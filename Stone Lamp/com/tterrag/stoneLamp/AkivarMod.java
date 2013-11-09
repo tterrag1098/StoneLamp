@@ -1,4 +1,4 @@
-package tterrag.akivarMod;
+package tterrag.stoneLamp;
 
 import tterrag.akivarMod.block.ModBlock;
 import tterrag.akivarMod.item.ModItem;
