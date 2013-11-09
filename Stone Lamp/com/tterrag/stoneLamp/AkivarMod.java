@@ -1,8 +1,8 @@
 package tterrag.stoneLamp;
 
-import tterrag.akivarMod.block.ModBlock;
-import tterrag.akivarMod.item.ModItem;
-import tterrag.akivarMod.lib.Reference;
+import tterrag.stoneLamp.block.ModBlock;
+import tterrag.stoneLamp.item.ModItem;
+import tterrag.stoneLamp.lib.Reference;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;

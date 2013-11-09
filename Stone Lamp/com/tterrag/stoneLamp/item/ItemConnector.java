@@ -1,11 +1,11 @@
-package tterrag.akivarMod.item;
+package tterrag.stoneLamp.item;
 
-import tterrag.akivarMod.block.ModBlock;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import tterrag.stoneLamp.block.ModBlock;
 
 public class ItemConnector extends Item{
 	

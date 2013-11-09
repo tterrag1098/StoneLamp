@@ -1,4 +1,4 @@
-package tterrag.akivarMod.block;
+package tterrag.stoneLamp.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

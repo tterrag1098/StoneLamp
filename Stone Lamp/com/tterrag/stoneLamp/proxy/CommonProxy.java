@@ -1,4 +1,4 @@
-package tterrag.akivarMod.proxy;
+package tterrag.stoneLamp.proxy;
 
 public class CommonProxy {
 

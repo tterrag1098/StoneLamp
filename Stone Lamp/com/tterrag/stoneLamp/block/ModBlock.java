@@ -1,4 +1,4 @@
-package tterrag.akivarMod.block;
+package tterrag.stoneLamp.block;
 
 import mods.tinker.tconstruct.common.TContent;
 import net.minecraft.block.Block;

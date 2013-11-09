@@ -1,4 +1,4 @@
-package tterrag.akivarMod.item;
+package tterrag.stoneLamp.item;
 
 import net.minecraft.item.Item;
 import cpw.mods.fml.common.registry.LanguageRegistry;

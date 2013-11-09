@@ -1,4 +1,4 @@
-package tterrag.akivarMod.lib;
+package tterrag.stoneLamp.lib;
 
 public class Reference {
 
