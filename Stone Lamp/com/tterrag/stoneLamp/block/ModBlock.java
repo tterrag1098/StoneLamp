@@ -9,8 +9,16 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class ModBlock {
 	
-	public static int LAMP_ID = 2999;
-	public static int EMPTYLAMP_ID = 2998;
+	public static final String LAMP_UNLOC_NAME = "stoneLamp";
+	public static final String EMPTYLAMP_UNLOC_NAME = "emptyLamp";
+	public static final String LAMP_LOC_NAME = "Stone Lamp";
+	public static final String EMPTYLAMP_LOC_NAME = "Empty Stone Lamp";
+	
+	public static final int LAMP_DEFAULT = 2999;
+	public static final int EMPTYLAMP_DEFAULT = 2998;
+	
+	public static int LAMP_ID;
+	public static int EMPTYLAMP_ID;
 	
 	public static Block lamp;
 	public static Block emptyLamp;

@@ -1,6 +1,7 @@
 package tterrag.stoneLamp;
 
 import tterrag.stoneLamp.block.ModBlock;
+import tterrag.stoneLamp.config.ConfigKeys;
 import tterrag.stoneLamp.item.ModItem;
 import tterrag.stoneLamp.lib.Reference;
 import cpw.mods.fml.common.Mod;
@@ -21,14 +22,16 @@ public class AkivarMod {
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event) {
 		ModBlock.init();
-		ModItem.init();
+		if (ConfigKeys.allowDebugItem)
+			ModItem.init();
 	}
 
 	@Init
 	public void init(FMLInitializationEvent event) {
 		ModBlock.addNames();
 		ModBlock.addRecipes();
-		ModItem.addNames();
+		if (ConfigKeys.allowDebugItem)
+			ModItem.addNames();
 	}
 
 	@PostInit

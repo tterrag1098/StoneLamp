@@ -1,5 +1,6 @@
 package tterrag.stoneLamp.block;
 
+import tterrag.stoneLamp.config.ConfigKeys;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -64,7 +65,9 @@ public class BlockLamp extends Block {
 	{
 		boolean isOpenUp = false, isOpenDown = false, isOpenLeft = false, isOpenRight = false;
 
-		//return icons[(int) (Math.random() * 16)];
+		if (!ConfigKeys.allowConnectedTextures)
+			return icons[0];
+		
 		switch (side)
 		{
 		case 0:
