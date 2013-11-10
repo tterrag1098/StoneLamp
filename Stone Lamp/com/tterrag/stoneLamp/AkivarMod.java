@@ -1,6 +1,7 @@
 package tterrag.stoneLamp;
 
 import tterrag.stoneLamp.block.ModBlock;
+import tterrag.stoneLamp.config.ConfigHandler;
 import tterrag.stoneLamp.config.ConfigKeys;
 import tterrag.stoneLamp.item.ModItem;
 import tterrag.stoneLamp.lib.Reference;
@@ -21,6 +22,9 @@ public class AkivarMod {
 
 	@PreInit
 	public void preInit(FMLPreInitializationEvent event) {
+		
+		ConfigHandler.init(event.getSuggestedConfigurationFile());
+		
 		ModBlock.init();
 		if (ConfigKeys.allowDebugItem)
 			ModItem.init();
