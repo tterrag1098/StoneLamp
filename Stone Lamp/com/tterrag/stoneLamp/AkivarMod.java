@@ -1,5 +1,6 @@
 package tterrag.stoneLamp;
 
+import net.minecraft.client.Minecraft;
 import tterrag.stoneLamp.block.ModBlock;
 import tterrag.stoneLamp.config.ConfigHandler;
 import tterrag.stoneLamp.config.ConfigKeys;

@@ -26,10 +26,11 @@ public class ConfigHandler {
 		ModBlock.EMPTYLAMP_ID = config.getBlock(ModBlock.EMPTYLAMP_UNLOC_NAME, ModBlock.EMPTYLAMP_DEFAULT).getInt();
 		
 		/**
-		 * Transmutation recipe configs
+		 * Other configs
 		 */
 		ConfigKeys.allowConnectedTextures = config.get("Options", ConfigKeys.ALLOW_CON_TEXTURES_KEY, true).getBoolean(true);
-		ConfigKeys.allowDebugItem = config.get("Recipes", ConfigKeys.ALLOW_DEBUG_KEY, true).getBoolean(true);
+		ConfigKeys.allowDebugItem = config.get("Options", ConfigKeys.ALLOW_DEBUG_KEY, true).getBoolean(true);
+		ConfigKeys.maxChannel = config.get("Options", ConfigKeys.MAX_CHANNEL_KEY, 15).getInt();
 		
 		config.save();
 	}

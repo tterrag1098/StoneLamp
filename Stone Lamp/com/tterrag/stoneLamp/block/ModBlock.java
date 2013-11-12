@@ -3,6 +3,8 @@ package tterrag.stoneLamp.block;
 import mods.tinker.tconstruct.common.TContent;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import tterrag.stoneLamp.client.ColoredLampRenderer;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -11,17 +13,22 @@ public class ModBlock {
 	
 	public static final String LAMP_UNLOC_NAME = "stoneLamp";
 	public static final String EMPTYLAMP_UNLOC_NAME = "emptyLamp";
+	public static final String COLOREDLAMP_UNLOC_NAME = "coloredLamp";
 	public static final String LAMP_LOC_NAME = "Stone Lamp";
 	public static final String EMPTYLAMP_LOC_NAME = "Empty Stone Lamp";
+	public static final String COLOREDLAMP_LOC_NAME = "Colored Stone Lamp";
 	
 	public static final int LAMP_DEFAULT = 2999;
 	public static final int EMPTYLAMP_DEFAULT = 2998;
+	public static final int COLOREDLAMP_DEFAULT = 2997;
 	
 	public static int LAMP_ID;
 	public static int EMPTYLAMP_ID;
+	public static int COLOREDLAMP_ID = 2997;
 	
 	public static Block lamp;
 	public static Block emptyLamp;
+	public static Block coloredLamp;
 	
 	public static void init()
 	{
@@ -30,6 +37,9 @@ public class ModBlock {
 
 		emptyLamp = new BlockLamp(EMPTYLAMP_ID, 0.0F, "blockEmptyLamp");
 		GameRegistry.registerBlock(emptyLamp, "blockEmptyLamp");
+		
+		coloredLamp = new BlockColoredLamp(COLOREDLAMP_ID, 0.9F, COLOREDLAMP_UNLOC_NAME);
+		GameRegistry.registerBlock(coloredLamp, COLOREDLAMP_UNLOC_NAME);
 	}
 	
 	public static void addRecipes()
@@ -78,6 +88,7 @@ public class ModBlock {
 	{
 		LanguageRegistry.addName(lamp, "Stone Lamp");
 		LanguageRegistry.addName(emptyLamp, "Empty Stone Lamp");
+		LanguageRegistry.addName(coloredLamp, COLOREDLAMP_LOC_NAME);
 	}
 
 }

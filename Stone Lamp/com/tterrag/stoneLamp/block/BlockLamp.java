@@ -3,6 +3,7 @@ package tterrag.stoneLamp.block;
 import tterrag.stoneLamp.config.ConfigKeys;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.Icon;
@@ -12,7 +13,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockLamp extends Block {
-
+	
 	public BlockLamp(int id, float lightValue, String unlocName) {
 		super(id, Material.glass);
 		setLightValue(lightValue);
@@ -35,10 +36,11 @@ public class BlockLamp extends Block {
 		return super.onBlockPlaced(world, x, y, z, par5, par6, par7, par8,
 				par9);
 	}
+	
 	/** 
 	 * @author fuj1n (from here down)
 	 */
-	protected Icon[] icons = new Icon[16];
+	public static Icon[] icons = new Icon[16];
 	protected String folder;
 
 	/**
@@ -50,9 +52,9 @@ public class BlockLamp extends Block {
 	 * @param par6 Metadata of the block this block is trying to connect to
 	 * @return true if should connect
 	 */
-	public boolean shouldConnectToBlock (IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5, int par6)
+	public boolean shouldConnectToBlock (IBlockAccess par1IBlockAccess, int x, int y, int z, int par5, int par6)
 	{
-		return par5 == this.blockID;
+		return par5 == this.blockID && par1IBlockAccess.getBlockMetadata(x, y, z) == par6;
 	}
 
 	@Override
