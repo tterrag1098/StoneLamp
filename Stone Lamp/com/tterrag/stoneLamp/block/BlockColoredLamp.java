@@ -1,5 +1,6 @@
 package tterrag.stoneLamp.block;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -11,14 +12,12 @@ import net.minecraft.world.World;
 
 public class BlockColoredLamp extends BlockLamp{
 	
-	private int meta;
 	private int color;
+	private List list;
 	
 	public BlockColoredLamp(int id, float lightValue, String unlocName)
 	{
 		super(id, lightValue, unlocName);
-		this.meta = 0;
-		this.color = 0;
 	}
 	
 	@Override
@@ -26,19 +25,14 @@ public class BlockColoredLamp extends BlockLamp{
 			List par3List) {
 		for (int i = 0; i <= 15; i++)
 		{
-			par3List.add(new ItemStack(this.blockID, 0, i));
+			par3List.add(new ItemStack(this.blockID, 1, i));
 		}
+		list = par3List;
 	}
 	
 	@Override
 	public Icon getIcon(int par1, int par2) {
 		return icons[0];
-	}
-
-	@Override
-	public void onBlockAdded(World par1World, int par2, int par3, int par4) {
-		par1World.setBlockMetadataWithNotify(par2, par3, par4, color, 3);
-		super.onBlockAdded(par1World, par2, par3, par4);
 	}
 	
 	@Override
@@ -85,9 +79,8 @@ public class BlockColoredLamp extends BlockLamp{
 	@Override
 	public int colorMultiplier(IBlockAccess par1iBlockAccess, int par2,
 		int par3, int par4) {
-		meta = par1iBlockAccess.getBlockMetadata(par2, par3, par4);
-		color = meta;
-		switch(meta)
+		color = par1iBlockAccess.getBlockMetadata(par2, par3, par4);
+		switch(color)
 		{
 		case 0:
 			return (12 << 16) | (12 << 8) | 12;
@@ -135,5 +128,13 @@ public class BlockColoredLamp extends BlockLamp{
 	public int getRenderColor(int par1) {
 		color = par1;
 		return getBlockColor();	
+	}
+	
+	@Override
+	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y,
+			int z, int metadata, int fortune) {
+		ArrayList<ItemStack> itemList = new ArrayList<ItemStack>();
+		itemList.add(new ItemStack(this.blockID, 1, metadata));
+		return itemList;
 	}
 }

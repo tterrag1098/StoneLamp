@@ -30,7 +30,10 @@ public class ItemConnector extends Item {
 				world.setBlockMetadataWithNotify(x, y, z,
 						stack.getItemDamage(), 3);
 			}
+			player.addChatMessage("Meta: " + world.getBlockMetadata(x, y, z));
 		}
+		
+		
 		return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX,
 				hitY, hitZ);
 	}
