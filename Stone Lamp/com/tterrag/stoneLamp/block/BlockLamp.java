@@ -13,9 +13,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockLamp extends Block {
 	
+	private float lightVal;
+	
 	public BlockLamp(int id, float lightValue, String unlocName) {
 		super(id, Material.glass);
 		setLightValue(lightValue);
+		lightVal = lightValue;
 		setUnlocalizedName(unlocName);
 		setCreativeTab(AkivarMod.tabStoneLamp);
 		setHardness(0.6F);
@@ -599,5 +602,17 @@ public class BlockLamp extends Block {
 	public boolean canPlaceTorchOnTop (World world, int x, int y, int z)
 	{
 		return true;
+	}
+	
+	@Override
+	public int getBlockColor() {
+		if (lightVal == 0.0F)
+			return (180 << 16) | (180 << 8) | 180;
+		else return (255 << 16) | (255 << 8) | 255;
+	}
+	
+	@Override
+	public int getRenderColor(int par1) {
+		return getBlockColor();
 	}
 }
