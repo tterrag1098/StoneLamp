@@ -50,7 +50,7 @@ public class BlockColoredLamp extends BlockLamp {
 			case 6:
 				return (32 << 16) | (124 << 8) | 196;
 			case 7:
-				return (180 << 16) | (180 << 8) | 180;
+				return (160 << 16) | (160 << 8) | 150;
 			case 8:
 				return (80 << 16) | (80 << 8) | 80;
 			case 9:
@@ -128,7 +128,7 @@ public class BlockColoredLamp extends BlockLamp {
 		case 6:
 			return (32 << 16) | (124 << 8) | 196;
 		case 7:
-			return (180 << 16) | (180 << 8) | 180;
+			return (160 << 16) | (160 << 8) | 160;
 		case 8:
 			return (80 << 16) | (80 << 8) | 80;
 		case 9:

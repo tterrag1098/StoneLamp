@@ -2,6 +2,7 @@ package tterrag.stoneLamp.block;
 
 import mods.tinker.tconstruct.common.TContent;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import tterrag.stoneLamp.item.ItemBlockColoredLamp;
 import cpw.mods.fml.common.Loader;
@@ -88,6 +89,37 @@ public class ModBlock {
 			GameRegistry.addShapelessRecipe(new ItemStack(ModBlock.lamp), new Object[]
 					{ModBlock.emptyLamp, TContent.stoneTorch});
 					
+		}
+		
+		
+		
+		for (int i = 0; i < 16; i++)
+		{
+			GameRegistry.addShapelessRecipe(new ItemStack(coloredLamp, 1, i), new Object[]
+					{new ItemStack(emptyColoredLamp, 1, i), Block.torchWood}
+			);
+			GameRegistry.addShapelessRecipe(new ItemStack(lamp), new Object[]
+					{new ItemStack(coloredLamp, 1, i), Item.bucketWater}
+			);
+			GameRegistry.addShapelessRecipe(new ItemStack(emptyLamp), new Object[]
+					{new ItemStack(emptyColoredLamp, 1, i), Item.bucketWater}
+			);
+			GameRegistry.addShapelessRecipe(new ItemStack(coloredLamp, 1, i), new Object[]
+					{lamp, new ItemStack(Item.dyePowder, 1, i)}
+			);
+			GameRegistry.addShapelessRecipe(new ItemStack(emptyColoredLamp, 1, i), new Object[]
+					{emptyLamp, new ItemStack(Item.dyePowder, 1, i)}
+			);
+			for (int j = 0; j < 16; j++)
+			{
+				GameRegistry.addShapelessRecipe(new ItemStack(coloredLamp, 1, i), new Object[]
+						{new ItemStack(coloredLamp, 1, j), new ItemStack(Item.dyePowder, 1, i)}
+				);
+				GameRegistry.addShapelessRecipe(new ItemStack(emptyColoredLamp, 1, i), new Object[]
+						{new ItemStack(emptyColoredLamp, 1, j), new ItemStack(Item.dyePowder, 1, i)}
+				);
+			}
+			
 		}
 	}
 	

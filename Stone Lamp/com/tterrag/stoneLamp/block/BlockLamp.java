@@ -3,10 +3,10 @@ package tterrag.stoneLamp.block;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import tterrag.stoneLamp.AkivarMod;
 import tterrag.stoneLamp.config.ConfigKeys;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -17,7 +17,7 @@ public class BlockLamp extends Block {
 		super(id, Material.glass);
 		setLightValue(lightValue);
 		setUnlocalizedName(unlocName);
-		setCreativeTab(CreativeTabs.tabBlock);
+		setCreativeTab(AkivarMod.tabStoneLamp);
 		setHardness(0.6F);
 	}
 

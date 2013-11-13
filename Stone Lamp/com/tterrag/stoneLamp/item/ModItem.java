@@ -10,8 +10,8 @@ public class ModItem {
 	public static int CONNECTOR_ID;	
 	public static final int CONNECTOR_DEFAULT = 24242;
 	public static final String CONNECTOR_KEY = "connector";
-	public static final String CONNECTOR_UNLOC_NAME = "textureConnector";
-	public static final String CONNECTOR_LOC_NAME = "Texture Connector";
+	public static final String CONNECTOR_UNLOC_NAME = "textureConnectorWand";
+	public static final String CONNECTOR_LOC_NAME = "Texture Connector Wand";
 
 	
 	public static Item textureConnector;
