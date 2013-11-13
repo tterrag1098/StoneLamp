@@ -1,14 +1,13 @@
 package tterrag.stoneLamp.block;
 
-import tterrag.stoneLamp.config.ConfigKeys;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import tterrag.stoneLamp.config.ConfigKeys;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -60,7 +59,7 @@ public class BlockLamp extends Block {
 	@Override
 	public Icon getBlockTexture (IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
 	{
-		return par1IBlockAccess.getBlockMetadata(par2, par3, par4) == 15 ? icons[0] : getConnectedBlockTexture(par1IBlockAccess, par2, par3, par4, par5, icons);
+		return getConnectedBlockTexture(par1IBlockAccess, par2, par3, par4, par5, icons);
 	}
 
 	public Icon getConnectedBlockTexture (IBlockAccess block, int x, int y, int z, int side, Icon[] icons)

@@ -1,7 +1,6 @@
 package tterrag.stoneLamp.item;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -10,8 +9,6 @@ import tterrag.stoneLamp.block.ModBlock;
 import tterrag.stoneLamp.config.ConfigKeys;
 
 public class ItemConnector extends Item {
-
-	private boolean wasUsedOnBlock = false;
 
 	public ItemConnector(int id) {
 		super(id);
@@ -26,7 +23,7 @@ public class ItemConnector extends Item {
 			float hitZ) {
 		if (!world.isRemote && !player.isSneaking()) {
 			int id = world.getBlockId(x, y, z);
-			if (id == ModBlock.LAMP_ID || id == ModBlock.EMPTYLAMP_ID || id == ModBlock.COLOREDLAMP_ID) {
+			if (id == ModBlock.LAMP_ID || id == ModBlock.EMPTYLAMP_ID || id == ModBlock.COLOREDLAMP_ID || id == ModBlock.EMPTYCOLOREDLAMP_ID) {
 				world.setBlockMetadataWithNotify(x, y, z,
 						stack.getItemDamage(), 3);
 			}
