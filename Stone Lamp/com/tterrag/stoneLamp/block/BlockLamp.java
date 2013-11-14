@@ -660,4 +660,9 @@ public class BlockLamp extends Block {
 		}
 		else return super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
 	}
+	
+	@Override
+	public boolean isBlockSolidOnSide(World world, int x, int y, int z, net.minecraftforge.common.ForgeDirection side) {
+		return true;
+	};
 }
