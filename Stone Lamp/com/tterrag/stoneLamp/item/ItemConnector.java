@@ -61,9 +61,9 @@ public class ItemConnector extends Item {
 				world.setBlockMetadataWithNotify(x, y, z,
 						stack.getItemDamage(), 3);
 			}
+			return false;
 		}
-
-		return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX,
+		else return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX,
 				hitY, hitZ);
 	}
 

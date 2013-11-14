@@ -23,7 +23,7 @@ public class ItemBlockColoredLamp extends ItemBlock {
 	public void addInformation(ItemStack par1ItemStack,
 			EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
 		if (par1ItemStack != null)
-			par3List.add("§o"
+			par3List.add("\u00A7o"
 					+ ItemConnector.colors[par1ItemStack.getItemDamage()]);
 	}
 
