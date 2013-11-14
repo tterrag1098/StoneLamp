@@ -5,6 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
@@ -656,6 +657,14 @@ public class BlockLamp extends Block {
 			world.setBlock(x, y, z, id);
 			world.setBlockMetadataWithNotify(x, y, z, meta, 3);
 			player.inventory.getCurrentItem().stackSize--;
+			return true;
+		}
+		else if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().itemID == Item.bucketWater.itemID && (this.blockID == ModBlock.EMPTYCOLOREDLAMP_ID || this.blockID == ModBlock.COLOREDLAMP_ID) && !player.isSneaking())
+		{
+			int id = world.getBlockId(x, y, z) == ModBlock.COLOREDLAMP_ID ? ModBlock.LAMP_ID : ModBlock.EMPTYLAMP_ID;
+			world.setBlock(x, y, z, id);
+			world.setBlockMetadataWithNotify(x, y, z, 0, 3);
+			player.inventory.getCurrentItem().itemID = Item.bucketEmpty.itemID;
 			return true;
 		}
 		else return super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
