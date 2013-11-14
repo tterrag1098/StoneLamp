@@ -1,5 +1,7 @@
 package tterrag.stoneLamp.item;
 
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -10,6 +12,10 @@ import tterrag.stoneLamp.block.ModBlock;
 import tterrag.stoneLamp.config.ConfigKeys;
 
 public class ItemConnector extends Item {
+
+	public static String[] colors = new String[] { "Black", "Red", "Green",
+			"Brown", "Blue", "Purple", "Cyan", "Light Gray", "Gray", "Pink",
+			"Lime", "Yellow", "Light Blue", "Magenta", "Orange", "White" };
 
 	public ItemConnector(int id) {
 		super(id);
@@ -45,14 +51,13 @@ public class ItemConnector extends Item {
 			float hitZ) {
 		if (!world.isRemote && !player.isSneaking()) {
 			int id = world.getBlockId(x, y, z);
-			if (!ConfigKeys.allowColorChangeWithWand && (id == ModBlock.LAMP_ID || id == ModBlock.EMPTYLAMP_ID)) 
-			{
+			if (!ConfigKeys.allowColorChangeWithWand
+					&& (id == ModBlock.LAMP_ID || id == ModBlock.EMPTYLAMP_ID)) {
 				world.setBlockMetadataWithNotify(x, y, z,
 						stack.getItemDamage(), 3);
-			}
-			else if (ConfigKeys.allowColorChangeWithWand && (id == ModBlock.LAMP_ID || id == ModBlock.EMPTYLAMP_ID || id == ModBlock.COLOREDLAMP_ID
-					|| id == ModBlock.EMPTYCOLOREDLAMP_ID))
-			{
+			} else if (ConfigKeys.allowColorChangeWithWand
+					&& (id == ModBlock.LAMP_ID || id == ModBlock.EMPTYLAMP_ID
+							|| id == ModBlock.COLOREDLAMP_ID || id == ModBlock.EMPTYCOLOREDLAMP_ID)) {
 				world.setBlockMetadataWithNotify(x, y, z,
 						stack.getItemDamage(), 3);
 			}
@@ -76,13 +81,24 @@ public class ItemConnector extends Item {
 			if (world.isRemote && !ConfigKeys.allowColorChangeWithWand)
 				player.addChatMessage("Channel: " + stack.getItemDamage());
 			else if (world.isRemote && ConfigKeys.allowColorChangeWithWand) {
-				String[] colors = new String[] { "Black", "Red", "Green",
-						"Brown", "Blue", "Purple", "Cyan", "Light Gray",
-						"Gray", "Pink", "Lime", "Yellow", "Light Blue",
-						"Magenta", "Orange", "White" };
-				player.addChatMessage("Channel " + stack.getItemDamage() + ", Color: " + colors[stack.getItemDamage()]);
+				player.addChatMessage("Channel " + stack.getItemDamage()
+						+ ", Color: " + colors[stack.getItemDamage()]);
 			}
 		}
 		return stack;
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public void addInformation(ItemStack par1ItemStack,
+			EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+		if (!ConfigKeys.allowColorChangeWithWand) {
+			par3List.add("Can be used to disconnect same-type");
+			par3List.add("lamps from others.");
+		} else if (ConfigKeys.allowColorChangeWithWand) {
+			par3List.add("Can be used to disconnect same-type");
+			par3List.add("lamps from others, and change the");
+			par3List.add("color of colored lamps.");
+		}
 	}
 }

@@ -1,13 +1,18 @@
 package tterrag.stoneLamp.block;
 
+import mods.tinker.tconstruct.common.TContent;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import tterrag.stoneLamp.AkivarMod;
 import tterrag.stoneLamp.config.ConfigKeys;
+import tterrag.stoneLamp.item.ModItem;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -614,5 +619,45 @@ public class BlockLamp extends Block {
 	@Override
 	public int getRenderColor(int par1) {
 		return getBlockColor();
+	}
+	
+	@Override
+	public void onBlockClicked(World world, int x, int y, int z,
+			EntityPlayer player) {
+		if (!world.isRemote && player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().itemID == (ModItem.CONNECTOR_ID + 256) && (this.blockID == ModBlock.COLOREDLAMP_ID || this.blockID == ModBlock.LAMP_ID) && player.isSneaking())
+		{
+			int id = world.getBlockId(x, y, z) == ModBlock.COLOREDLAMP_ID ? ModBlock.EMPTYCOLOREDLAMP_ID : ModBlock.EMPTYLAMP_ID;
+			int meta = world.getBlockMetadata(x, y, z);
+			world.setBlock(x, y, z, id);
+			world.setBlockMetadataWithNotify(x, y, z, meta, 3);
+			if (!player.inventory.addItemStackToInventory(new ItemStack(Block.torchWood, 1)))
+				player.dropItem(Block.torchWood.blockID, 1);
+		}
+		super.onBlockClicked(world, x, y, z, player);
+	}
+	
+	@Override
+	public boolean onBlockActivated(World world, int x, int y,
+			int z, EntityPlayer player, int par6, float par7,
+			float par8, float par9) {
+		if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().itemID == Block.torchWood.blockID && (this.blockID == ModBlock.EMPTYCOLOREDLAMP_ID || this.blockID == ModBlock.EMPTYLAMP_ID) && !player.isSneaking())
+		{
+			int id = world.getBlockId(x, y, z) == ModBlock.EMPTYCOLOREDLAMP_ID ? ModBlock.COLOREDLAMP_ID : ModBlock.LAMP_ID;
+			int meta = world.getBlockMetadata(x, y, z);
+			world.setBlock(x, y, z, id);
+			world.setBlockMetadataWithNotify(x, y, z, meta, 3);
+			player.inventory.getCurrentItem().stackSize--;
+			return true;
+		}
+		else if (Loader.isModLoaded("TConstruct") && player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().itemID == TContent.stoneTorch.blockID && (this.blockID == ModBlock.EMPTYCOLOREDLAMP_ID || this.blockID == ModBlock.EMPTYLAMP_ID) && !player.isSneaking())
+		{
+			int id = world.getBlockId(x, y, z) == ModBlock.EMPTYCOLOREDLAMP_ID ? ModBlock.COLOREDLAMP_ID : ModBlock.LAMP_ID;
+			int meta = world.getBlockMetadata(x, y, z);
+			world.setBlock(x, y, z, id);
+			world.setBlockMetadataWithNotify(x, y, z, meta, 3);
+			player.inventory.getCurrentItem().stackSize--;
+			return true;
+		}
+		else return super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
 	}
 }

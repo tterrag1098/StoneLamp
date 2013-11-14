@@ -5,6 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import tterrag.stoneLamp.item.ItemBlockColoredLamp;
+import tterrag.stoneLamp.item.ModItem;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -119,8 +120,23 @@ public class ModBlock {
 						{new ItemStack(emptyColoredLamp, 1, j), new ItemStack(Item.dyePowder, 1, i)}
 				);
 			}
-			
+			GameRegistry.addRecipe(new ItemStack(ModItem.textureConnector), new Object[]{
+				"  L",
+				" S ",
+				"S  ",
+				
+				'L', new ItemStack(emptyColoredLamp, 1, i),
+				'S', Item.stick
+			});
 		}
+		GameRegistry.addRecipe(new ItemStack(ModItem.textureConnector), new Object[]{
+			"  L",
+			" S ",
+			"S  ",
+			
+			'L', emptyLamp,
+			'S', Item.stick
+		});
 	}
 	
 	public static void addNames()

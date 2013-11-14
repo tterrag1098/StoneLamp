@@ -2,10 +2,14 @@ package tterrag.stoneLamp.block;
 
 import java.util.List;
 
+import tterrag.stoneLamp.item.ModItem;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 public class BlockColoredLamp extends BlockLamp {
 
@@ -160,4 +164,6 @@ public class BlockColoredLamp extends BlockLamp {
 		color = par1;
 		return getBlockColor();
 	}
+	
+
 }
