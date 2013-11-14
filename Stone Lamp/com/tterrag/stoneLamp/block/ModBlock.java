@@ -1,9 +1,9 @@
 package tterrag.stoneLamp.block;
 
-import mods.tinker.tconstruct.common.TContent;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import tconstruct.common.TContent;
 import tterrag.stoneLamp.item.ItemBlockColoredLamp;
 import tterrag.stoneLamp.item.ModItem;
 import cpw.mods.fml.common.Loader;

@@ -1,6 +1,5 @@
 package tterrag.stoneLamp.block;
 
-import mods.tinker.tconstruct.common.TContent;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -9,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import tconstruct.common.TContent;
 import tterrag.stoneLamp.AkivarMod;
 import tterrag.stoneLamp.config.ConfigKeys;
 import tterrag.stoneLamp.item.ModItem;

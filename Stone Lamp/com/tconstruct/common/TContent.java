@@ -1,4 +1,4 @@
-package mods.tinker.tconstruct.common;
+package tconstruct.common;
 
 import net.minecraft.block.Block;
 
