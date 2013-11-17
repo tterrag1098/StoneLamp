@@ -3,9 +3,12 @@ package tterrag.stoneLamp.block;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 public class BlockColoredLamp extends BlockLamp {
 
@@ -160,6 +163,19 @@ public class BlockColoredLamp extends BlockLamp {
 		color = par1;
 		return getBlockColor();
 	}
-	
+
+	@Override
+	public boolean onBlockActivated(World world, int x, int y, int z,
+			EntityPlayer player, int par6, float par7, float par8, float par9) {
+		int id = player.inventory.getCurrentItem().itemID;
+		if (id == Item.dyePowder.itemID && player.inventory.getCurrentItem().getItemDamage() != world.getBlockMetadata(x, y, z))
+		{
+			world.setBlockMetadataWithNotify(x, y, z, player.inventory.getCurrentItem().getItemDamage(), 3);
+			if (!player.capabilities.isCreativeMode)
+				player.inventory.getCurrentItem().stackSize--;
+		}
+		return super.onBlockActivated(world, x, y, z, player, par6, par7, par8,
+				par9);
+	}
 
 }
