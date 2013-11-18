@@ -33,7 +33,7 @@ public class BlockColoredLamp extends BlockLamp {
 	public Icon getIcon(int par1, int par2) {
 		return icons[0];
 	}
-
+	/*
 	@Override
 	public int getBlockColor() {
 		if (lightVal == 0.9F) {
@@ -111,6 +111,7 @@ public class BlockColoredLamp extends BlockLamp {
 			}
 	}
 
+	/*
 	@Override
 	public int colorMultiplier(IBlockAccess par1iBlockAccess, int par2,
 			int par3, int par4) {
@@ -151,7 +152,7 @@ public class BlockColoredLamp extends BlockLamp {
 		default:
 			return (200 << 16) | (200 << 8) | 200;
 		}
-	}
+	}*/
 
 	@Override
 	public int damageDropped(int par1) {
@@ -170,6 +171,7 @@ public class BlockColoredLamp extends BlockLamp {
 		int id = 0;
 		if (player.inventory.getCurrentItem() != null)
 			id = player.inventory.getCurrentItem().itemID;
+		else return super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
 		if (id == Item.dyePowder.itemID && player.inventory.getCurrentItem().getItemDamage() != world.getBlockMetadata(x, y, z))
 		{
 			world.setBlockMetadataWithNotify(x, y, z, player.inventory.getCurrentItem().getItemDamage(), 3);

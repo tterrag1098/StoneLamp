@@ -48,7 +48,7 @@ public class BlockLamp extends Block {
 	/** 
 	 * @author fuj1n (from here down)
 	 */
-	public static Icon[] icons = new Icon[9];
+	public static Icon[] icons = new Icon[14];
 	public static int renderId;
 	protected String folder;
 
@@ -595,12 +595,12 @@ public class BlockLamp extends Block {
 		icons[5] = par1IconRegister.registerIcon("akivarmod:bottomLeftCorner");
 		icons[6] = par1IconRegister.registerIcon("akivarmod:bottomRightCorner");
 		icons[7] = par1IconRegister.registerIcon("akivarmod:topRightCorner");
-		icons[8] = par1IconRegister.registerIcon("akivarmod:lamp_full");
-		//icons[9] = par1IconRegister.registerIcon("akivarmod:lamp_ul");
-		//icons[10] = par1IconRegister.registerIcon("akivarmod:lamp_dl");
-		//icons[11] = par1IconRegister.registerIcon("akivarmod:lamp_di");
-		//icons[12] = par1IconRegister.registerIcon("akivarmod:lamp_ui");
-		//icons[13] = par1IconRegister.registerIcon("akivarmod:lamp_li");
+		icons[8] = par1IconRegister.registerIcon("akivarmod:topLeftCornerClosed");
+		icons[9] = par1IconRegister.registerIcon("akivarmod:bottomLeftCornerClosed");
+		icons[10] = par1IconRegister.registerIcon("akivarmod:bottomRightCornerClosed");
+		icons[11] = par1IconRegister.registerIcon("akivarmod:topRightCornerClosed");
+		icons[12] = par1IconRegister.registerIcon("akivarmod:lamp_full");
+		icons[13] = par1IconRegister.registerIcon("akivarmod:lamp");
 		//icons[14] = par1IconRegister.registerIcon("akivarmod:lamp_ri");
 		//icons[15] = par1IconRegister.registerIcon("akivarmod:lamp_full");
 	}
@@ -618,7 +618,9 @@ public class BlockLamp extends Block {
 		else return (255 << 16) | (255 << 8) | 255;
 	}
 		   
-   public int getBlockColor(int metadata) {
+	public int getBlockColor(int metadata) {
+		if (this.blockID == ModBlock.COLOREDLAMP_ID || this.blockID == ModBlock.EMPTYCOLOREDLAMP_ID)
+		{
 		if (lightVal == 0.9F) {
 			switch (metadata) {
 			case 0:
@@ -692,6 +694,9 @@ public class BlockLamp extends Block {
 			default:
 				return (200 << 16) | (200 << 8) | 200;
 			}
+		}
+		else 
+			return (0xffffff);
 	}
 
    @Override
@@ -719,6 +724,8 @@ public class BlockLamp extends Block {
 	public boolean onBlockActivated(World world, int x, int y,
 			int z, EntityPlayer player, int par6, float par7,
 			float par8, float par9) {
+		if (player.inventory.getCurrentItem() == null)
+			return super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
 		if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().itemID == Block.torchWood.blockID && (this.blockID == ModBlock.EMPTYCOLOREDLAMP_ID || this.blockID == ModBlock.EMPTYLAMP_ID) && !player.isSneaking())
 		{
 			int id = world.getBlockId(x, y, z) == ModBlock.EMPTYCOLOREDLAMP_ID ? ModBlock.COLOREDLAMP_ID : ModBlock.LAMP_ID;

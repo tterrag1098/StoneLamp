@@ -18,8 +18,12 @@ public class ColoredLampRenderer implements ISimpleBlockRenderingHandler {
 
 	  @Override
 	  public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
-	    renderer.setOverrideBlockTexture(BlockLamp.icons[0]);
+	    
+	    renderer.setOverrideBlockTexture(BlockLamp.icons[13]);
 	    renderer.renderBlockAsItem(Block.glass, 0, 1);
+		Tessellator tessellator = Tessellator.instance;
+		if (block.blockID == ModBlock.COLOREDLAMP_ID || block.blockID == ModBlock.EMPTYCOLOREDLAMP_ID)
+	    	tessellator.setColorOpaque_I(((BlockLamp)block).getBlockColor(metadata));
 	    renderer.clearOverrideBlockTexture();
 	  }
 
@@ -43,16 +47,17 @@ public class ColoredLampRenderer implements ISimpleBlockRenderingHandler {
 					x, y, z);
 
 			Tessellator tessellator = Tessellator.instance;
-			tessellator.setColorOpaque_I(rawBlock.getBlockColor());
+			tessellator.setColorOpaque_I(((BlockLamp)rawBlock).getBlockColor(blockAccess.getBlockMetadata(x, y, z)));
+			tessellator.setBrightness(brightness);
 			
 			BlockLamp block = ((BlockLamp) rawBlock);
 
-			renderer.renderFaceYNeg(block, x, y, z, BlockLamp.icons[8]);
-			renderer.renderFaceYPos(block, x, y, z, BlockLamp.icons[8]);
-			renderer.renderFaceXNeg(block, x, y, z, BlockLamp.icons[8]);
-			renderer.renderFaceXPos(block, x, y, z, BlockLamp.icons[8]);
-			renderer.renderFaceZNeg(block, x, y, z, BlockLamp.icons[8]);
-			renderer.renderFaceZPos(block, x, y, z, BlockLamp.icons[8]);
+			renderer.renderFaceYNeg(block, x, y, z, BlockLamp.icons[12]);
+			renderer.renderFaceYPos(block, x, y, z, BlockLamp.icons[12]);
+			renderer.renderFaceXNeg(block, x, y, z, BlockLamp.icons[12]);
+			renderer.renderFaceXPos(block, x, y, z, BlockLamp.icons[12]);
+			renderer.renderFaceZNeg(block, x, y, z, BlockLamp.icons[12]);
+			renderer.renderFaceZPos(block, x, y, z, BlockLamp.icons[12]);	
 
 			for (Icon icon : getIconsToDraw(blockAccess, x, y, z, block, 0))
 				if (icon != null)
@@ -81,17 +86,18 @@ public class ColoredLampRenderer implements ISimpleBlockRenderingHandler {
 	  private Icon[] getIcons()
 	  {
 		  Icon[] allIcons = BlockLamp.icons;
-		  Icon[] newIcons = new Icon[8];
-		  for (int i = 0; i < 8; i++)
+		  Icon[] newIcons = new Icon[12];
+		  for (int i = 0; i < 12; i++)
 			  newIcons[i] = allIcons[i];
 		  return newIcons;
 	  }
+	  
 	  public Icon[] getIconsToDraw(IBlockAccess blockAccess, int x, int y, int z, Block block, int side)
 	  {
 		  boolean up = false, down = false, left = false, right = false, upLeft = false, upRight = false, downLeft = false, downRight = false;
 		  int id = block.blockID;
 
-		Icon[] iconsToDraw = new Icon[8];
+		Icon[] iconsToDraw = new Icon[12];
 		int index = 0;
 		
 		Icon[] allIcons = getIcons();
@@ -102,60 +108,60 @@ public class ColoredLampRenderer implements ISimpleBlockRenderingHandler {
 			down = id == blockAccess.getBlockId(x, y, z + 1);
 			left = id == blockAccess.getBlockId(x - 1, y, z);
 			right = id == blockAccess.getBlockId(x + 1, y, z);
-			upLeft = id == blockAccess.getBlockId(x + 1, y, z + 1);
+			upLeft = id == blockAccess.getBlockId(x - 1, y, z - 1);
 			upRight = id == blockAccess.getBlockId(x + 1, y, z - 1);
 			downLeft = id == blockAccess.getBlockId(x - 1, y, z + 1);
-			downRight = id == blockAccess.getBlockId(x - 1, y, z + 1);
+			downRight = id == blockAccess.getBlockId(x + 1, y, z + 1);
 			break;
 		case 1:
-			up = id == blockAccess.getBlockId(x + 1, y, z);
-			down = id == blockAccess.getBlockId(x - 1, y, z);
-			left = id == blockAccess.getBlockId(x, y, z + 1);
-			right = id == blockAccess.getBlockId(x, y, z - 1);
-			upLeft = id == blockAccess.getBlockId(x + 1, y, z + 1);
+			up = id == blockAccess.getBlockId(x, y, z - 1);
+			down = id == blockAccess.getBlockId(x, y, z + 1);
+			left = id == blockAccess.getBlockId(x - 1, y, z);
+			right = id == blockAccess.getBlockId(x + 1, y, z);
+			upLeft = id == blockAccess.getBlockId(x - 1, y, z - 1);
 			upRight = id == blockAccess.getBlockId(x + 1, y, z - 1);
 			downLeft = id == blockAccess.getBlockId(x - 1, y, z + 1);
-			downRight = id == blockAccess.getBlockId(x - 1, y, z + 1);
+			downRight = id == blockAccess.getBlockId(x + 1, y, z + 1);
 			break;
 		case 2:
-			up = id == blockAccess.getBlockId(x + 1, y, z);
-			down = id == blockAccess.getBlockId(x - 1, y, z);
-			left = id == blockAccess.getBlockId(x, y, z + 1);
-			right = id == blockAccess.getBlockId(x, y, z - 1);
-			upLeft = id == blockAccess.getBlockId(x + 1, y, z + 1);
-			upRight = id == blockAccess.getBlockId(x + 1, y, z - 1);
-			downLeft = id == blockAccess.getBlockId(x - 1, y, z + 1);
-			downRight = id == blockAccess.getBlockId(x - 1, y, z + 1);
+			up = id == blockAccess.getBlockId(x, y + 1, z);
+			down = id == blockAccess.getBlockId(x, y - 1, z);
+			left = id == blockAccess.getBlockId(x, y, z - 1);
+			right = id == blockAccess.getBlockId(x, y, z + 1);
+			upLeft = id == blockAccess.getBlockId(x, y + 1, z - 1);
+			upRight = id == blockAccess.getBlockId(x, y + 1, z + 1);
+			downLeft = id == blockAccess.getBlockId(x, y - 1, z - 1);
+			downRight = id == blockAccess.getBlockId(x, y - 1, z + 1);
 			break;
 		case 3:
-			up = id == blockAccess.getBlockId(x + 1, y, z);
-			down = id == blockAccess.getBlockId(x - 1, y, z);
+			up = id == blockAccess.getBlockId(x, y + 1, z);
+			down = id == blockAccess.getBlockId(x, y - 1, z);
 			left = id == blockAccess.getBlockId(x, y, z + 1);
 			right = id == blockAccess.getBlockId(x, y, z - 1);
-			upLeft = id == blockAccess.getBlockId(x + 1, y, z + 1);
-			upRight = id == blockAccess.getBlockId(x + 1, y, z - 1);
-			downLeft = id == blockAccess.getBlockId(x - 1, y, z + 1);
-			downRight = id == blockAccess.getBlockId(x - 1, y, z + 1);
+			upLeft = id == blockAccess.getBlockId(x, y + 1, z + 1);
+			upRight = id == blockAccess.getBlockId(x, y + 1, z - 1);
+			downLeft = id == blockAccess.getBlockId(x, y - 1, z + 1);
+			downRight = id == blockAccess.getBlockId(x, y - 1, z - 1);
 			break;
 		case 4:
-			up = id == blockAccess.getBlockId(x + 1, y, z);
-			down = id == blockAccess.getBlockId(x - 1, y, z);
-			left = id == blockAccess.getBlockId(x, y, z + 1);
-			right = id == blockAccess.getBlockId(x, y, z - 1);
-			upLeft = id == blockAccess.getBlockId(x + 1, y, z + 1);
-			upRight = id == blockAccess.getBlockId(x + 1, y, z - 1);
-			downLeft = id == blockAccess.getBlockId(x - 1, y, z + 1);
-			downRight = id == blockAccess.getBlockId(x - 1, y, z + 1);
+			up = id == blockAccess.getBlockId(x, y + 1, z);
+			down = id == blockAccess.getBlockId(x, y - 1, z);
+			left = id == blockAccess.getBlockId(x + 1, y, z);
+			right = id == blockAccess.getBlockId(x - 1, y, z);
+			upLeft = id == blockAccess.getBlockId(x + 1, y + 1, z);
+			upRight = id == blockAccess.getBlockId(x - 1, y + 1, z);
+			downLeft = id == blockAccess.getBlockId(x + 1, y - 1, z);
+			downRight = id == blockAccess.getBlockId(x - 1, y - 1, z);
 			break;
 		case 5:
-			up = id == blockAccess.getBlockId(x + 1, y, z);
-			down = id == blockAccess.getBlockId(x - 1, y, z);
-			left = id == blockAccess.getBlockId(x, y, z + 1);
-			right = id == blockAccess.getBlockId(x, y, z - 1);
-			upLeft = id == blockAccess.getBlockId(x + 1, y, z + 1);
-			upRight = id == blockAccess.getBlockId(x + 1, y, z - 1);
-			downLeft = id == blockAccess.getBlockId(x - 1, y, z + 1);
-			downRight = id == blockAccess.getBlockId(x - 1, y, z + 1);
+			up = id == blockAccess.getBlockId(x, y + 1, z);
+			down = id == blockAccess.getBlockId(x, y - 1, z);
+			left = id == blockAccess.getBlockId(x - 1, y, z);
+			right = id == blockAccess.getBlockId(x + 1, y, z);
+			upLeft = id == blockAccess.getBlockId(x - 1, y + 1, z);
+			upRight = id == blockAccess.getBlockId(x + 1, y + 1, z);
+			downLeft = id == blockAccess.getBlockId(x - 1, y - 1, z);
+			downRight = id == blockAccess.getBlockId(x + 1, y - 1, z);
 			break;
 		}
 		if (!up)
@@ -178,24 +184,44 @@ public class ColoredLampRenderer implements ISimpleBlockRenderingHandler {
 			iconsToDraw[index] = allIcons[3];
 			index++;
 		}
-		if (!upLeft)
+		if (!upLeft && (up && left))
 		{
 			iconsToDraw[index] = allIcons[4];
 			index++;
 		}
-		if (!downLeft)
+		if (!downLeft && (down && left))
 		{
 			iconsToDraw[index] = allIcons[5];
 			index++;
 		}
-		if (!downRight)
+		if (!downRight && (down && right))
 		{
 			iconsToDraw[index] = allIcons[6];
 			index++;
 		}
-		if (!upRight)
+		if (!upRight && (up && right))
 		{
 			iconsToDraw[index] = allIcons[7];
+			index++;
+		}
+		if (!up && !left)
+		{
+			iconsToDraw[index] = allIcons[8];
+			index++;
+		}
+		if (!down && !left)
+		{
+			iconsToDraw[index] = allIcons[9];
+			index++;
+		}
+		if (!down && !right)
+		{
+			iconsToDraw[index] = allIcons[10];
+			index++;
+		}
+		if (!up && !right)
+		{
+			iconsToDraw[index] = allIcons[11];
 			index++;
 		}
 		return iconsToDraw; 
