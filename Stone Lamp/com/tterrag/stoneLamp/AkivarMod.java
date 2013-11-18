@@ -3,7 +3,7 @@ package tterrag.stoneLamp;
 import net.minecraft.creativetab.CreativeTabs;
 import tterrag.stoneLamp.block.BlockLamp;
 import tterrag.stoneLamp.block.ModBlock;
-import tterrag.stoneLamp.client.ColoredLampRenderer;
+import tterrag.stoneLamp.client.LampRenderer;
 import tterrag.stoneLamp.config.ConfigHandler;
 import tterrag.stoneLamp.config.ConfigKeys;
 import tterrag.stoneLamp.creativetab.CreativeTabStoneLamp;
@@ -47,7 +47,7 @@ public class AkivarMod {
 		
 		BlockLamp.renderId = RenderingRegistry.getNextAvailableRenderId();
 		
-		RenderingRegistry.registerBlockHandler(BlockLamp.renderId, new ColoredLampRenderer());
+		RenderingRegistry.registerBlockHandler(BlockLamp.renderId, new LampRenderer());
 	}
 
 	@EventHandler

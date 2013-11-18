@@ -621,7 +621,6 @@ public class BlockLamp extends Block {
 	public int getBlockColor(int metadata) {
 		if (this.blockID == ModBlock.COLOREDLAMP_ID || this.blockID == ModBlock.EMPTYCOLOREDLAMP_ID)
 		{
-		if (lightVal == 0.9F) {
 			switch (metadata) {
 			case 0:
 				return (12 << 16) | (12 << 8) | 12;
@@ -656,43 +655,6 @@ public class BlockLamp extends Block {
 			case 15:
 			default:
 				return (255 << 16) | (255 << 8) | 255;
-			}
-		} else
-			switch (metadata) {
-			case 0:
-				return (10 << 16) | (10 << 8) | 10;
-			case 1:
-				return (150 << 16) | (10 << 8) | 10;
-			case 2:
-				return (10 << 16) | (150 << 8) | 10;
-			case 3:
-				return (50 << 16) | (30 << 8) | 20;
-			case 4:
-				return (10 << 16) | (10 << 8) | 150;
-			case 5:
-				return (120 << 16) | (20 << 8) | 150;
-			case 6:
-				return (15 << 16) | (90 << 8) | 140;
-			case 7:
-				return (140 << 16) | (140 << 8) | 140;
-			case 8:
-				return (60 << 16) | (60 << 8) | 60;
-			case 9:
-				return (200 << 16) | (80 << 8) | 200;
-			case 10:
-				return (80 << 16) | (170 << 8) | 40;
-			case 11:
-				return (150 << 16) | (150 << 8) | 10;
-			case 12:
-				return (80 << 16) | (150 << 8) | 190;
-			case 13:
-				return (160 << 16) | (10 << 8) | 160;
-			case 14:
-				return (180 << 16) | (80 << 8) | 10;
-			case 15:
-				return (200 << 16) | (200 << 8) | 200;
-			default:
-				return (200 << 16) | (200 << 8) | 200;
 			}
 		}
 		else 
