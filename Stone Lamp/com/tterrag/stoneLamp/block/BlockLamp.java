@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
@@ -47,7 +48,8 @@ public class BlockLamp extends Block {
 	/** 
 	 * @author fuj1n (from here down)
 	 */
-	public static Icon[] icons = new Icon[16];
+	public static Icon[] icons = new Icon[9];
+	public static int renderId;
 	protected String folder;
 
 	/**
@@ -585,22 +587,22 @@ public class BlockLamp extends Block {
 	@Override
 	public void registerIcons (IconRegister par1IconRegister)
 	{
-		icons[0] = par1IconRegister.registerIcon("akivarmod:lamp");
-		icons[1] = par1IconRegister.registerIcon("akivarmod:lamp_d");
-		icons[2] = par1IconRegister.registerIcon("akivarmod:lamp_u");
-		icons[3] = par1IconRegister.registerIcon("akivarmod:lamp_l");
-		icons[4] = par1IconRegister.registerIcon("akivarmod:lamp_r");
-		icons[5] = par1IconRegister.registerIcon("akivarmod:lamp_h");
-		icons[6] = par1IconRegister.registerIcon("akivarmod:lamp_v");
-		icons[7] = par1IconRegister.registerIcon("akivarmod:lamp_ur");
-		icons[8] = par1IconRegister.registerIcon("akivarmod:lamp_dr");
-		icons[9] = par1IconRegister.registerIcon("akivarmod:lamp_ul");
-		icons[10] = par1IconRegister.registerIcon("akivarmod:lamp_dl");
-		icons[11] = par1IconRegister.registerIcon("akivarmod:lamp_di");
-		icons[12] = par1IconRegister.registerIcon("akivarmod:lamp_ui");
-		icons[13] = par1IconRegister.registerIcon("akivarmod:lamp_li");
-		icons[14] = par1IconRegister.registerIcon("akivarmod:lamp_ri");
-		icons[15] = par1IconRegister.registerIcon("akivarmod:lamp_full");
+		icons[0] = par1IconRegister.registerIcon("akivarmod:topBorder");
+		icons[1] = par1IconRegister.registerIcon("akivarmod:rightBorder");
+		icons[2] = par1IconRegister.registerIcon("akivarmod:bottomBorder");
+		icons[3] = par1IconRegister.registerIcon("akivarmod:leftBorder");
+		icons[4] = par1IconRegister.registerIcon("akivarmod:topLeftCorner");
+		icons[5] = par1IconRegister.registerIcon("akivarmod:bottomLeftCorner");
+		icons[6] = par1IconRegister.registerIcon("akivarmod:bottomRightCorner");
+		icons[7] = par1IconRegister.registerIcon("akivarmod:topRightCorner");
+		icons[8] = par1IconRegister.registerIcon("akivarmod:lamp_full");
+		//icons[9] = par1IconRegister.registerIcon("akivarmod:lamp_ul");
+		//icons[10] = par1IconRegister.registerIcon("akivarmod:lamp_dl");
+		//icons[11] = par1IconRegister.registerIcon("akivarmod:lamp_di");
+		//icons[12] = par1IconRegister.registerIcon("akivarmod:lamp_ui");
+		//icons[13] = par1IconRegister.registerIcon("akivarmod:lamp_li");
+		//icons[14] = par1IconRegister.registerIcon("akivarmod:lamp_ri");
+		//icons[15] = par1IconRegister.registerIcon("akivarmod:lamp_full");
 	}
 
 	@Override
@@ -615,11 +617,88 @@ public class BlockLamp extends Block {
 			return (180 << 16) | (180 << 8) | 180;
 		else return (255 << 16) | (255 << 8) | 255;
 	}
-	
-	@Override
-	public int getRenderColor(int par1) {
-		return getBlockColor();
+		   
+   public int getBlockColor(int metadata) {
+		if (lightVal == 0.9F) {
+			switch (metadata) {
+			case 0:
+				return (12 << 16) | (12 << 8) | 12;
+			case 1:
+				return (255 << 16) | (24 << 8) | 24;
+			case 2:
+				return (24 << 16) | (255 << 8) | 24;
+			case 3:
+				return (76 << 16) | (48 << 8) | 40;
+			case 4:
+				return (24 << 16) | (24 << 8) | 255;
+			case 5:
+				return (150 << 16) | (48 << 8) | 255;
+			case 6:
+				return (32 << 16) | (124 << 8) | 196;
+			case 7:
+				return (160 << 16) | (160 << 8) | 150;
+			case 8:
+				return (80 << 16) | (80 << 8) | 80;
+			case 9:
+				return (255 << 16) | (110 << 8) | 255;
+			case 10:
+				return (105 << 16) | (206 << 8) | 64;
+			case 11:
+				return (255 << 16) | (255 << 8) | 24;
+			case 12:
+				return (120 << 16) | (200 << 8) | 255;
+			case 13:
+				return (255 << 16) | (24 << 8) | 255;
+			case 14:
+				return (255 << 16) | (125 << 8) | 24;
+			case 15:
+			default:
+				return (255 << 16) | (255 << 8) | 255;
+			}
+		} else
+			switch (metadata) {
+			case 0:
+				return (10 << 16) | (10 << 8) | 10;
+			case 1:
+				return (150 << 16) | (10 << 8) | 10;
+			case 2:
+				return (10 << 16) | (150 << 8) | 10;
+			case 3:
+				return (50 << 16) | (30 << 8) | 20;
+			case 4:
+				return (10 << 16) | (10 << 8) | 150;
+			case 5:
+				return (120 << 16) | (20 << 8) | 150;
+			case 6:
+				return (15 << 16) | (90 << 8) | 140;
+			case 7:
+				return (140 << 16) | (140 << 8) | 140;
+			case 8:
+				return (60 << 16) | (60 << 8) | 60;
+			case 9:
+				return (200 << 16) | (80 << 8) | 200;
+			case 10:
+				return (80 << 16) | (170 << 8) | 40;
+			case 11:
+				return (150 << 16) | (150 << 8) | 10;
+			case 12:
+				return (80 << 16) | (150 << 8) | 190;
+			case 13:
+				return (160 << 16) | (10 << 8) | 160;
+			case 14:
+				return (180 << 16) | (80 << 8) | 10;
+			case 15:
+				return (200 << 16) | (200 << 8) | 200;
+			default:
+				return (200 << 16) | (200 << 8) | 200;
+			}
 	}
+
+   @Override
+   @SideOnly(Side.CLIENT)
+   public int getRenderColor(int metadata) {
+       return getBlockColor(metadata);
+   }
 	
 	@Override
 	public void onBlockClicked(World world, int x, int y, int z,
@@ -658,6 +737,8 @@ public class BlockLamp extends Block {
 			player.inventory.getCurrentItem().stackSize--;
 			return true;
 		}
+		else if (player.inventory.getCurrentItem().itemID == Item.bucketWater.itemID || player.inventory.getCurrentItem().itemID == Item.bucketEmpty.itemID)
+			return true;
 		else return super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
 	}
 	
@@ -665,4 +746,9 @@ public class BlockLamp extends Block {
 	public boolean isBlockSolidOnSide(World world, int x, int y, int z, net.minecraftforge.common.ForgeDirection side) {
 		return true;
 	};
+	
+	@Override
+	public int getRenderType() {
+		return renderId;
+	}
 }

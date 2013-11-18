@@ -167,13 +167,19 @@ public class BlockColoredLamp extends BlockLamp {
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z,
 			EntityPlayer player, int par6, float par7, float par8, float par9) {
-		int id = player.inventory.getCurrentItem().itemID;
+		int id = 0;
+		if (player.inventory.getCurrentItem() != null)
+			id = player.inventory.getCurrentItem().itemID;
 		if (id == Item.dyePowder.itemID && player.inventory.getCurrentItem().getItemDamage() != world.getBlockMetadata(x, y, z))
 		{
 			world.setBlockMetadataWithNotify(x, y, z, player.inventory.getCurrentItem().getItemDamage(), 3);
 			if (!player.capabilities.isCreativeMode)
 				player.inventory.getCurrentItem().stackSize--;
 		}
+		else if (id == Item.bucketWater.itemID)
+			world.setBlock(x, y, z, world.getBlockId(x, y, z) == ModBlock.COLOREDLAMP_ID ? ModBlock.LAMP_ID : ModBlock.EMPTYLAMP_ID);
+			if (!player.capabilities.isCreativeMode)
+				player.inventory.getCurrentItem().itemID = Item.bucketEmpty.itemID;
 		return super.onBlockActivated(world, x, y, z, player, par6, par7, par8,
 				par9);
 	}

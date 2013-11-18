@@ -1,13 +1,16 @@
 package tterrag.stoneLamp;
 
 import net.minecraft.creativetab.CreativeTabs;
+import tterrag.stoneLamp.block.BlockLamp;
 import tterrag.stoneLamp.block.ModBlock;
+import tterrag.stoneLamp.client.ColoredLampRenderer;
 import tterrag.stoneLamp.config.ConfigHandler;
 import tterrag.stoneLamp.config.ConfigKeys;
 import tterrag.stoneLamp.creativetab.CreativeTabStoneLamp;
 import tterrag.stoneLamp.item.ModItem;
 import tterrag.stoneLamp.lib.Reference;
 import tterrag.stoneLamp.proxy.CommonProxy;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -41,6 +44,10 @@ public class AkivarMod {
 		
 		proxy.initSounds();
 		proxy.initRenderers();
+		
+		BlockLamp.renderId = RenderingRegistry.getNextAvailableRenderId();
+		
+		RenderingRegistry.registerBlockHandler(BlockLamp.renderId, new ColoredLampRenderer());
 	}
 
 	@EventHandler
