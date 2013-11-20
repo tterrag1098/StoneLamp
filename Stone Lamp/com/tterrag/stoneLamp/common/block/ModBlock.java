@@ -1,35 +1,16 @@
-package tterrag.stoneLamp.block;
+package tterrag.stoneLamp.common.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import tconstruct.common.TContent;
-import tterrag.stoneLamp.item.ItemBlockColoredLamp;
-import tterrag.stoneLamp.item.ModItem;
+import tterrag.stoneLamp.common.item.ItemBlockColoredLamp;
+import tterrag.stoneLamp.common.item.ModItem;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class ModBlock {
-	
-	public static final String LAMP_UNLOC_NAME = "stoneLamp";
-	public static final String EMPTYLAMP_UNLOC_NAME = "emptyLamp";
-	public static final String COLOREDLAMP_UNLOC_NAME = "coloredLamp";
-	public static final String EMPTYCOLOREDLAMP_UNLOC_NAME = "emptyColoredLamp";
-	public static final String LAMP_LOC_NAME = "Stone Lamp";
-	public static final String EMPTYLAMP_LOC_NAME = "Empty Stone Lamp";
-	public static final String COLOREDLAMP_LOC_NAME = "Colored Stone Lamp";
-	public static final String EMPTYCOLOREDLAMP_LOC_NAME = "Empty Colored Stone Lamp";
-	
-	public static final int LAMP_DEFAULT = 2999;
-	public static final int EMPTYLAMP_DEFAULT = 2998;
-	public static final int COLOREDLAMP_DEFAULT = 2997;
-	public static final int EMPTYCOLOREDLAMP_DEFAULT = 2996;
-	
-	public static int LAMP_ID;
-	public static int EMPTYLAMP_ID;
-	public static int COLOREDLAMP_ID = 2997;
-	public static int EMPTYCOLOREDLAMP_ID = 2996;
 	
 	public static Block lamp;
 	public static Block emptyLamp;
@@ -38,17 +19,17 @@ public class ModBlock {
 	
 	public static void init()
 	{
-		lamp = new BlockLamp(LAMP_ID, 0.9F, "blockLamp");
+		lamp = new BlockLamp(BlockInfo.LAMP_ID, 0.9F, "blockLamp");
 		GameRegistry.registerBlock(lamp, "blockLamp");
 
-		emptyLamp = new BlockLamp(EMPTYLAMP_ID, 0.0F, "blockEmptyLamp");
+		emptyLamp = new BlockLamp(BlockInfo.EMPTYLAMP_ID, 0.0F, "blockEmptyLamp");
 		GameRegistry.registerBlock(emptyLamp, "blockEmptyLamp");
 		
-		coloredLamp = new BlockColoredLamp(COLOREDLAMP_ID, 0.9F, COLOREDLAMP_UNLOC_NAME);
-		GameRegistry.registerBlock(coloredLamp, ItemBlockColoredLamp.class, COLOREDLAMP_UNLOC_NAME);
+		coloredLamp = new BlockColoredLamp(BlockInfo.COLOREDLAMP_ID, 0.9F, BlockInfo.COLOREDLAMP_UNLOC_NAME);
+		GameRegistry.registerBlock(coloredLamp, ItemBlockColoredLamp.class, BlockInfo.COLOREDLAMP_UNLOC_NAME);
 		
-		emptyColoredLamp = new BlockColoredLamp(EMPTYCOLOREDLAMP_ID, 0.0F, EMPTYCOLOREDLAMP_UNLOC_NAME);
-		GameRegistry.registerBlock(emptyColoredLamp, ItemBlockColoredLamp.class, EMPTYCOLOREDLAMP_UNLOC_NAME);
+		emptyColoredLamp = new BlockColoredLamp(BlockInfo.EMPTYCOLOREDLAMP_ID, 0.0F, BlockInfo.EMPTYCOLOREDLAMP_UNLOC_NAME);
+		GameRegistry.registerBlock(emptyColoredLamp, ItemBlockColoredLamp.class, BlockInfo.EMPTYCOLOREDLAMP_UNLOC_NAME);
 	}
 	
 	public static void addRecipes()
@@ -143,8 +124,8 @@ public class ModBlock {
 	{
 		LanguageRegistry.addName(lamp, "Stone Lamp");
 		LanguageRegistry.addName(emptyLamp, "Empty Stone Lamp");
-		LanguageRegistry.addName(coloredLamp, COLOREDLAMP_LOC_NAME);
-		LanguageRegistry.addName(emptyColoredLamp, EMPTYCOLOREDLAMP_LOC_NAME);
+		LanguageRegistry.addName(coloredLamp, BlockInfo.COLOREDLAMP_LOC_NAME);
+		LanguageRegistry.addName(emptyColoredLamp, BlockInfo.EMPTYCOLOREDLAMP_LOC_NAME);
 	}
 
 }

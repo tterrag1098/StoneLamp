@@ -1,4 +1,4 @@
-package tterrag.stoneLamp.item;
+package tterrag.stoneLamp.common.item;
 
 import net.minecraft.item.Item;
 import cpw.mods.fml.common.registry.LanguageRegistry;

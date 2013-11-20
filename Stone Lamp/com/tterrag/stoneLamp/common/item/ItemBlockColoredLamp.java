@@ -1,23 +1,23 @@
-package tterrag.stoneLamp.item;
+package tterrag.stoneLamp.common.item;
 
 import java.util.List;
 
+import tterrag.stoneLamp.common.api.ItemBlockSL;
+import tterrag.stoneLamp.common.block.BlockLamp;
+import tterrag.stoneLamp.common.block.ModBlock;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 
-public class ItemBlockColoredLamp extends ItemBlock {
+public class ItemBlockColoredLamp extends ItemBlockSL {
 
 	public ItemBlockColoredLamp(int par1) {
 		super(par1);
-		this.setHasSubtypes(true);
 	}
-
-	@Override
-	public int getMetadata(int damageValue) {
-		return damageValue;
-	}
-
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(ItemStack par1ItemStack,

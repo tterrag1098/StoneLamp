@@ -1,4 +1,4 @@
-package tterrag.stoneLamp.block;
+package tterrag.stoneLamp.common.block;
 
 import java.util.List;
 
@@ -7,7 +7,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockColoredLamp extends BlockLamp {
@@ -179,7 +178,7 @@ public class BlockColoredLamp extends BlockLamp {
 				player.inventory.getCurrentItem().stackSize--;
 		}
 		else if (id == Item.bucketWater.itemID)
-			world.setBlock(x, y, z, world.getBlockId(x, y, z) == ModBlock.COLOREDLAMP_ID ? ModBlock.LAMP_ID : ModBlock.EMPTYLAMP_ID);
+			world.setBlock(x, y, z, world.getBlockId(x, y, z) == BlockInfo.COLOREDLAMP_ID ? BlockInfo.LAMP_ID : BlockInfo.EMPTYLAMP_ID);
 			if (!player.capabilities.isCreativeMode)
 				player.inventory.getCurrentItem().itemID = Item.bucketEmpty.itemID;
 		return super.onBlockActivated(world, x, y, z, player, par6, par7, par8,

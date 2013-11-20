@@ -1,16 +1,13 @@
 package tterrag.stoneLamp;
 
 import net.minecraft.creativetab.CreativeTabs;
-import tterrag.stoneLamp.block.BlockLamp;
-import tterrag.stoneLamp.block.ModBlock;
-import tterrag.stoneLamp.client.LampRenderer;
-import tterrag.stoneLamp.config.ConfigHandler;
-import tterrag.stoneLamp.config.ConfigKeys;
-import tterrag.stoneLamp.creativetab.CreativeTabStoneLamp;
-import tterrag.stoneLamp.item.ModItem;
-import tterrag.stoneLamp.lib.Reference;
+import tterrag.stoneLamp.common.block.ModBlock;
+import tterrag.stoneLamp.common.config.ConfigHandler;
+import tterrag.stoneLamp.common.config.ConfigKeys;
+import tterrag.stoneLamp.common.creativetab.CreativeTabStoneLamp;
+import tterrag.stoneLamp.common.item.ModItem;
+import tterrag.stoneLamp.common.lib.Reference;
 import tterrag.stoneLamp.proxy.CommonProxy;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -40,14 +37,9 @@ public class AkivarMod {
 		if (ConfigKeys.allowDebugItem)
 			ModItem.init();
 		
-		LanguageRegistry.instance().addStringLocalization("itemGroup." + Reference.TAB_NAME, "en_US", Reference.TAB_LOC_NAME);
-		
+		proxy.runClientSide();
 		proxy.initSounds();
 		proxy.initRenderers();
-		
-		BlockLamp.renderId = RenderingRegistry.getNextAvailableRenderId();
-		
-		RenderingRegistry.registerBlockHandler(BlockLamp.renderId, new LampRenderer());
 	}
 
 	@EventHandler
@@ -56,6 +48,7 @@ public class AkivarMod {
 		ModBlock.addRecipes();
 		if (ConfigKeys.allowDebugItem)
 			ModItem.addNames();
+		LanguageRegistry.instance().addStringLocalization("itemGroup." + Reference.TAB_NAME, "en_US", Reference.TAB_LOC_NAME);
 	}
 
 	@EventHandler

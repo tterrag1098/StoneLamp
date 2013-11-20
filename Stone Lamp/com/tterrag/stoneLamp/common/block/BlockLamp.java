@@ -1,8 +1,11 @@
-package tterrag.stoneLamp.block;
+package tterrag.stoneLamp.common.block;
+
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -11,8 +14,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import tconstruct.common.TContent;
 import tterrag.stoneLamp.AkivarMod;
-import tterrag.stoneLamp.config.ConfigKeys;
-import tterrag.stoneLamp.item.ModItem;
+import tterrag.stoneLamp.client.renderers.LampRenderer;
+import tterrag.stoneLamp.common.config.ConfigKeys;
+import tterrag.stoneLamp.common.item.ModItem;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -48,8 +52,7 @@ public class BlockLamp extends Block {
 	/** 
 	 * @author fuj1n (from here down)
 	 */
-	public static Icon[] icons = new Icon[14];
-	public static int renderId;
+	public static Icon[] icons = new Icon[16];
 	protected String folder;
 
 	/**
@@ -584,6 +587,11 @@ public class BlockLamp extends Block {
 		return icons[0];
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+    public void getSubBlocks(int id, CreativeTabs creativeTab, List list) {
+	    list.add(new ItemStack(id, 1, 0));
+    }
+	
 	@Override
 	public void registerIcons (IconRegister par1IconRegister)
 	{
@@ -601,8 +609,8 @@ public class BlockLamp extends Block {
 		icons[11] = par1IconRegister.registerIcon("akivarmod:topRightCornerClosed");
 		icons[12] = par1IconRegister.registerIcon("akivarmod:lamp_full");
 		icons[13] = par1IconRegister.registerIcon("akivarmod:lamp");
-		//icons[14] = par1IconRegister.registerIcon("akivarmod:lamp_ri");
-		//icons[15] = par1IconRegister.registerIcon("akivarmod:lamp_full");
+		//icons[14] = par1IconRegister.registerIcon("akivarmod:lamp");
+		//icons[15] = par1IconRegister.registerIcon("akivarmod:lamp");
 	}
 
 	@Override
@@ -613,13 +621,16 @@ public class BlockLamp extends Block {
 	
 	@Override
 	public int getBlockColor() {
-		if (lightVal == 0.0F)
-			return (180 << 16) | (180 << 8) | 180;
-		else return (255 << 16) | (255 << 8) | 255;
+		if (lightVal == 0.0F){
+		    return (180 << 16) | (180 << 8) | 180;
+		}
+		else{
+		    return (255 << 16) | (255 << 8) | 255;		    
+		}
 	}
 		   
 	public int getBlockColor(int metadata) {
-		if (this.blockID == ModBlock.COLOREDLAMP_ID || this.blockID == ModBlock.EMPTYCOLOREDLAMP_ID)
+		if (this.blockID == BlockInfo.COLOREDLAMP_ID || this.blockID == BlockInfo.EMPTYCOLOREDLAMP_ID)
 		{
 			switch (metadata) {
 			case 0:
@@ -666,40 +677,40 @@ public class BlockLamp extends Block {
    public int getRenderColor(int metadata) {
        return getBlockColor(metadata);
    }
-	
-	@Override
-	public void onBlockClicked(World world, int x, int y, int z,
-			EntityPlayer player) {
-		if (!world.isRemote && player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().itemID == (ModItem.CONNECTOR_ID + 256) && (this.blockID == ModBlock.COLOREDLAMP_ID || this.blockID == ModBlock.LAMP_ID) && player.isSneaking())
-		{
-			int id = world.getBlockId(x, y, z) == ModBlock.COLOREDLAMP_ID ? ModBlock.EMPTYCOLOREDLAMP_ID : ModBlock.EMPTYLAMP_ID;
-			int meta = world.getBlockMetadata(x, y, z);
-			world.setBlock(x, y, z, id);
-			world.setBlockMetadataWithNotify(x, y, z, meta, 3);
-			if (!player.inventory.addItemStackToInventory(new ItemStack(Block.torchWood, 1)))
-				player.dropItem(Block.torchWood.blockID, 1);
-		}
-		super.onBlockClicked(world, x, y, z, player);
-	}
-	
+   
+   @Override
+   public void onBlockClicked(World world, int x, int y, int z,
+           EntityPlayer player) {
+       if (!world.isRemote && player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().itemID == (ModItem.CONNECTOR_ID + 256) && (this.blockID == BlockInfo.COLOREDLAMP_ID || this.blockID == BlockInfo.LAMP_ID) && player.isSneaking())
+       {
+           int id = world.getBlockId(x, y, z) == BlockInfo.COLOREDLAMP_ID ? BlockInfo.EMPTYCOLOREDLAMP_ID : BlockInfo.EMPTYLAMP_ID;
+           int meta = world.getBlockMetadata(x, y, z);
+           world.setBlock(x, y, z, id);
+           world.setBlockMetadataWithNotify(x, y, z, meta, 3);
+           if (!player.inventory.addItemStackToInventory(new ItemStack(Block.torchWood, 1)))
+               player.dropItem(Block.torchWood.blockID, 1);
+       }
+       super.onBlockClicked(world, x, y, z, player);
+   }
+   
 	@Override
 	public boolean onBlockActivated(World world, int x, int y,
 			int z, EntityPlayer player, int par6, float par7,
 			float par8, float par9) {
 		if (player.inventory.getCurrentItem() == null)
 			return super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
-		if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().itemID == Block.torchWood.blockID && (this.blockID == ModBlock.EMPTYCOLOREDLAMP_ID || this.blockID == ModBlock.EMPTYLAMP_ID) && !player.isSneaking())
+		if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().itemID == Block.torchWood.blockID && (this.blockID == BlockInfo.EMPTYCOLOREDLAMP_ID || this.blockID == BlockInfo.EMPTYLAMP_ID) && !player.isSneaking())
 		{
-			int id = world.getBlockId(x, y, z) == ModBlock.EMPTYCOLOREDLAMP_ID ? ModBlock.COLOREDLAMP_ID : ModBlock.LAMP_ID;
+			int id = world.getBlockId(x, y, z) == BlockInfo.EMPTYCOLOREDLAMP_ID ? BlockInfo.COLOREDLAMP_ID : BlockInfo.LAMP_ID;
 			int meta = world.getBlockMetadata(x, y, z);
 			world.setBlock(x, y, z, id);
 			world.setBlockMetadataWithNotify(x, y, z, meta, 3);
 			player.inventory.getCurrentItem().stackSize--;
 			return true;
 		}
-		else if (Loader.isModLoaded("TConstruct") && player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().itemID == TContent.stoneTorch.blockID && (this.blockID == ModBlock.EMPTYCOLOREDLAMP_ID || this.blockID == ModBlock.EMPTYLAMP_ID) && !player.isSneaking())
+		else if (Loader.isModLoaded("TConstruct") && player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().itemID == TContent.stoneTorch.blockID && (this.blockID == BlockInfo.EMPTYCOLOREDLAMP_ID || this.blockID == BlockInfo.EMPTYLAMP_ID) && !player.isSneaking())
 		{
-			int id = world.getBlockId(x, y, z) == ModBlock.EMPTYCOLOREDLAMP_ID ? ModBlock.COLOREDLAMP_ID : ModBlock.LAMP_ID;
+			int id = world.getBlockId(x, y, z) == BlockInfo.EMPTYCOLOREDLAMP_ID ? BlockInfo.COLOREDLAMP_ID : BlockInfo.LAMP_ID;
 			int meta = world.getBlockMetadata(x, y, z);
 			world.setBlock(x, y, z, id);
 			world.setBlockMetadataWithNotify(x, y, z, meta, 3);
@@ -717,7 +728,50 @@ public class BlockLamp extends Block {
 	};
 	
 	@Override
-	public int getRenderType() {
-		return renderId;
+    public int getRenderType() {
+        return LampRenderer.instance().getRenderId();
+    }
+
+	public int getBlockColorWithDarkness(int metadata) {
+		if (this.blockID == BlockInfo.COLOREDLAMP_ID || this.blockID == BlockInfo.LAMP_ID)
+			return getBlockColor(metadata);
+		else 
+			switch (metadata) {
+			case 0:
+				return (10 << 16) | (10 << 8) | 10;
+			case 1:
+				return (150 << 16) | (10 << 8) | 10;
+			case 2:
+				return (10 << 16) | (150 << 8) | 10;
+			case 3:
+				return (50 << 16) | (30 << 8) | 20;
+			case 4:
+				return (10 << 16) | (10 << 8) | 150;
+			case 5:
+				return (120 << 16) | (20 << 8) | 150;
+			case 6:
+				return (15 << 16) | (90 << 8) | 140;
+			case 7:
+				return (140 << 16) | (140 << 8) | 140;
+			case 8:
+				return (60 << 16) | (60 << 8) | 60;
+			case 9:
+				return (200 << 16) | (80 << 8) | 200;
+			case 10:
+				return (80 << 16) | (170 << 8) | 40;
+			case 11:
+				return (150 << 16) | (150 << 8) | 10;
+			case 12:
+				return (80 << 16) | (150 << 8) | 190;
+			case 13:
+				return (160 << 16) | (10 << 8) | 160;
+			case 14:
+				return (180 << 16) | (80 << 8) | 10;
+			case 15:
+				return (200 << 16) | (200 << 8) | 200;
+			default:
+				return (200 << 16) | (200 << 8) | 200;
+			}
+			
 	}
 }

@@ -1,4 +1,4 @@
-package tterrag.stoneLamp.lib;
+package tterrag.stoneLamp.common.lib;
 
 public class Reference {
 

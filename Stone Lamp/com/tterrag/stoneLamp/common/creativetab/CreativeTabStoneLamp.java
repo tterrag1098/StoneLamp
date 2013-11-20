@@ -1,8 +1,8 @@
-package tterrag.stoneLamp.creativetab;
+package tterrag.stoneLamp.common.creativetab;
 
 import net.minecraft.creativetab.CreativeTabs;
-import tterrag.stoneLamp.block.ModBlock;
-import tterrag.stoneLamp.lib.Reference;
+import tterrag.stoneLamp.common.block.BlockInfo;
+import tterrag.stoneLamp.common.lib.Reference;
 
 public class CreativeTabStoneLamp extends CreativeTabs {
 	
@@ -13,7 +13,7 @@ public class CreativeTabStoneLamp extends CreativeTabs {
 	
 	@Override
 	public int getTabIconItemIndex() {
-		return ModBlock.LAMP_ID;
+		return BlockInfo.LAMP_ID;
 	}
 	
 	@Override
