@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 import tterrag.stoneLamp.AkivarMod;
 import tterrag.stoneLamp.common.block.BlockInfo;
 import tterrag.stoneLamp.common.config.ConfigKeys;
+import cpw.mods.fml.common.Loader;
 
 public class ItemConnector extends Item {
 
@@ -43,18 +44,37 @@ public class ItemConnector extends Item {
         return true;
     }
 
-    @Override
+    @SuppressWarnings("rawtypes")
+	@Override
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+        System.out.println(Loader.isModLoaded("tahgMod") && !player.isSneaking() && !world.isRemote);
         if (!world.isRemote && !player.isSneaking()) {
-            int id = world.getBlockId(x, y, z);
-            if (!ConfigKeys.allowColorChangeWithWand && (id == BlockInfo.LAMP_ID || id == BlockInfo.EMPTYLAMP_ID)) {
-                world.setBlockMetadataWithNotify(x, y, z, stack.getItemDamage(), 3);
-            } else if (ConfigKeys.allowColorChangeWithWand && (id == BlockInfo.LAMP_ID || id == BlockInfo.EMPTYLAMP_ID || id == BlockInfo.COLOREDLAMP_ID || id == BlockInfo.EMPTYCOLOREDLAMP_ID)) {
-                world.setBlockMetadataWithNotify(x, y, z, stack.getItemDamage(), 3);
+        	if (!Loader.isModLoaded("tahgMod"))
+        	{
+        		int id = world.getBlockId(x, y, z);
+        		if (!ConfigKeys.allowColorChangeWithWand && (id == BlockInfo.LAMP_ID || id == BlockInfo.EMPTYLAMP_ID)) {
+        			world.setBlockMetadataWithNotify(x, y, z, stack.getItemDamage(), 3);
+        		} else if (ConfigKeys.allowColorChangeWithWand && (id == BlockInfo.LAMP_ID || id == BlockInfo.EMPTYLAMP_ID || id == BlockInfo.COLOREDLAMP_ID || id == BlockInfo.EMPTYCOLOREDLAMP_ID)) {
+        			world.setBlockMetadataWithNotify(x, y, z, stack.getItemDamage(), 3);
+        		}
+        	}
+            else
+            {
+            	Class c;
+            	System.out.println("SNEAKING: " + player.isSneaking());
+            	try {
+            		c = Class.forName("com.tterrag.mod.block.ModBlock");
+			
+            		if (c != null && c.getField("FANCY_CT_STONE_ID").getInt(c) == world.getBlockId(x, y, z))
+            		{
+            			world.setBlockMetadataWithNotify(x, y, z, stack.getItemDamage(), 3);
+            		}
+            	} catch (Exception e) {
+            	}
             }
-            return false;
-        } else
-            return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+            return true;
+        } 
+        else return false;
     }
 
     @Override
