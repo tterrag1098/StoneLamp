@@ -2,11 +2,13 @@ package tterrag.stoneLamp.common.block;
 
 import java.util.List;
 
+import tterrag.stoneLamp.common.config.ConfigKeys;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockColoredLamp extends BlockLamp {
@@ -32,9 +34,12 @@ public class BlockColoredLamp extends BlockLamp {
 	public Icon getIcon(int par1, int par2) {
 		return icons[0];
 	}
-	/*
+	
 	@Override
 	public int getBlockColor() {
+		if (ConfigKeys.allowNewRenderer)
+			return super.getBlockColor();
+		
 		if (lightVal == 0.9F) {
 			switch (color) {
 			case 0:
@@ -109,11 +114,13 @@ public class BlockColoredLamp extends BlockLamp {
 				return (200 << 16) | (200 << 8) | 200;
 			}
 	}
-
-	/*
+	
 	@Override
 	public int colorMultiplier(IBlockAccess par1iBlockAccess, int par2,
 			int par3, int par4) {
+		if (ConfigKeys.allowNewRenderer)
+			return super.colorMultiplier(par1iBlockAccess, par2, par3, par4);
+		
 		color = par1iBlockAccess.getBlockMetadata(par2, par3, par4);
 		switch (color) {
 		case 0:
@@ -151,7 +158,7 @@ public class BlockColoredLamp extends BlockLamp {
 		default:
 			return (200 << 16) | (200 << 8) | 200;
 		}
-	}*/
+	}
 
 	@Override
 	public int damageDropped(int par1) {

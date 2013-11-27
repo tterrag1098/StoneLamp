@@ -44,6 +44,7 @@ public class AkivarMod {
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
+		
 		ModBlock.addNames();
 		ModBlock.addRecipes();
 		if (ConfigKeys.allowDebugItem)

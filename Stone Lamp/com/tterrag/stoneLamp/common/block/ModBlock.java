@@ -58,6 +58,8 @@ public class ModBlock {
 		
 		if (Loader.isModLoaded("TConstruct"))
 		{
+			try
+			{
 			GameRegistry.addRecipe(new ItemStack(ModBlock.lamp), new Object[]{
 					"CPC",
 					"PTP",
@@ -70,6 +72,11 @@ public class ModBlock {
 			
 			GameRegistry.addShapelessRecipe(new ItemStack(ModBlock.lamp), new Object[]
 					{ModBlock.emptyLamp, TContent.stoneTorch});
+			}
+			catch(NoClassDefFoundError e)
+			{
+				System.out.println("DANGIT TCON STOP CHANGING PACKAGES");
+			}
 					
 		}
 		

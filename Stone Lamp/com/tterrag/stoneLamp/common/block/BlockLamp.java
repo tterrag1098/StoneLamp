@@ -595,22 +595,44 @@ public class BlockLamp extends Block {
 	@Override
 	public void registerIcons (IconRegister par1IconRegister)
 	{
-		icons[0] = par1IconRegister.registerIcon("akivarmod:topBorder");
-		icons[1] = par1IconRegister.registerIcon("akivarmod:rightBorder");
-		icons[2] = par1IconRegister.registerIcon("akivarmod:bottomBorder");
-		icons[3] = par1IconRegister.registerIcon("akivarmod:leftBorder");
-		icons[4] = par1IconRegister.registerIcon("akivarmod:topLeftCorner");
-		icons[5] = par1IconRegister.registerIcon("akivarmod:bottomLeftCorner");
-		icons[6] = par1IconRegister.registerIcon("akivarmod:bottomRightCorner");
-		icons[7] = par1IconRegister.registerIcon("akivarmod:topRightCorner");
-		icons[8] = par1IconRegister.registerIcon("akivarmod:topLeftCornerClosed");
-		icons[9] = par1IconRegister.registerIcon("akivarmod:bottomLeftCornerClosed");
-		icons[10] = par1IconRegister.registerIcon("akivarmod:bottomRightCornerClosed");
-		icons[11] = par1IconRegister.registerIcon("akivarmod:topRightCornerClosed");
-		icons[12] = par1IconRegister.registerIcon("akivarmod:lamp_full");
-		icons[13] = par1IconRegister.registerIcon("akivarmod:lamp");
-		//icons[14] = par1IconRegister.registerIcon("akivarmod:lamp");
-		//icons[15] = par1IconRegister.registerIcon("akivarmod:lamp");
+		if (ConfigKeys.allowNewRenderer)
+		{
+			icons[0] = par1IconRegister.registerIcon("akivarmod:topBorder");
+			icons[1] = par1IconRegister.registerIcon("akivarmod:rightBorder");
+			icons[2] = par1IconRegister.registerIcon("akivarmod:bottomBorder");
+			icons[3] = par1IconRegister.registerIcon("akivarmod:leftBorder");
+			icons[4] = par1IconRegister.registerIcon("akivarmod:topLeftCorner");
+			icons[5] = par1IconRegister.registerIcon("akivarmod:bottomLeftCorner");
+			icons[6] = par1IconRegister.registerIcon("akivarmod:bottomRightCorner");
+			icons[7] = par1IconRegister.registerIcon("akivarmod:topRightCorner");
+			icons[8] = par1IconRegister.registerIcon("akivarmod:topLeftCornerClosed");
+			icons[9] = par1IconRegister.registerIcon("akivarmod:bottomLeftCornerClosed");
+			icons[10] = par1IconRegister.registerIcon("akivarmod:bottomRightCornerClosed");
+			icons[11] = par1IconRegister.registerIcon("akivarmod:topRightCornerClosed");
+			icons[12] = par1IconRegister.registerIcon("akivarmod:lamp_full");
+			icons[13] = par1IconRegister.registerIcon("akivarmod:lamp");
+			//icons[14] = par1IconRegister.registerIcon("akivarmod:lamp");
+			//icons[15] = par1IconRegister.registerIcon("akivarmod:lamp");
+		}
+		else 
+		{
+			icons[0] = par1IconRegister.registerIcon("akivarmod:lamp");
+            icons[1] = par1IconRegister.registerIcon("akivarmod:lamp_d");
+            icons[2] = par1IconRegister.registerIcon("akivarmod:lamp_u");
+            icons[3] = par1IconRegister.registerIcon("akivarmod:lamp_l");
+            icons[4] = par1IconRegister.registerIcon("akivarmod:lamp_r");
+            icons[5] = par1IconRegister.registerIcon("akivarmod:lamp_h");
+            icons[6] = par1IconRegister.registerIcon("akivarmod:lamp_v");
+            icons[7] = par1IconRegister.registerIcon("akivarmod:lamp_ur");
+            icons[8] = par1IconRegister.registerIcon("akivarmod:lamp_dr");
+            icons[9] = par1IconRegister.registerIcon("akivarmod:lamp_ul");
+            icons[10] = par1IconRegister.registerIcon("akivarmod:lamp_dl");
+            icons[11] = par1IconRegister.registerIcon("akivarmod:lamp_di");
+            icons[12] = par1IconRegister.registerIcon("akivarmod:lamp_ui");
+            icons[13] = par1IconRegister.registerIcon("akivarmod:lamp_li");
+            icons[14] = par1IconRegister.registerIcon("akivarmod:lamp_ri");
+            icons[15] = par1IconRegister.registerIcon("akivarmod:lamp_full");
+		}
 	}
 
 	@Override
@@ -729,7 +751,7 @@ public class BlockLamp extends Block {
 	
 	@Override
     public int getRenderType() {
-        return LampRenderer.instance().getRenderId();
+        return ConfigKeys.allowNewRenderer ? LampRenderer.instance().getRenderId() : super.getRenderType();
     }
 
 	public int getBlockColorWithDarkness(int metadata) {

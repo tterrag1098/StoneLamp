@@ -49,16 +49,13 @@ public class ItemConnector extends Item {
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
         System.out.println(Loader.isModLoaded("tahgMod") && !player.isSneaking() && !world.isRemote);
         if (!world.isRemote && !player.isSneaking()) {
-        	if (!Loader.isModLoaded("tahgMod"))
-        	{
-        		int id = world.getBlockId(x, y, z);
-        		if (!ConfigKeys.allowColorChangeWithWand && (id == BlockInfo.LAMP_ID || id == BlockInfo.EMPTYLAMP_ID)) {
-        			world.setBlockMetadataWithNotify(x, y, z, stack.getItemDamage(), 3);
-        		} else if (ConfigKeys.allowColorChangeWithWand && (id == BlockInfo.LAMP_ID || id == BlockInfo.EMPTYLAMP_ID || id == BlockInfo.COLOREDLAMP_ID || id == BlockInfo.EMPTYCOLOREDLAMP_ID)) {
-        			world.setBlockMetadataWithNotify(x, y, z, stack.getItemDamage(), 3);
-        		}
+           	int id = world.getBlockId(x, y, z);
+        	if (!ConfigKeys.allowColorChangeWithWand && (id == BlockInfo.LAMP_ID || id == BlockInfo.EMPTYLAMP_ID)) {
+        		world.setBlockMetadataWithNotify(x, y, z, stack.getItemDamage(), 3);
+        	} else if (ConfigKeys.allowColorChangeWithWand && (id == BlockInfo.LAMP_ID || id == BlockInfo.EMPTYLAMP_ID || id == BlockInfo.COLOREDLAMP_ID || id == BlockInfo.EMPTYCOLOREDLAMP_ID)) {
+        		world.setBlockMetadataWithNotify(x, y, z, stack.getItemDamage(), 3);
         	}
-            else
+        	if (Loader.isModLoaded("tahgMod"))
             {
             	Class c;
             	System.out.println("SNEAKING: " + player.isSneaking());
@@ -70,6 +67,7 @@ public class ItemConnector extends Item {
             			world.setBlockMetadataWithNotify(x, y, z, stack.getItemDamage(), 3);
             		}
             	} catch (Exception e) {
+            		e.printStackTrace();
             	}
             }
             return true;
