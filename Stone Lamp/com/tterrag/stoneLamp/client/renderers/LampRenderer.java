@@ -65,50 +65,40 @@ public class LampRenderer extends BaseBlockRenderer {
     protected static void renderAsItem(Block block, int metadata, RenderBlocks renderer, Icon icon) {
         Tessellator tessellator = Tessellator.instance;
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F); // Set angled view
+        tessellator.startDrawingQuads();
 
         // Y-
-        tessellator.startDrawingQuads();
         tessellator.setColorOpaque_I(((BlockLamp) block).getBlockColorWithDarkness(metadata));
         tessellator.setNormal(0.0F, -1.0F, 0.0F);
         renderer.renderFaceYNeg(block, 0, 0, 0, icon);
-        tessellator.draw();
 
         // Y+
-        tessellator.startDrawingQuads();
         tessellator.setColorOpaque_I(((BlockLamp) block).getBlockColorWithDarkness(metadata));
         tessellator.setNormal(0.0F, 1.0F, 0.0F);
         renderer.renderFaceYPos(block, 0, 0, 0, icon);
-        tessellator.draw();
 
         // X+
-        tessellator.startDrawingQuads();
         tessellator.setColorOpaque_I(((BlockLamp) block).getBlockColorWithDarkness(metadata));
         tessellator.setNormal(0.0F, 0.0F, -1.0F);
         renderer.renderFaceXPos(block, 0, 0, 0, icon);
-        tessellator.draw();
 
         // X-
-        tessellator.startDrawingQuads();
         tessellator.setColorOpaque_I(((BlockLamp) block).getBlockColorWithDarkness(metadata));
         tessellator.setNormal(0.0F, 0.0F, 1.0F);
         renderer.renderFaceXNeg(block, 0, 0, 0, icon);
-        tessellator.draw();
 
         // Z-
-        tessellator.startDrawingQuads();
         tessellator.setColorOpaque_I(((BlockLamp) block).getBlockColorWithDarkness(metadata));
         tessellator.setNormal(-1.0F, 0.0F, 0.0F);
         renderer.renderFaceZNeg(block, 0, 0, 0, icon);
-        tessellator.draw();
 
         // Z+
-        tessellator.startDrawingQuads();
         tessellator.setColorOpaque_I(((BlockLamp) block).getBlockColorWithDarkness(metadata));
         tessellator.setNormal(1.0F, 0.0F, 0.0F);
         renderer.renderFaceZPos(block, 0, 0, 0, icon);
-        tessellator.draw();
 
         GL11.glTranslatef(0.5F, 0.5F, 0.5F); // Reset angled view
+        tessellator.draw();
     }
     
     @Override
