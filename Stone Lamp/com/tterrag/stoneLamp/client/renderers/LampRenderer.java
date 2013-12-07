@@ -1,6 +1,7 @@
 package tterrag.stoneLamp.client.renderers;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockGrass;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.Icon;
@@ -27,33 +28,39 @@ public class LampRenderer extends BaseBlockRenderer {
         BlockLamp block = ((BlockLamp) rawBlock);        
                 
         tessellator.setColorOpaque_I(block.getBlockColor(blockAccess.getBlockMetadata(x, y, z)));
-        
-        int brightness = block.getMixedBrightnessForBlock(blockAccess, x, y, z);
-        int id = block.blockID;
-        if (id == ModBlock.coloredLamp.blockID || id == ModBlock.lamp.blockID)
-        	tessellator.setBrightness(brightness);// + renderer.brightnessBottomLeft + renderer.brightnessBottomRight + renderer.brightnessTopLeft + renderer.brightnessTopRight + block.getLightValue(blockAccess, x, y, z));
-        renderer.renderFaceYNeg(block, x, y, z, BlockLamp.icons[12]);
-        renderer.renderFaceYPos(block, x, y, z, BlockLamp.icons[12]);
-        renderer.renderFaceXNeg(block, x, y, z, BlockLamp.icons[12]);
-        renderer.renderFaceXPos(block, x, y, z, BlockLamp.icons[12]);
-        renderer.renderFaceZNeg(block, x, y, z, BlockLamp.icons[12]);
-        renderer.renderFaceZPos(block, x, y, z, BlockLamp.icons[12]);
 
+        tessellator.setBrightness(block.getMixedBrightnessForBlock(blockAccess, x, y - 1, z));
+        renderer.renderFaceYNeg(block, x, y, z, BlockLamp.icons[12]);
         for (Icon icon : getIconsToDraw(blockAccess, x, y, z, block, 0))
             if (icon != null)
                 renderer.renderFaceYNeg(block, x, y, z, icon);
+        
+        tessellator.setBrightness(block.getMixedBrightnessForBlock(blockAccess, x, y + 1, z));
+        renderer.renderFaceYPos(block, x, y, z, BlockLamp.icons[12]);
         for (Icon icon : getIconsToDraw(blockAccess, x, y, z, block, 1))
             if (icon != null)
                 renderer.renderFaceYPos(block, x, y, z, icon);
+        
+        tessellator.setBrightness(block.getMixedBrightnessForBlock(blockAccess, x - 1, y, z));
+        renderer.renderFaceXNeg(block, x, y, z, BlockLamp.icons[12]);
         for (Icon icon : getIconsToDraw(blockAccess, x, y, z, block, 2))
             if (icon != null)
                 renderer.renderFaceXNeg(block, x, y, z, icon);
+        
+        tessellator.setBrightness(block.getMixedBrightnessForBlock(blockAccess, x + 1, y, z));
+        renderer.renderFaceXPos(block, x, y, z, BlockLamp.icons[12]);
         for (Icon icon : getIconsToDraw(blockAccess, x, y, z, block, 3))
             if (icon != null)
                 renderer.renderFaceXPos(block, x, y, z, icon);
+        
+        tessellator.setBrightness(block.getMixedBrightnessForBlock(blockAccess, x, y, z - 1));
+        renderer.renderFaceZNeg(block, x, y, z, BlockLamp.icons[12]);
         for (Icon icon : getIconsToDraw(blockAccess, x, y, z, block, 4))
             if (icon != null)
                 renderer.renderFaceZNeg(block, x, y, z, icon);
+        
+        tessellator.setBrightness(block.getMixedBrightnessForBlock(blockAccess, x, y, z + 1));
+        renderer.renderFaceZPos(block, x, y, z, BlockLamp.icons[12]);
         for (Icon icon : getIconsToDraw(blockAccess, x, y, z, block, 5))
             if (icon != null)
                 renderer.renderFaceZPos(block, x, y, z, icon);

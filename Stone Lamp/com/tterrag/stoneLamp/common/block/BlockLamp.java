@@ -584,7 +584,7 @@ public class BlockLamp extends Block {
 	@Override
 	public Icon getIcon (int par1, int par2)
 	{
-		return icons[0];
+		return icons[13];
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
