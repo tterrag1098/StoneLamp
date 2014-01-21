@@ -185,9 +185,11 @@ public class BlockColoredLamp extends BlockLamp {
 				player.inventory.getCurrentItem().stackSize--;
 		}
 		else if (id == Item.bucketWater.itemID)
+		{
 			world.setBlock(x, y, z, world.getBlockId(x, y, z) == BlockInfo.COLOREDLAMP_ID ? BlockInfo.LAMP_ID : BlockInfo.EMPTYLAMP_ID);
 			if (!player.capabilities.isCreativeMode)
 				player.inventory.getCurrentItem().itemID = Item.bucketEmpty.itemID;
+		}
 		return super.onBlockActivated(world, x, y, z, player, par6, par7, par8,
 				par9);
 	}

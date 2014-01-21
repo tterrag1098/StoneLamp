@@ -690,8 +690,7 @@ public class BlockLamp extends Block {
 				return (255 << 16) | (255 << 8) | 255;
 			}
 		}
-		else 
-			return (0xffffff);
+		return (0xffffff);
 	}
 
    @Override
@@ -755,9 +754,11 @@ public class BlockLamp extends Block {
     }
 
 	public int getBlockColorWithDarkness(int metadata) {
-		if (this.blockID == BlockInfo.COLOREDLAMP_ID || this.blockID == BlockInfo.LAMP_ID)
+		if (this.blockID != BlockInfo.EMPTYCOLOREDLAMP_ID && this.blockID != BlockInfo.EMPTYLAMP_ID)
 			return getBlockColor(metadata);
-		else 
+		else if (this.blockID == BlockInfo.EMPTYLAMP_ID)
+			return (180 << 16) | (180 << 8) | 180;
+		else
 			switch (metadata) {
 			case 0:
 				return (10 << 16) | (10 << 8) | 10;
