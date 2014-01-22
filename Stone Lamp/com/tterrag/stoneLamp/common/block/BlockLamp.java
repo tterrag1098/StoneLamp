@@ -49,9 +49,8 @@ public class BlockLamp extends Block {
 				par9);
 	}
 	
-	/** 
-	 * @author fuj1n (from here down)
-	 */
+	/** Begin fuj1n (Tcon) code **/
+	
 	public static Icon[] icons = new Icon[16];
 	protected String folder;
 
@@ -580,6 +579,8 @@ public class BlockLamp extends Block {
 
 		return icons[0];
 	}
+	
+	/** End fuj1n code **/
 
 	@Override
 	public Icon getIcon (int par1, int par2)
