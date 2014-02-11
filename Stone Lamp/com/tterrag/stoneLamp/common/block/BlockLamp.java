@@ -17,30 +17,30 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import tconstruct.common.TContent;
 import tterrag.stoneLamp.AkivarMod;
 import tterrag.stoneLamp.client.renderers.LampRenderer;
 import tterrag.stoneLamp.common.config.ConfigKeys;
 import tterrag.stoneLamp.common.item.ModItem;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockLamp extends Block {
-	
+public class BlockLamp extends Block
+{
+
 	private float lightVal;
 	private String unlocName;
-	
-	public BlockLamp(float lightValue, String unlocName) {
+
+	public BlockLamp(float lightValue, String unlocName)
+	{
 		super(Material.glass);
 		setLightLevel(lightValue);
 		lightVal = lightValue;
 		setCreativeTab(AkivarMod.tabStoneLamp);
 		setHardness(0.6F);
-		
+
 		this.unlocName = unlocName;
 	}
-	
+
 	@Override
 	public String getUnlocalizedName()
 	{
@@ -49,34 +49,40 @@ public class BlockLamp extends Block {
 
 	@SideOnly(Side.CLIENT)
 	private Icon icon;
-	
+
 	@Override
-	public int onBlockPlaced(World world, int x, int y, int z,
-			int par5, float par6, float par7, float par8, int par9) {
-		
+	public int onBlockPlaced(World world, int x, int y, int z, int par5, float par6, float par7, float par8, int par9)
+	{
+
 		for (int i = -1; i <= 1; i++)
-			for (int j = -1; j <=1; j++)
+			for (int j = -1; j <= 1; j++)
 				world.markBlockForUpdate(x + i, y, z + i);
-		
-		return super.onBlockPlaced(world, x, y, z, par5, par6, par7, par8,
-				par9);
+
+		return super.onBlockPlaced(world, x, y, z, par5, par6, par7, par8, par9);
 	}
-	
+
 	/** Begin fuj1n (Tcon) code **/
-	
+
 	public static IIcon[] icons = new IIcon[16];
 	protected String folder;
 
 	/**
 	 * This is checked to see if the texture should connect to this block
-	 * @param par2 x
-	 * @param par3 y
-	 * @param par4 z
-	 * @param par5 ID this block is asking to connect to (may be 0 if there is no block)
-	 * @param par6 Metadata of the block this block is trying to connect to
+	 * 
+	 * @param par2
+	 *            x
+	 * @param par3
+	 *            y
+	 * @param par4
+	 *            z
+	 * @param par5
+	 *            ID this block is asking to connect to (may be 0 if there is no
+	 *            block)
+	 * @param par6
+	 *            Metadata of the block this block is trying to connect to
 	 * @return true if should connect
 	 */
-	public boolean shouldConnectToBlock (IBlockAccess par1IBlockAccess, int x, int y, int z, Block par5, int par6)
+	public boolean shouldConnectToBlock(IBlockAccess par1IBlockAccess, int x, int y, int z, Block par5, int par6)
 	{
 		return par5 == this && par1IBlockAccess.getBlockMetadata(x, y, z) == par6;
 	}
@@ -87,13 +93,12 @@ public class BlockLamp extends Block {
 		return getConnectedBlockTexture(par1IBlockAccess, par2, par3, par4, p_149673_5_, icons);
 	}
 
-	public IIcon getConnectedBlockTexture (IBlockAccess block, int x, int y, int z, int side, IIcon[] icons2)
+	public IIcon getConnectedBlockTexture(IBlockAccess block, int x, int y, int z, int side, IIcon[] icons2)
 	{
 		boolean isOpenUp = false, isOpenDown = false, isOpenLeft = false, isOpenRight = false;
 
-		if (!ConfigKeys.allowConnectedTextures)
-			return icons2[0];
-		
+		if (!ConfigKeys.allowConnectedTextures) return icons2[0];
+
 		switch (side)
 		{
 		case 0:
@@ -116,7 +121,7 @@ public class BlockLamp extends Block {
 			{
 				isOpenRight = true;
 			}
-			
+
 			if (isOpenUp && isOpenDown && isOpenLeft && isOpenRight)
 			{
 				return icons2[15];
@@ -592,22 +597,22 @@ public class BlockLamp extends Block {
 
 		return icons2[0];
 	}
-	
+
 	/** End fuj1n code **/
 
 	@Override
-	public IIcon getIcon (int par1, int par2)
+	public IIcon getIcon(int par1, int par2)
 	{
 		return icons[13];
 	}
 
 	@Override
-	public void getSubBlocks(Item item, CreativeTabs tab, List list) 
+	public void getSubBlocks(Item item, CreativeTabs tab, List list)
 	{
 		list.add(new ItemStack(this, 1, 0));
 		list.add(new ItemStack(this, 1, 1));
 	}
-	
+
 	@Override
 	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
@@ -627,50 +632,55 @@ public class BlockLamp extends Block {
 			icons[11] = par1IconRegister.registerIcon("akivarmod:topRightCornerClosed");
 			icons[12] = par1IconRegister.registerIcon("akivarmod:lamp_full");
 			icons[13] = par1IconRegister.registerIcon("akivarmod:lamp");
-			//icons[14] = par1IconRegister.registerIcon("akivarmod:lamp");
-			//icons[15] = par1IconRegister.registerIcon("akivarmod:lamp");
+			// icons[14] = par1IconRegister.registerIcon("akivarmod:lamp");
+			// icons[15] = par1IconRegister.registerIcon("akivarmod:lamp");
 		}
-		else 
+		else
 		{
 			icons[0] = par1IconRegister.registerIcon("akivarmod:lamp");
-            icons[1] = par1IconRegister.registerIcon("akivarmod:lamp_d");
-            icons[2] = par1IconRegister.registerIcon("akivarmod:lamp_u");
-            icons[3] = par1IconRegister.registerIcon("akivarmod:lamp_l");
-            icons[4] = par1IconRegister.registerIcon("akivarmod:lamp_r");
-            icons[5] = par1IconRegister.registerIcon("akivarmod:lamp_h");
-            icons[6] = par1IconRegister.registerIcon("akivarmod:lamp_v");
-            icons[7] = par1IconRegister.registerIcon("akivarmod:lamp_ur");
-            icons[8] = par1IconRegister.registerIcon("akivarmod:lamp_dr");
-            icons[9] = par1IconRegister.registerIcon("akivarmod:lamp_ul");
-            icons[10] = par1IconRegister.registerIcon("akivarmod:lamp_dl");
-            icons[11] = par1IconRegister.registerIcon("akivarmod:lamp_di");
-            icons[12] = par1IconRegister.registerIcon("akivarmod:lamp_ui");
-            icons[13] = par1IconRegister.registerIcon("akivarmod:lamp_li");
-            icons[14] = par1IconRegister.registerIcon("akivarmod:lamp_ri");
-            icons[15] = par1IconRegister.registerIcon("akivarmod:lamp_full");
+			icons[1] = par1IconRegister.registerIcon("akivarmod:lamp_d");
+			icons[2] = par1IconRegister.registerIcon("akivarmod:lamp_u");
+			icons[3] = par1IconRegister.registerIcon("akivarmod:lamp_l");
+			icons[4] = par1IconRegister.registerIcon("akivarmod:lamp_r");
+			icons[5] = par1IconRegister.registerIcon("akivarmod:lamp_h");
+			icons[6] = par1IconRegister.registerIcon("akivarmod:lamp_v");
+			icons[7] = par1IconRegister.registerIcon("akivarmod:lamp_ur");
+			icons[8] = par1IconRegister.registerIcon("akivarmod:lamp_dr");
+			icons[9] = par1IconRegister.registerIcon("akivarmod:lamp_ul");
+			icons[10] = par1IconRegister.registerIcon("akivarmod:lamp_dl");
+			icons[11] = par1IconRegister.registerIcon("akivarmod:lamp_di");
+			icons[12] = par1IconRegister.registerIcon("akivarmod:lamp_ui");
+			icons[13] = par1IconRegister.registerIcon("akivarmod:lamp_li");
+			icons[14] = par1IconRegister.registerIcon("akivarmod:lamp_ri");
+			icons[15] = par1IconRegister.registerIcon("akivarmod:lamp_full");
 		}
 	}
 
 	@Override
-	public boolean canPlaceTorchOnTop (World world, int x, int y, int z)
+	public boolean canPlaceTorchOnTop(World world, int x, int y, int z)
 	{
 		return true;
 	}
-	
+
 	@Override
-	public int getBlockColor() {
-		if (lightVal == 0.0F){
-		    return (180 << 16) | (180 << 8) | 180;
+	public int getBlockColor()
+	{
+		if (lightVal == 0.0F)
+		{
+			return (180 << 16) | (180 << 8) | 180;
 		}
-		else{
-		    return (255 << 16) | (255 << 8) | 255;		    
+		else
+		{
+			return (255 << 16) | (255 << 8) | 255;
 		}
 	}
-		   
-	public int getBlockColor(int metadata) {
+
+	public int getBlockColor(int metadata)
+	{
 		if (this == ModBlock.coloredLamp || this == ModBlock.emptyColoredLamp)
 		{
-			switch (metadata) {
+			switch (metadata)
+			{
 			case 0:
 				return (12 << 16) | (12 << 8) | 12;
 			case 1:
@@ -709,33 +719,31 @@ public class BlockLamp extends Block {
 		return (0xffffff);
 	}
 
-   @Override
-   @SideOnly(Side.CLIENT)
-   public int getRenderColor(int metadata) {
-       return getBlockColor(metadata);
-   }
-   
-   @Override
-   public void onBlockClicked(World world, int x, int y, int z,
-           EntityPlayer player) {
-       if (!world.isRemote && player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() == ModItem.textureConnector && (this == ModBlock.coloredLamp || this == ModBlock.lamp) && player.isSneaking())
-       {
-           Block block = world.getBlock(x, y, z) == ModBlock.coloredLamp ? ModBlock.emptyColoredLamp : ModBlock.emptyLamp;
-           int meta = world.getBlockMetadata(x, y, z);
-           world.setBlock(x, y, z, block);
-           world.setBlockMetadataWithNotify(x, y, z, meta, 3);
-           if (!player.inventory.addItemStackToInventory(new ItemStack(Blocks.torch, 1)))
-               player.dropItem(Blocks.torch.getItem(world, x, y, z), 1);
-       }
-       super.onBlockClicked(world, x, y, z, player);
-   }
-   
 	@Override
-	public boolean onBlockActivated(World world, int x, int y,
-			int z, EntityPlayer player, int par6, float par7,
-			float par8, float par9) {
-		if (player.inventory.getCurrentItem() == null)
-			return super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
+	@SideOnly(Side.CLIENT)
+	public int getRenderColor(int metadata)
+	{
+		return getBlockColor(metadata);
+	}
+
+	@Override
+	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player)
+	{
+		if (!world.isRemote && player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() == ModItem.textureConnector && (this == ModBlock.coloredLamp || this == ModBlock.lamp) && player.isSneaking())
+		{
+			Block block = world.getBlock(x, y, z) == ModBlock.coloredLamp ? ModBlock.emptyColoredLamp : ModBlock.emptyLamp;
+			int meta = world.getBlockMetadata(x, y, z);
+			world.setBlock(x, y, z, block);
+			world.setBlockMetadataWithNotify(x, y, z, meta, 3);
+			if (!player.inventory.addItemStackToInventory(new ItemStack(Blocks.torch, 1))) player.dropItem(Blocks.torch.getItem(world, x, y, z), 1);
+		}
+		super.onBlockClicked(world, x, y, z, player);
+	}
+
+	@Override
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9)
+	{
+		if (player.inventory.getCurrentItem() == null) return super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
 		if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() == Blocks.torch.getItem(world, x, y, z) && (this == ModBlock.emptyColoredLamp || this == ModBlock.emptyLamp) && !player.isSneaking())
 		{
 			Block block = world.getBlock(x, y, z) == ModBlock.emptyColoredLamp ? ModBlock.coloredLamp : ModBlock.lamp;
@@ -744,74 +752,79 @@ public class BlockLamp extends Block {
 			world.setBlockMetadataWithNotify(x, y, z, meta, 3);
 			player.inventory.getCurrentItem().stackSize--;
 			return true;
-		}/*// TODO Tcon compat
-		else if (Loader.isModLoaded("TConstruct") && player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().itemID == TContent.stoneTorch.blockID && (this.blockID == BlockInfo.EMPTYCOLOREDLAMP_ID || this.blockID == BlockInfo.EMPTYLAMP_ID) && !player.isSneaking())
-		{
-			Block block= world.getBlock(x, y, z) == ModBlock.emptyColoredLamp ? ModBlock.coloredLamp : ModBlock.lamp;
-			int meta = world.getBlockMetadata(x, y, z);
-			world.setBlock(x, y, z, block);
-			world.setBlockMetadataWithNotify(x, y, z, meta, 3);
-			player.inventory.getCurrentItem().stackSize--;
-			return true;
-		}*/
+		}/*
+		 * // TODO Tcon compat else if (Loader.isModLoaded("TConstruct") &&
+		 * player.inventory.getCurrentItem() != null &&
+		 * player.inventory.getCurrentItem().itemID ==
+		 * TContent.stoneTorch.blockID && (this.blockID ==
+		 * BlockInfo.EMPTYCOLOREDLAMP_ID || this.blockID ==
+		 * BlockInfo.EMPTYLAMP_ID) && !player.isSneaking()) { Block block=
+		 * world.getBlock(x, y, z) == ModBlock.emptyColoredLamp ?
+		 * ModBlock.coloredLamp : ModBlock.lamp; int meta =
+		 * world.getBlockMetadata(x, y, z); world.setBlock(x, y, z, block);
+		 * world.setBlockMetadataWithNotify(x, y, z, meta, 3);
+		 * player.inventory.getCurrentItem().stackSize--; return true; }
+		 */
 		else if (player.inventory.getCurrentItem().getItem() == Items.water_bucket || player.inventory.getCurrentItem().getItem() == Items.bucket)
 			return true;
 		else return super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
 	}
-	
+
 	@Override
 	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side)
 	{
 		return true;
 	}
-	
-	@Override
-    public int getRenderType() {
-        return ConfigKeys.allowNewRenderer ? LampRenderer.instance().getRenderId() : super.getRenderType();
-    }
 
-	public int getBlockColorWithDarkness(int metadata) {
+	@Override
+	public int getRenderType()
+	{
+		return ConfigKeys.allowNewRenderer ? LampRenderer.instance().getRenderId() : super.getRenderType();
+	}
+
+	public int getBlockColorWithDarkness(int metadata)
+	{
 		if (this != ModBlock.emptyColoredLamp && this != ModBlock.emptyLamp)
 			return getBlockColor(metadata);
 		else if (this == ModBlock.emptyLamp)
 			return (180 << 16) | (180 << 8) | 180;
-		else
-			switch (metadata) {
-			case 0:
-				return (10 << 16) | (10 << 8) | 10;
-			case 1:
-				return (150 << 16) | (10 << 8) | 10;
-			case 2:
-				return (10 << 16) | (150 << 8) | 10;
-			case 3:
-				return (50 << 16) | (30 << 8) | 20;
-			case 4:
-				return (10 << 16) | (10 << 8) | 150;
-			case 5:
-				return (120 << 16) | (20 << 8) | 150;
-			case 6:
-				return (15 << 16) | (90 << 8) | 140;
-			case 7:
-				return (140 << 16) | (140 << 8) | 140;
-			case 8:
-				return (60 << 16) | (60 << 8) | 60;
-			case 9:
-				return (200 << 16) | (80 << 8) | 200;
-			case 10:
-				return (80 << 16) | (170 << 8) | 40;
-			case 11:
-				return (150 << 16) | (150 << 8) | 10;
-			case 12:
-				return (80 << 16) | (150 << 8) | 190;
-			case 13:
-				return (160 << 16) | (10 << 8) | 160;
-			case 14:
-				return (180 << 16) | (80 << 8) | 10;
-			case 15:
-				return (200 << 16) | (200 << 8) | 200;
-			default:
-				return (200 << 16) | (200 << 8) | 200;
-			}
-			
+		else switch (metadata)
+		{
+		case 0:
+			return (10 << 16) | (10 << 8) | 10;
+		case 1:
+			return (150 << 16) | (10 << 8) | 10;
+		case 2:
+			return (10 << 16) | (150 << 8) | 10;
+		case 3:
+			return (50 << 16) | (30 << 8) | 20;
+		case 4:
+			return (10 << 16) | (10 << 8) | 150;
+		case 5:
+			return (120 << 16) | (20 << 8) | 150;
+		case 6:
+			return (15 << 16) | (90 << 8) | 140;
+		case 7:
+			return (140 << 16) | (140 << 8) | 140;
+		case 8:
+			return (60 << 16) | (60 << 8) | 60;
+		case 9:
+			return (200 << 16) | (80 << 8) | 200;
+		case 10:
+			return (80 << 16) | (170 << 8) | 40;
+		case 11:
+			return (150 << 16) | (150 << 8) | 10;
+		case 12:
+			return (80 << 16) | (150 << 8) | 190;
+		case 13:
+			return (160 << 16) | (10 << 8) | 160;
+		case 14:
+			return (180 << 16) | (80 << 8) | 10;
+		case 15:
+			return (200 << 16) | (200 << 8) | 200;
+		default:
+			return (200 << 16) | (200 << 8) | 200;
+		}
+
 	}
 }

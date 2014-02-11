@@ -3,17 +3,16 @@ package tterrag.stoneLamp.common.config;
 import java.io.File;
 
 import net.minecraftforge.common.config.Configuration;
-import tterrag.stoneLamp.common.block.BlockInfo;
-import tterrag.stoneLamp.common.item.ModItem;
 
-public class ConfigHandler {
-	
-	public static void init(File file) 
+public class ConfigHandler
+{
+
+	public static void init(File file)
 	{
 		Configuration config = new Configuration(file);
-		
+
 		config.load();
-				
+
 		/**
 		 * Other configs
 		 */

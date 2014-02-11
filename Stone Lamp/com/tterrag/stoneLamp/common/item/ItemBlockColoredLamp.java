@@ -10,7 +10,8 @@ import tterrag.stoneLamp.common.api.ItemBlockSL;
 public class ItemBlockColoredLamp extends ItemBlockSL
 {
 
-	public ItemBlockColoredLamp(Block block) {
+	public ItemBlockColoredLamp(Block block)
+	{
 		super(block);
 	}
 
@@ -18,7 +19,6 @@ public class ItemBlockColoredLamp extends ItemBlockSL
 	@Override
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
 	{
-		if (par1ItemStack != null)
-			par3List.add("\u00A7o" + ItemConnector.colors[par1ItemStack.getItemDamage()]);
+		if (par1ItemStack != null) par3List.add("\u00A7o" + ItemConnector.colors[par1ItemStack.getItemDamage()]);
 	}
 }
