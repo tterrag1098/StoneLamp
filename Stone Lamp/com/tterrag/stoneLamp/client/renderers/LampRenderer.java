@@ -241,8 +241,6 @@ public class LampRenderer extends BaseBlockRenderer {
             iconsToDraw[index] = allIcons[11];
             index++;
         }
-        
-        System.out.print(iconsToDraw.toString());
         return iconsToDraw;
     }
 }

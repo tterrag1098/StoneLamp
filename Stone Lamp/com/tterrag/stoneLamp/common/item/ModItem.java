@@ -1,6 +1,10 @@
 package tterrag.stoneLamp.common.item;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import tterrag.stoneLamp.common.block.ModBlock;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class ModItem {
@@ -17,15 +21,18 @@ public class ModItem {
 	public static void init()
 	{
 		textureConnector = new ItemConnector();
+		GameRegistry.registerItem(textureConnector, CONNECTOR_UNLOC_NAME);
 	}
 	
 	public static void addRecipes()
 	{		 
-
-	}
-	
-	public static void addNames()
-	{
-		LanguageRegistry.addName(textureConnector, CONNECTOR_LOC_NAME);
+		GameRegistry.addRecipe(new ItemStack(textureConnector), new Object[]{
+			"  L",
+			" S ",
+			"S  ",
+			
+			'L', ModBlock.emptyLamp,
+			'S', Items.stick
+		});
 	}
 }

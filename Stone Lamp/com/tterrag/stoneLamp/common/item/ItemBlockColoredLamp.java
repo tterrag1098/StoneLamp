@@ -21,5 +21,4 @@ public class ItemBlockColoredLamp extends ItemBlockSL
 		if (par1ItemStack != null)
 			par3List.add("\u00A7o" + ItemConnector.colors[par1ItemStack.getItemDamage()]);
 	}
-
 }

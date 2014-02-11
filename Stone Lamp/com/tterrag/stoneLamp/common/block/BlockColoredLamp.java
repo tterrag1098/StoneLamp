@@ -27,7 +27,7 @@ public class BlockColoredLamp extends BlockLamp
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void getSubBlocks(Block block, CreativeTabs creativeTab, List list)
+	public void getSubBlocks(Item Item, CreativeTabs creativeTab, List list)
 	{
 		for (int i = 0; i <= 15; i++)
 		{
@@ -38,7 +38,7 @@ public class BlockColoredLamp extends BlockLamp
 	@Override
 	public IIcon getIcon(int par1, int par2)
 	{
-		return icons[0];
+		return icons[13];
 	}
 
 	@Override

@@ -601,10 +601,12 @@ public class BlockLamp extends Block {
 		return icons[13];
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-    public void getSubBlocks(Block block, CreativeTabs creativeTab, List list) {
-	    list.add(new ItemStack(block, 1, 0));
-    }
+	@Override
+	public void getSubBlocks(Item item, CreativeTabs tab, List list) 
+	{
+		list.add(new ItemStack(this, 1, 0));
+		list.add(new ItemStack(this, 1, 1));
+	}
 	
 	@Override
 	public void registerBlockIcons(IIconRegister par1IconRegister)
