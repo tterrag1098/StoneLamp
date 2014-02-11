@@ -1,9 +1,11 @@
 package tterrag.stoneLamp.common.api;
 
+import javax.swing.Icon;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 
 import org.lwjgl.opengl.GL11;
 
@@ -23,8 +25,9 @@ public abstract class BaseBlockRenderer implements ISimpleBlockRenderingHandler 
     }
 
     @Override
-    public boolean shouldRender3DInInventory() {
-        return true;
+    public boolean shouldRender3DInInventory(int modelId)
+    {
+    	return true;
     }
 
     @Override
@@ -33,7 +36,7 @@ public abstract class BaseBlockRenderer implements ISimpleBlockRenderingHandler 
     }
 
     protected static void renderAsItem(Block block, RenderBlocks renderer) {
-        Icon[] tmap = new Icon[6];
+        IIcon[] tmap = new IIcon[6];
         for (int i = 0; i < 6; i++) {
             if (block.getBlockTextureFromSide(i) != null) {
                 tmap[i] = block.getBlockTextureFromSide(i);
@@ -42,7 +45,7 @@ public abstract class BaseBlockRenderer implements ISimpleBlockRenderingHandler 
         renderAsItem(block, renderer, tmap);
     }
     
-    protected static void renderAsItem(Block block, RenderBlocks renderer, Icon[] tmap) {
+    protected static void renderAsItem(Block block, RenderBlocks renderer, IIcon[] tmap) {
         Tessellator tessellator = Tessellator.instance;
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F); // Set angled view
 

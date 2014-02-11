@@ -2,7 +2,7 @@ package tterrag.stoneLamp.common.config;
 
 import java.io.File;
 
-import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.config.Configuration;
 import tterrag.stoneLamp.common.block.BlockInfo;
 import tterrag.stoneLamp.common.item.ModItem;
 
@@ -14,19 +14,6 @@ public class ConfigHandler {
 		
 		config.load();
 				
-		/**
-		 * Item ID configs
-		 */
-		ModItem.CONNECTOR_ID = config.getItem(ModItem.CONNECTOR_UNLOC_NAME , ModItem.CONNECTOR_DEFAULT).getInt() - 256;
-		
-		/**
-		 * Block ID configs
-		 */
-		BlockInfo.LAMP_ID = config.getBlock(BlockInfo.LAMP_UNLOC_NAME, BlockInfo.LAMP_DEFAULT).getInt();
-		BlockInfo.EMPTYLAMP_ID = config.getBlock(BlockInfo.EMPTYLAMP_UNLOC_NAME, BlockInfo.EMPTYLAMP_DEFAULT).getInt();
-		BlockInfo.COLOREDLAMP_ID = config.getBlock(BlockInfo.COLOREDLAMP_UNLOC_NAME, BlockInfo.COLOREDLAMP_DEFAULT).getInt();
-		BlockInfo.EMPTYCOLOREDLAMP_ID = config.getBlock(BlockInfo.EMPTYCOLOREDLAMP_UNLOC_NAME, BlockInfo.EMPTYCOLOREDLAMP_DEFAULT).getInt();
-		
 		/**
 		 * Other configs
 		 */

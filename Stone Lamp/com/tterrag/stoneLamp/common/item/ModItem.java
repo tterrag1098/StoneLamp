@@ -7,8 +7,6 @@ public class ModItem {
 	
 	public static String TEXTURE_LOC = "akivarmod";
 	
-	public static int CONNECTOR_ID;	
-	public static final int CONNECTOR_DEFAULT = 24242;
 	public static final String CONNECTOR_KEY = "connector";
 	public static final String CONNECTOR_UNLOC_NAME = "textureConnectorWand";
 	public static final String CONNECTOR_LOC_NAME = "Texture Connector Wand";
@@ -18,7 +16,7 @@ public class ModItem {
 	
 	public static void init()
 	{
-		textureConnector = new ItemConnector(CONNECTOR_ID);
+		textureConnector = new ItemConnector();
 	}
 	
 	public static void addRecipes()

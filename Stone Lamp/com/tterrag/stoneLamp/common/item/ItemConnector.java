@@ -2,14 +2,16 @@ package tterrag.stoneLamp.common.item;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import tterrag.stoneLamp.AkivarMod;
-import tterrag.stoneLamp.common.block.BlockInfo;
+import tterrag.stoneLamp.common.block.ModBlock;
 import tterrag.stoneLamp.common.config.ConfigKeys;
 import cpw.mods.fml.common.Loader;
 
@@ -17,25 +19,25 @@ public class ItemConnector extends Item {
 
     public static String[] colors = new String[] { "Black", "Red", "Green", "Brown", "Blue", "Purple", "Cyan", "Light Gray", "Gray", "Pink", "Lime", "Yellow", "Light Blue", "Magenta", "Orange", "White" };
 
-    public ItemConnector(int id) {
-        super(id);
+    public ItemConnector() {
+        super();
         setUnlocalizedName(ModItem.CONNECTOR_UNLOC_NAME);
         setCreativeTab(AkivarMod.tabStoneLamp);
     }
 
-    private Icon icon;
-
-    public void registerIcons(IconRegister par1IconRegister) {
+    private IIcon icon;
+    
+    public void registerIcons(IIconRegister par1IconRegister) {
         icon = par1IconRegister.registerIcon("akivarmod:wand");
     };
 
     @Override
-    public Icon getIcon(ItemStack stack, int pass) {
+    public IIcon getIcon(ItemStack stack, int pass) {
         return icon;
     }
 
     @Override
-    public Icon getIconFromDamage(int par1) {
+    public IIcon getIconFromDamage(int par1) {
         return icon;
     }
 
@@ -49,10 +51,10 @@ public class ItemConnector extends Item {
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
         System.out.println(Loader.isModLoaded("tahgMod") && !player.isSneaking() && !world.isRemote);
         if (!world.isRemote && !player.isSneaking()) {
-           	int id = world.getBlockId(x, y, z);
-        	if (!ConfigKeys.allowColorChangeWithWand && (id == BlockInfo.LAMP_ID || id == BlockInfo.EMPTYLAMP_ID)) {
+           	Block block = world.getBlock(x, y, z);
+        	if (!ConfigKeys.allowColorChangeWithWand && (block == ModBlock.lamp || block == ModBlock.emptyLamp)) {
         		world.setBlockMetadataWithNotify(x, y, z, stack.getItemDamage(), 3);
-        	} else if (ConfigKeys.allowColorChangeWithWand && (id == BlockInfo.LAMP_ID || id == BlockInfo.EMPTYLAMP_ID || id == BlockInfo.COLOREDLAMP_ID || id == BlockInfo.EMPTYCOLOREDLAMP_ID)) {
+        	} else if (ConfigKeys.allowColorChangeWithWand && (block == ModBlock.lamp || block == ModBlock.emptyLamp || block == ModBlock.coloredLamp || block == ModBlock.emptyColoredLamp)) {
         		world.setBlockMetadataWithNotify(x, y, z, stack.getItemDamage(), 3);
         	}
         	if (Loader.isModLoaded("tahgMod"))
@@ -62,7 +64,7 @@ public class ItemConnector extends Item {
             	try {
             		c = Class.forName("com.tterrag.mod.block.ModBlock");
 			
-            		if (c != null && c.getField("FANCY_CT_STONE_ID").getInt(c) == world.getBlockId(x, y, z))
+            		if (c != null && c.getField("FANCY_CT_STONE_ID").get(c) == world.getBlock(x, y, z))
             		{
             			world.setBlockMetadataWithNotify(x, y, z, stack.getItemDamage(), 3);
             		}
@@ -86,9 +88,9 @@ public class ItemConnector extends Item {
                 stack.setItemDamage(0);
 
             if (world.isRemote && !ConfigKeys.allowColorChangeWithWand)
-                player.addChatMessage("Channel: " + stack.getItemDamage());
+                player.addChatMessage(new ChatComponentText("Channel: " + stack.getItemDamage()));
             else if (world.isRemote && ConfigKeys.allowColorChangeWithWand) {
-                player.addChatMessage("Channel " + stack.getItemDamage() + ", Color: " + colors[stack.getItemDamage()]);
+                player.addChatMessage(new ChatComponentText("Channel " + stack.getItemDamage() + ", Color: " + colors[stack.getItemDamage()]));
             }
         }
         return stack;

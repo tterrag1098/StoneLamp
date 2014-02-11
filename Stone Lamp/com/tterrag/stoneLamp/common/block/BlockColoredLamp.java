@@ -2,46 +2,55 @@ package tterrag.stoneLamp.common.block;
 
 import java.util.List;
 
-import tterrag.stoneLamp.common.config.ConfigKeys;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import tterrag.stoneLamp.common.config.ConfigKeys;
 
-public class BlockColoredLamp extends BlockLamp {
+public class BlockColoredLamp extends BlockLamp
+{
 
 	private int color;
 	private float lightVal;
 
-	public BlockColoredLamp(int id, float lightValue, String unlocName) {
-		super(id, lightValue, unlocName);
+	public BlockColoredLamp(float lightValue, String unlocName)
+	{
+		super(lightValue, unlocName);
 		lightVal = lightValue;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs,
-			List par3List) {
-		for (int i = 0; i <= 15; i++) {
-			par3List.add(new ItemStack(this.blockID, 1, i));
+	public void getSubBlocks(Block block, CreativeTabs creativeTab, List list)
+	{
+		for (int i = 0; i <= 15; i++)
+		{
+			list.add(new ItemStack(this, 1, i));
 		}
 	}
 
 	@Override
-	public Icon getIcon(int par1, int par2) {
+	public IIcon getIcon(int par1, int par2)
+	{
 		return icons[0];
 	}
-	
+
 	@Override
-	public int getBlockColor() {
+	public int getBlockColor()
+	{
 		if (ConfigKeys.allowNewRenderer)
 			return super.getBlockColor();
-		
-		if (lightVal == 0.9F) {
-			switch (color) {
+
+		if (lightVal == 0.9F)
+		{
+			switch (color)
+			{
 			case 0:
 				return (12 << 16) | (12 << 8) | 12;
 			case 1:
@@ -77,7 +86,8 @@ public class BlockColoredLamp extends BlockLamp {
 				return (255 << 16) | (255 << 8) | 255;
 			}
 		} else
-			switch (color) {
+			switch (color)
+			{
 			case 0:
 				return (10 << 16) | (10 << 8) | 10;
 			case 1:
@@ -114,15 +124,16 @@ public class BlockColoredLamp extends BlockLamp {
 				return (200 << 16) | (200 << 8) | 200;
 			}
 	}
-	
+
 	@Override
-	public int colorMultiplier(IBlockAccess par1iBlockAccess, int par2,
-			int par3, int par4) {
+	public int colorMultiplier(IBlockAccess par1iBlockAccess, int par2, int par3, int par4)
+	{
 		if (ConfigKeys.allowNewRenderer)
 			return super.colorMultiplier(par1iBlockAccess, par2, par3, par4);
-		
+
 		color = par1iBlockAccess.getBlockMetadata(par2, par3, par4);
-		switch (color) {
+		switch (color)
+		{
 		case 0:
 			return (12 << 16) | (12 << 8) | 12;
 		case 1:
@@ -161,37 +172,38 @@ public class BlockColoredLamp extends BlockLamp {
 	}
 
 	@Override
-	public int damageDropped(int par1) {
+	public int damageDropped(int par1)
+	{
 		return par1;
 	}
 
 	@Override
-	public int getRenderColor(int par1) {
+	public int getRenderColor(int par1)
+	{
 		color = par1;
 		return getBlockColor();
 	}
-	
+
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z,
-			EntityPlayer player, int par6, float par7, float par8, float par9) {
-		int id = 0;
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9)
+	{
+		Item item = null;
 		if (player.inventory.getCurrentItem() != null)
-			id = player.inventory.getCurrentItem().itemID;
-		else return super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
-		if (id == Item.dyePowder.itemID && player.inventory.getCurrentItem().getItemDamage() != world.getBlockMetadata(x, y, z))
+			item = player.inventory.getCurrentItem().getItem();
+		else
+			return super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
+		if (item == Items.dye && player.inventory.getCurrentItem().getItemDamage() != world.getBlockMetadata(x, y, z))
 		{
 			world.setBlockMetadataWithNotify(x, y, z, player.inventory.getCurrentItem().getItemDamage(), 3);
 			if (!player.capabilities.isCreativeMode)
 				player.inventory.getCurrentItem().stackSize--;
-		}
-		else if (id == Item.bucketWater.itemID)
+		} else if (item == Items.water_bucket)
 		{
-			world.setBlock(x, y, z, world.getBlockId(x, y, z) == BlockInfo.COLOREDLAMP_ID ? BlockInfo.LAMP_ID : BlockInfo.EMPTYLAMP_ID);
+			world.setBlock(x, y, z, world.getBlock(x, y, z) == ModBlock.coloredLamp ? ModBlock.lamp: ModBlock.emptyLamp);
 			if (!player.capabilities.isCreativeMode)
-				player.inventory.getCurrentItem().itemID = Item.bucketEmpty.itemID;
+				player.inventory.getCurrentItem().stackSize--;
 		}
-		return super.onBlockActivated(world, x, y, z, player, par6, par7, par8,
-				par9);
+		return super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
 	}
 
 }

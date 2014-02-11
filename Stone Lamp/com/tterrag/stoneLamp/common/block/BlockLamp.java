@@ -2,16 +2,21 @@ package tterrag.stoneLamp.common.block;
 
 import java.util.List;
 
+import javax.swing.Icon;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import tconstruct.common.TContent;
 import tterrag.stoneLamp.AkivarMod;
 import tterrag.stoneLamp.client.renderers.LampRenderer;
@@ -24,14 +29,22 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockLamp extends Block {
 	
 	private float lightVal;
+	private String unlocName;
 	
-	public BlockLamp(int id, float lightValue, String unlocName) {
-		super(id, Material.glass);
-		setLightValue(lightValue);
+	public BlockLamp(float lightValue, String unlocName) {
+		super(Material.glass);
+		setLightLevel(lightValue);
 		lightVal = lightValue;
-		setUnlocalizedName(unlocName);
 		setCreativeTab(AkivarMod.tabStoneLamp);
 		setHardness(0.6F);
+		
+		this.unlocName = unlocName;
+	}
+	
+	@Override
+	public String getUnlocalizedName()
+	{
+		return unlocName;
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -43,7 +56,7 @@ public class BlockLamp extends Block {
 		
 		for (int i = -1; i <= 1; i++)
 			for (int j = -1; j <=1; j++)
-				world.markBlockForRenderUpdate(x + i, y, z + i);
+				world.markBlockForUpdate(x + i, y, z + i);
 		
 		return super.onBlockPlaced(world, x, y, z, par5, par6, par7, par8,
 				par9);
@@ -51,7 +64,7 @@ public class BlockLamp extends Block {
 	
 	/** Begin fuj1n (Tcon) code **/
 	
-	public static Icon[] icons = new Icon[16];
+	public static IIcon[] icons = new IIcon[16];
 	protected String folder;
 
 	/**
@@ -63,538 +76,538 @@ public class BlockLamp extends Block {
 	 * @param par6 Metadata of the block this block is trying to connect to
 	 * @return true if should connect
 	 */
-	public boolean shouldConnectToBlock (IBlockAccess par1IBlockAccess, int x, int y, int z, int par5, int par6)
+	public boolean shouldConnectToBlock (IBlockAccess par1IBlockAccess, int x, int y, int z, Block par5, int par6)
 	{
-		return par5 == this.blockID && par1IBlockAccess.getBlockMetadata(x, y, z) == par6;
+		return par5 == this && par1IBlockAccess.getBlockMetadata(x, y, z) == par6;
 	}
 
 	@Override
-	public Icon getBlockTexture (IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
+	public IIcon getIcon(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int p_149673_5_)
 	{
-		return getConnectedBlockTexture(par1IBlockAccess, par2, par3, par4, par5, icons);
+		return getConnectedBlockTexture(par1IBlockAccess, par2, par3, par4, p_149673_5_, icons);
 	}
 
-	public Icon getConnectedBlockTexture (IBlockAccess block, int x, int y, int z, int side, Icon[] icons)
+	public IIcon getConnectedBlockTexture (IBlockAccess block, int x, int y, int z, int side, IIcon[] icons2)
 	{
 		boolean isOpenUp = false, isOpenDown = false, isOpenLeft = false, isOpenRight = false;
 
 		if (!ConfigKeys.allowConnectedTextures)
-			return icons[0];
+			return icons2[0];
 		
 		switch (side)
 		{
 		case 0:
-			if (shouldConnectToBlock(block, x, y, z, block.getBlockId(x - 1, y, z), block.getBlockMetadata(x - 1, y, z)))
+			if (shouldConnectToBlock(block, x, y, z, block.getBlock(x - 1, y, z), block.getBlockMetadata(x - 1, y, z)))
 			{
 				isOpenDown = true;
 			}
 
-			if (shouldConnectToBlock(block, x, y, z, block.getBlockId(x + 1, y, z), block.getBlockMetadata(x + 1, y, z)))
+			if (shouldConnectToBlock(block, x, y, z, block.getBlock(x + 1, y, z), block.getBlockMetadata(x + 1, y, z)))
 			{
 				isOpenUp = true;
 			}
 
-			if (shouldConnectToBlock(block, x, y, z, block.getBlockId(x, y, z - 1), block.getBlockMetadata(x, y, z - 1)))
+			if (shouldConnectToBlock(block, x, y, z, block.getBlock(x, y, z - 1), block.getBlockMetadata(x, y, z - 1)))
 			{
 				isOpenLeft = true;
 			}
 
-			if (shouldConnectToBlock(block, x, y, z, block.getBlockId(x, y, z + 1), block.getBlockMetadata(x, y, z + 1)))
+			if (shouldConnectToBlock(block, x, y, z, block.getBlock(x, y, z + 1), block.getBlockMetadata(x, y, z + 1)))
 			{
 				isOpenRight = true;
 			}
 			
 			if (isOpenUp && isOpenDown && isOpenLeft && isOpenRight)
 			{
-				return icons[15];
+				return icons2[15];
 			}
 			else if (isOpenUp && isOpenDown && isOpenLeft)
 			{
-				return icons[11];
+				return icons2[11];
 			}
 			else if (isOpenUp && isOpenDown && isOpenRight)
 			{
-				return icons[12];
+				return icons2[12];
 			}
 			else if (isOpenUp && isOpenLeft && isOpenRight)
 			{
-				return icons[13];
+				return icons2[13];
 			}
 			else if (isOpenDown && isOpenLeft && isOpenRight)
 			{
-				return icons[14];
+				return icons2[14];
 			}
 			else if (isOpenDown && isOpenUp)
 			{
-				return icons[5];
+				return icons2[5];
 			}
 			else if (isOpenLeft && isOpenRight)
 			{
-				return icons[6];
+				return icons2[6];
 			}
 			else if (isOpenDown && isOpenLeft)
 			{
-				return icons[8];
+				return icons2[8];
 			}
 			else if (isOpenDown && isOpenRight)
 			{
-				return icons[10];
+				return icons2[10];
 			}
 			else if (isOpenUp && isOpenLeft)
 			{
-				return icons[7];
+				return icons2[7];
 			}
 			else if (isOpenUp && isOpenRight)
 			{
-				return icons[9];
+				return icons2[9];
 			}
 			else if (isOpenDown)
 			{
-				return icons[3];
+				return icons2[3];
 			}
 			else if (isOpenUp)
 			{
-				return icons[4];
+				return icons2[4];
 			}
 			else if (isOpenLeft)
 			{
-				return icons[2];
+				return icons2[2];
 			}
 			else if (isOpenRight)
 			{
-				return icons[1];
+				return icons2[1];
 			}
 			break;
 		case 1:
-			if (shouldConnectToBlock(block, x, y, z, block.getBlockId(x - 1, y, z), block.getBlockMetadata(x - 1, y, z)))
+			if (shouldConnectToBlock(block, x, y, z, block.getBlock(x - 1, y, z), block.getBlockMetadata(x - 1, y, z)))
 			{
 				isOpenDown = true;
 			}
 
-			if (shouldConnectToBlock(block, x, y, z, block.getBlockId(x + 1, y, z), block.getBlockMetadata(x + 1, y, z)))
+			if (shouldConnectToBlock(block, x, y, z, block.getBlock(x + 1, y, z), block.getBlockMetadata(x + 1, y, z)))
 			{
 				isOpenUp = true;
 			}
 
-			if (shouldConnectToBlock(block, x, y, z, block.getBlockId(x, y, z - 1), block.getBlockMetadata(x, y, z - 1)))
+			if (shouldConnectToBlock(block, x, y, z, block.getBlock(x, y, z - 1), block.getBlockMetadata(x, y, z - 1)))
 			{
 				isOpenLeft = true;
 			}
 
-			if (shouldConnectToBlock(block, x, y, z, block.getBlockId(x, y, z + 1), block.getBlockMetadata(x, y, z + 1)))
+			if (shouldConnectToBlock(block, x, y, z, block.getBlock(x, y, z + 1), block.getBlockMetadata(x, y, z + 1)))
 			{
 				isOpenRight = true;
 			}
 
 			if (isOpenUp && isOpenDown && isOpenLeft && isOpenRight)
 			{
-				return icons[15];
+				return icons2[15];
 			}
 			else if (isOpenUp && isOpenDown && isOpenLeft)
 			{
-				return icons[11];
+				return icons2[11];
 			}
 			else if (isOpenUp && isOpenDown && isOpenRight)
 			{
-				return icons[12];
+				return icons2[12];
 			}
 			else if (isOpenUp && isOpenLeft && isOpenRight)
 			{
-				return icons[13];
+				return icons2[13];
 			}
 			else if (isOpenDown && isOpenLeft && isOpenRight)
 			{
-				return icons[14];
+				return icons2[14];
 			}
 			else if (isOpenDown && isOpenUp)
 			{
-				return icons[5];
+				return icons2[5];
 			}
 			else if (isOpenLeft && isOpenRight)
 			{
-				return icons[6];
+				return icons2[6];
 			}
 			else if (isOpenDown && isOpenLeft)
 			{
-				return icons[8];
+				return icons2[8];
 			}
 			else if (isOpenDown && isOpenRight)
 			{
-				return icons[10];
+				return icons2[10];
 			}
 			else if (isOpenUp && isOpenLeft)
 			{
-				return icons[7];
+				return icons2[7];
 			}
 			else if (isOpenUp && isOpenRight)
 			{
-				return icons[9];
+				return icons2[9];
 			}
 			else if (isOpenDown)
 			{
-				return icons[3];
+				return icons2[3];
 			}
 			else if (isOpenUp)
 			{
-				return icons[4];
+				return icons2[4];
 			}
 			else if (isOpenLeft)
 			{
-				return icons[2];
+				return icons2[2];
 			}
 			else if (isOpenRight)
 			{
-				return icons[1];
+				return icons2[1];
 			}
 			break;
 		case 2:
-			if (shouldConnectToBlock(block, x, y, z, block.getBlockId(x, y - 1, z), block.getBlockMetadata(x, y - 1, z)))
+			if (shouldConnectToBlock(block, x, y, z, block.getBlock(x, y - 1, z), block.getBlockMetadata(x, y - 1, z)))
 			{
 				isOpenDown = true;
 			}
 
-			if (shouldConnectToBlock(block, x, y, z, block.getBlockId(x, y + 1, z), block.getBlockMetadata(x, y + 1, z)))
+			if (shouldConnectToBlock(block, x, y, z, block.getBlock(x, y + 1, z), block.getBlockMetadata(x, y + 1, z)))
 			{
 				isOpenUp = true;
 			}
 
-			if (shouldConnectToBlock(block, x, y, z, block.getBlockId(x - 1, y, z), block.getBlockMetadata(x - 1, y, z)))
+			if (shouldConnectToBlock(block, x, y, z, block.getBlock(x - 1, y, z), block.getBlockMetadata(x - 1, y, z)))
 			{
 				isOpenLeft = true;
 			}
 
-			if (shouldConnectToBlock(block, x, y, z, block.getBlockId(x + 1, y, z), block.getBlockMetadata(x + 1, y, z)))
+			if (shouldConnectToBlock(block, x, y, z, block.getBlock(x + 1, y, z), block.getBlockMetadata(x + 1, y, z)))
 			{
 				isOpenRight = true;
 			}
 
 			if (isOpenUp && isOpenDown && isOpenLeft && isOpenRight)
 			{
-				return icons[15];
+				return icons2[15];
 			}
 			else if (isOpenUp && isOpenDown && isOpenLeft)
 			{
-				return icons[13];
+				return icons2[13];
 			}
 			else if (isOpenUp && isOpenDown && isOpenRight)
 			{
-				return icons[14];
+				return icons2[14];
 			}
 			else if (isOpenUp && isOpenLeft && isOpenRight)
 			{
-				return icons[11];
+				return icons2[11];
 			}
 			else if (isOpenDown && isOpenLeft && isOpenRight)
 			{
-				return icons[12];
+				return icons2[12];
 			}
 			else if (isOpenDown && isOpenUp)
 			{
-				return icons[6];
+				return icons2[6];
 			}
 			else if (isOpenLeft && isOpenRight)
 			{
-				return icons[5];
+				return icons2[5];
 			}
 			else if (isOpenDown && isOpenLeft)
 			{
-				return icons[9];
+				return icons2[9];
 			}
 			else if (isOpenDown && isOpenRight)
 			{
-				return icons[10];
+				return icons2[10];
 			}
 			else if (isOpenUp && isOpenLeft)
 			{
-				return icons[7];
+				return icons2[7];
 			}
 			else if (isOpenUp && isOpenRight)
 			{
-				return icons[8];
+				return icons2[8];
 			}
 			else if (isOpenDown)
 			{
-				return icons[1];
+				return icons2[1];
 			}
 			else if (isOpenUp)
 			{
-				return icons[2];
+				return icons2[2];
 			}
 			else if (isOpenLeft)
 			{
-				return icons[4];
+				return icons2[4];
 			}
 			else if (isOpenRight)
 			{
-				return icons[3];
+				return icons2[3];
 			}
 			break;
 		case 3:
-			if (shouldConnectToBlock(block, x, y, z, block.getBlockId(x, y - 1, z), block.getBlockMetadata(x, y - 1, z)))
+			if (shouldConnectToBlock(block, x, y, z, block.getBlock(x, y - 1, z), block.getBlockMetadata(x, y - 1, z)))
 			{
 				isOpenDown = true;
 			}
 
-			if (shouldConnectToBlock(block, x, y, z, block.getBlockId(x, y + 1, z), block.getBlockMetadata(x, y + 1, z)))
+			if (shouldConnectToBlock(block, x, y, z, block.getBlock(x, y + 1, z), block.getBlockMetadata(x, y + 1, z)))
 			{
 				isOpenUp = true;
 			}
 
-			if (shouldConnectToBlock(block, x, y, z, block.getBlockId(x - 1, y, z), block.getBlockMetadata(x - 1, y, z)))
+			if (shouldConnectToBlock(block, x, y, z, block.getBlock(x - 1, y, z), block.getBlockMetadata(x - 1, y, z)))
 			{
 				isOpenLeft = true;
 			}
 
-			if (shouldConnectToBlock(block, x, y, z, block.getBlockId(x + 1, y, z), block.getBlockMetadata(x + 1, y, z)))
+			if (shouldConnectToBlock(block, x, y, z, block.getBlock(x + 1, y, z), block.getBlockMetadata(x + 1, y, z)))
 			{
 				isOpenRight = true;
 			}
 
 			if (isOpenUp && isOpenDown && isOpenLeft && isOpenRight)
 			{
-				return icons[15];
+				return icons2[15];
 			}
 			else if (isOpenUp && isOpenDown && isOpenLeft)
 			{
-				return icons[14];
+				return icons2[14];
 			}
 			else if (isOpenUp && isOpenDown && isOpenRight)
 			{
-				return icons[13];
+				return icons2[13];
 			}
 			else if (isOpenUp && isOpenLeft && isOpenRight)
 			{
-				return icons[11];
+				return icons2[11];
 			}
 			else if (isOpenDown && isOpenLeft && isOpenRight)
 			{
-				return icons[12];
+				return icons2[12];
 			}
 			else if (isOpenDown && isOpenUp)
 			{
-				return icons[6];
+				return icons2[6];
 			}
 			else if (isOpenLeft && isOpenRight)
 			{
-				return icons[5];
+				return icons2[5];
 			}
 			else if (isOpenDown && isOpenLeft)
 			{
-				return icons[10];
+				return icons2[10];
 			}
 			else if (isOpenDown && isOpenRight)
 			{
-				return icons[9];
+				return icons2[9];
 			}
 			else if (isOpenUp && isOpenLeft)
 			{
-				return icons[8];
+				return icons2[8];
 			}
 			else if (isOpenUp && isOpenRight)
 			{
-				return icons[7];
+				return icons2[7];
 			}
 			else if (isOpenDown)
 			{
-				return icons[1];
+				return icons2[1];
 			}
 			else if (isOpenUp)
 			{
-				return icons[2];
+				return icons2[2];
 			}
 			else if (isOpenLeft)
 			{
-				return icons[3];
+				return icons2[3];
 			}
 			else if (isOpenRight)
 			{
-				return icons[4];
+				return icons2[4];
 			}
 			break;
 		case 4:
-			if (shouldConnectToBlock(block, x, y, z, block.getBlockId(x, y - 1, z), block.getBlockMetadata(x, y - 1, z)))
+			if (shouldConnectToBlock(block, x, y, z, block.getBlock(x, y - 1, z), block.getBlockMetadata(x, y - 1, z)))
 			{
 				isOpenDown = true;
 			}
 
-			if (shouldConnectToBlock(block, x, y, z, block.getBlockId(x, y + 1, z), block.getBlockMetadata(x, y + 1, z)))
+			if (shouldConnectToBlock(block, x, y, z, block.getBlock(x, y + 1, z), block.getBlockMetadata(x, y + 1, z)))
 			{
 				isOpenUp = true;
 			}
 
-			if (shouldConnectToBlock(block, x, y, z, block.getBlockId(x, y, z - 1), block.getBlockMetadata(x, y, z - 1)))
+			if (shouldConnectToBlock(block, x, y, z, block.getBlock(x, y, z - 1), block.getBlockMetadata(x, y, z - 1)))
 			{
 				isOpenLeft = true;
 			}
 
-			if (shouldConnectToBlock(block, x, y, z, block.getBlockId(x, y, z + 1), block.getBlockMetadata(x, y, z + 1)))
+			if (shouldConnectToBlock(block, x, y, z, block.getBlock(x, y, z + 1), block.getBlockMetadata(x, y, z + 1)))
 			{
 				isOpenRight = true;
 			}
 
 			if (isOpenUp && isOpenDown && isOpenLeft && isOpenRight)
 			{
-				return icons[15];
+				return icons2[15];
 			}
 			else if (isOpenUp && isOpenDown && isOpenLeft)
 			{
-				return icons[14];
+				return icons2[14];
 			}
 			else if (isOpenUp && isOpenDown && isOpenRight)
 			{
-				return icons[13];
+				return icons2[13];
 			}
 			else if (isOpenUp && isOpenLeft && isOpenRight)
 			{
-				return icons[11];
+				return icons2[11];
 			}
 			else if (isOpenDown && isOpenLeft && isOpenRight)
 			{
-				return icons[12];
+				return icons2[12];
 			}
 			else if (isOpenDown && isOpenUp)
 			{
-				return icons[6];
+				return icons2[6];
 			}
 			else if (isOpenLeft && isOpenRight)
 			{
-				return icons[5];
+				return icons2[5];
 			}
 			else if (isOpenDown && isOpenLeft)
 			{
-				return icons[10];
+				return icons2[10];
 			}
 			else if (isOpenDown && isOpenRight)
 			{
-				return icons[9];
+				return icons2[9];
 			}
 			else if (isOpenUp && isOpenLeft)
 			{
-				return icons[8];
+				return icons2[8];
 			}
 			else if (isOpenUp && isOpenRight)
 			{
-				return icons[7];
+				return icons2[7];
 			}
 			else if (isOpenDown)
 			{
-				return icons[1];
+				return icons2[1];
 			}
 			else if (isOpenUp)
 			{
-				return icons[2];
+				return icons2[2];
 			}
 			else if (isOpenLeft)
 			{
-				return icons[3];
+				return icons2[3];
 			}
 			else if (isOpenRight)
 			{
-				return icons[4];
+				return icons2[4];
 			}
 			break;
 		case 5:
-			if (shouldConnectToBlock(block, x, y, z, block.getBlockId(x, y - 1, z), block.getBlockMetadata(x, y - 1, z)))
+			if (shouldConnectToBlock(block, x, y, z, block.getBlock(x, y - 1, z), block.getBlockMetadata(x, y - 1, z)))
 			{
 				isOpenDown = true;
 			}
 
-			if (shouldConnectToBlock(block, x, y, z, block.getBlockId(x, y + 1, z), block.getBlockMetadata(x, y + 1, z)))
+			if (shouldConnectToBlock(block, x, y, z, block.getBlock(x, y + 1, z), block.getBlockMetadata(x, y + 1, z)))
 			{
 				isOpenUp = true;
 			}
 
-			if (shouldConnectToBlock(block, x, y, z, block.getBlockId(x, y, z - 1), block.getBlockMetadata(x, y, z - 1)))
+			if (shouldConnectToBlock(block, x, y, z, block.getBlock(x, y, z - 1), block.getBlockMetadata(x, y, z - 1)))
 			{
 				isOpenLeft = true;
 			}
 
-			if (shouldConnectToBlock(block, x, y, z, block.getBlockId(x, y, z + 1), block.getBlockMetadata(x, y, z + 1)))
+			if (shouldConnectToBlock(block, x, y, z, block.getBlock(x, y, z + 1), block.getBlockMetadata(x, y, z + 1)))
 			{
 				isOpenRight = true;
 			}
 
 			if (isOpenUp && isOpenDown && isOpenLeft && isOpenRight)
 			{
-				return icons[15];
+				return icons2[15];
 			}
 			else if (isOpenUp && isOpenDown && isOpenLeft)
 			{
-				return icons[13];
+				return icons2[13];
 			}
 			else if (isOpenUp && isOpenDown && isOpenRight)
 			{
-				return icons[14];
+				return icons2[14];
 			}
 			else if (isOpenUp && isOpenLeft && isOpenRight)
 			{
-				return icons[11];
+				return icons2[11];
 			}
 			else if (isOpenDown && isOpenLeft && isOpenRight)
 			{
-				return icons[12];
+				return icons2[12];
 			}
 			else if (isOpenDown && isOpenUp)
 			{
-				return icons[6];
+				return icons2[6];
 			}
 			else if (isOpenLeft && isOpenRight)
 			{
-				return icons[5];
+				return icons2[5];
 			}
 			else if (isOpenDown && isOpenLeft)
 			{
-				return icons[9];
+				return icons2[9];
 			}
 			else if (isOpenDown && isOpenRight)
 			{
-				return icons[10];
+				return icons2[10];
 			}
 			else if (isOpenUp && isOpenLeft)
 			{
-				return icons[7];
+				return icons2[7];
 			}
 			else if (isOpenUp && isOpenRight)
 			{
-				return icons[8];
+				return icons2[8];
 			}
 			else if (isOpenDown)
 			{
-				return icons[1];
+				return icons2[1];
 			}
 			else if (isOpenUp)
 			{
-				return icons[2];
+				return icons2[2];
 			}
 			else if (isOpenLeft)
 			{
-				return icons[4];
+				return icons2[4];
 			}
 			else if (isOpenRight)
 			{
-				return icons[3];
+				return icons2[3];
 			}
 			break;
 		}
 
-		return icons[0];
+		return icons2[0];
 	}
 	
 	/** End fuj1n code **/
 
 	@Override
-	public Icon getIcon (int par1, int par2)
+	public IIcon getIcon (int par1, int par2)
 	{
 		return icons[13];
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-    public void getSubBlocks(int id, CreativeTabs creativeTab, List list) {
-	    list.add(new ItemStack(id, 1, 0));
+    public void getSubBlocks(Block block, CreativeTabs creativeTab, List list) {
+	    list.add(new ItemStack(block, 1, 0));
     }
 	
 	@Override
-	public void registerIcons (IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		if (ConfigKeys.allowNewRenderer)
 		{
@@ -653,7 +666,7 @@ public class BlockLamp extends Block {
 	}
 		   
 	public int getBlockColor(int metadata) {
-		if (this.blockID == BlockInfo.COLOREDLAMP_ID || this.blockID == BlockInfo.EMPTYCOLOREDLAMP_ID)
+		if (this == ModBlock.coloredLamp || this == ModBlock.emptyColoredLamp)
 		{
 			switch (metadata) {
 			case 0:
@@ -703,14 +716,14 @@ public class BlockLamp extends Block {
    @Override
    public void onBlockClicked(World world, int x, int y, int z,
            EntityPlayer player) {
-       if (!world.isRemote && player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().itemID == (ModItem.CONNECTOR_ID + 256) && (this.blockID == BlockInfo.COLOREDLAMP_ID || this.blockID == BlockInfo.LAMP_ID) && player.isSneaking())
+       if (!world.isRemote && player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() == ModItem.textureConnector && (this == ModBlock.coloredLamp || this == ModBlock.lamp) && player.isSneaking())
        {
-           int id = world.getBlockId(x, y, z) == BlockInfo.COLOREDLAMP_ID ? BlockInfo.EMPTYCOLOREDLAMP_ID : BlockInfo.EMPTYLAMP_ID;
+           Block block = world.getBlock(x, y, z) == ModBlock.coloredLamp ? ModBlock.emptyColoredLamp : ModBlock.emptyLamp;
            int meta = world.getBlockMetadata(x, y, z);
-           world.setBlock(x, y, z, id);
+           world.setBlock(x, y, z, block);
            world.setBlockMetadataWithNotify(x, y, z, meta, 3);
-           if (!player.inventory.addItemStackToInventory(new ItemStack(Block.torchWood, 1)))
-               player.dropItem(Block.torchWood.blockID, 1);
+           if (!player.inventory.addItemStackToInventory(new ItemStack(Blocks.torch, 1)))
+               player.dropItem(Blocks.torch.getItem(world, x, y, z), 1);
        }
        super.onBlockClicked(world, x, y, z, player);
    }
@@ -721,33 +734,34 @@ public class BlockLamp extends Block {
 			float par8, float par9) {
 		if (player.inventory.getCurrentItem() == null)
 			return super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
-		if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().itemID == Block.torchWood.blockID && (this.blockID == BlockInfo.EMPTYCOLOREDLAMP_ID || this.blockID == BlockInfo.EMPTYLAMP_ID) && !player.isSneaking())
+		if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() == Blocks.torch.getItem(world, x, y, z) && (this == ModBlock.emptyColoredLamp || this == ModBlock.emptyLamp) && !player.isSneaking())
 		{
-			int id = world.getBlockId(x, y, z) == BlockInfo.EMPTYCOLOREDLAMP_ID ? BlockInfo.COLOREDLAMP_ID : BlockInfo.LAMP_ID;
+			Block block = world.getBlock(x, y, z) == ModBlock.emptyColoredLamp ? ModBlock.coloredLamp : ModBlock.lamp;
 			int meta = world.getBlockMetadata(x, y, z);
-			world.setBlock(x, y, z, id);
+			world.setBlock(x, y, z, block);
 			world.setBlockMetadataWithNotify(x, y, z, meta, 3);
 			player.inventory.getCurrentItem().stackSize--;
 			return true;
-		}
+		}/*// TODO Tcon compat
 		else if (Loader.isModLoaded("TConstruct") && player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().itemID == TContent.stoneTorch.blockID && (this.blockID == BlockInfo.EMPTYCOLOREDLAMP_ID || this.blockID == BlockInfo.EMPTYLAMP_ID) && !player.isSneaking())
 		{
-			int id = world.getBlockId(x, y, z) == BlockInfo.EMPTYCOLOREDLAMP_ID ? BlockInfo.COLOREDLAMP_ID : BlockInfo.LAMP_ID;
+			Block block= world.getBlock(x, y, z) == ModBlock.emptyColoredLamp ? ModBlock.coloredLamp : ModBlock.lamp;
 			int meta = world.getBlockMetadata(x, y, z);
-			world.setBlock(x, y, z, id);
+			world.setBlock(x, y, z, block);
 			world.setBlockMetadataWithNotify(x, y, z, meta, 3);
 			player.inventory.getCurrentItem().stackSize--;
 			return true;
-		}
-		else if (player.inventory.getCurrentItem().itemID == Item.bucketWater.itemID || player.inventory.getCurrentItem().itemID == Item.bucketEmpty.itemID)
+		}*/
+		else if (player.inventory.getCurrentItem().getItem() == Items.water_bucket || player.inventory.getCurrentItem().getItem() == Items.bucket)
 			return true;
 		else return super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
 	}
 	
 	@Override
-	public boolean isBlockSolidOnSide(World world, int x, int y, int z, net.minecraftforge.common.ForgeDirection side) {
+	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side)
+	{
 		return true;
-	};
+	}
 	
 	@Override
     public int getRenderType() {
@@ -755,9 +769,9 @@ public class BlockLamp extends Block {
     }
 
 	public int getBlockColorWithDarkness(int metadata) {
-		if (this.blockID != BlockInfo.EMPTYCOLOREDLAMP_ID && this.blockID != BlockInfo.EMPTYLAMP_ID)
+		if (this != ModBlock.emptyColoredLamp && this != ModBlock.emptyLamp)
 			return getBlockColor(metadata);
-		else if (this.blockID == BlockInfo.EMPTYLAMP_ID)
+		else if (this == ModBlock.emptyLamp)
 			return (180 << 16) | (180 << 8) | 180;
 		else
 			switch (metadata) {

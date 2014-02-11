@@ -45,11 +45,9 @@ public class AkivarMod {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		
-		ModBlock.addNames();
 		ModBlock.addRecipes();
 		if (ConfigKeys.allowDebugItem)
 			ModItem.addNames();
-		LanguageRegistry.instance().addStringLocalization("itemGroup." + Reference.TAB_NAME, "en_US", Reference.TAB_LOC_NAME);
 	}
 
 	@EventHandler
