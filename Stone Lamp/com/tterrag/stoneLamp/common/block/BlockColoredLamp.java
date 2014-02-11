@@ -201,7 +201,7 @@ public class BlockColoredLamp extends BlockLamp
 		{
 			world.setBlock(x, y, z, world.getBlock(x, y, z) == ModBlock.coloredLamp ? ModBlock.lamp: ModBlock.emptyLamp);
 			if (!player.capabilities.isCreativeMode)
-				player.inventory.getCurrentItem().stackSize--;
+				player.inventory.mainInventory[player.inventory.currentItem] = new ItemStack(player.inventory.getCurrentItem().getItem().getContainerItem());
 		}
 		return super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
 	}
