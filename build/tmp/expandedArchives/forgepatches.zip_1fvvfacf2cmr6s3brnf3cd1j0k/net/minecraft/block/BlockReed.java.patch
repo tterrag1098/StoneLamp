@@ -1,0 +1,47 @@
+--- ../src-base/minecraft/net/minecraft/block/BlockReed.java
++++ ../src-work/minecraft/net/minecraft/block/BlockReed.java
+@@ -11,7 +11,11 @@
+ import net.minecraft.world.IBlockAccess;
+ import net.minecraft.world.World;
+ 
+-public class BlockReed extends Block
++import net.minecraftforge.common.EnumPlantType;
++import net.minecraftforge.common.util.ForgeDirection;
++import net.minecraftforge.common.IPlantable;
++
++public class BlockReed extends Block implements IPlantable
+ {
+     private static final String __OBFID = "CL_00000300";
+ 
+@@ -59,7 +63,7 @@
+     public boolean canPlaceBlockAt(World p_149742_1_, int p_149742_2_, int p_149742_3_, int p_149742_4_)
+     {
+         Block block = p_149742_1_.getBlock(p_149742_2_, p_149742_3_ - 1, p_149742_4_);
+-        return block == this ? true : (block != Blocks.grass && block != Blocks.dirt && block != Blocks.sand ? false : (p_149742_1_.getBlock(p_149742_2_ - 1, p_149742_3_ - 1, p_149742_4_).getMaterial() == Material.water ? true : (p_149742_1_.getBlock(p_149742_2_ + 1, p_149742_3_ - 1, p_149742_4_).getMaterial() == Material.water ? true : (p_149742_1_.getBlock(p_149742_2_, p_149742_3_ - 1, p_149742_4_ - 1).getMaterial() == Material.water ? true : p_149742_1_.getBlock(p_149742_2_, p_149742_3_ - 1, p_149742_4_ + 1).getMaterial() == Material.water))));
++        return block.canSustainPlant(p_149742_1_, p_149742_2_, p_149742_3_ - 1, p_149742_4_, ForgeDirection.UP, this);
+     }
+ 
+     // JAVADOC METHOD $$ func_149695_a
+@@ -130,4 +134,22 @@
+     {
+         return p_149720_1_.getBiomeGenForCoords(p_149720_2_, p_149720_4_).getBiomeGrassColor(p_149720_2_, p_149720_3_, p_149720_4_);
+     }
++
++    @Override
++    public EnumPlantType getPlantType(IBlockAccess world, int x, int y, int z)
++    {
++        return EnumPlantType.Beach;
++    }
++
++    @Override
++    public Block getPlant(IBlockAccess world, int x, int y, int z)
++    {
++        return this;
++    }
++
++    @Override
++    public int getPlantMetadata(IBlockAccess world, int x, int y, int z)
++    {
++        return world.getBlockMetadata(x, y, z);
++    }
+ }

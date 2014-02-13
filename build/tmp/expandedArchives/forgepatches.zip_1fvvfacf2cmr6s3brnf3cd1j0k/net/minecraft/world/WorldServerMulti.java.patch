@@ -1,0 +1,12 @@
+--- ../src-base/minecraft/net/minecraft/world/WorldServerMulti.java
++++ ../src-work/minecraft/net/minecraft/world/WorldServerMulti.java
+@@ -18,5 +18,8 @@
+     }
+ 
+     // JAVADOC METHOD $$ func_73042_a
+-    protected void saveLevel() throws MinecraftException {}
++    protected void saveLevel() throws MinecraftException
++    {
++        this.perWorldStorage.saveAllData();
++    }
+ }

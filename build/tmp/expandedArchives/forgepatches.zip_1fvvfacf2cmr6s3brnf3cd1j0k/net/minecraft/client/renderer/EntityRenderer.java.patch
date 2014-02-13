@@ -1,0 +1,151 @@
+--- ../src-base/minecraft/net/minecraft/client/renderer/EntityRenderer.java
++++ ../src-work/minecraft/net/minecraft/client/renderer/EntityRenderer.java
+@@ -51,6 +51,11 @@
+ import org.lwjgl.opengl.GL11;
+ import org.lwjgl.opengl.GLContext;
+ import org.lwjgl.util.glu.Project;
++import net.minecraftforge.client.ForgeHooksClient;
++import net.minecraftforge.client.IRenderHandler;
++import net.minecraftforge.client.event.DrawBlockHighlightEvent;
++import net.minecraftforge.client.event.RenderWorldLastEvent;
++import net.minecraftforge.common.MinecraftForge;
+ 
+ @SideOnly(Side.CLIENT)
+ public class EntityRenderer implements IResourceManagerReloadListener
+@@ -397,7 +402,7 @@
+ 
+                             if (d3 < d2 || d2 == 0.0D)
+                             {
+-                                if (entity == this.mc.renderViewEntity.ridingEntity)
++                                if (entity == this.mc.renderViewEntity.ridingEntity && !entity.canRiderInteract())
+                                 {
+                                     if (d2 == 0.0D)
+                                     {
+@@ -432,8 +437,15 @@
+     // JAVADOC METHOD $$ func_78477_e
+     private void updateFovModifierHand()
+     {
+-        EntityPlayerSP entityplayersp = (EntityPlayerSP)this.mc.renderViewEntity;
+-        this.fovMultiplierTemp = entityplayersp.getFOVMultiplier();
++        if (mc.renderViewEntity instanceof EntityPlayerSP)
++        {
++            EntityPlayerSP entityplayersp = (EntityPlayerSP)this.mc.renderViewEntity;
++            this.fovMultiplierTemp = entityplayersp.getFOVMultiplier();
++        }
++        else
++        {
++            this.fovMultiplierTemp = mc.thePlayer.getFOVMultiplier();
++        }
+         this.fovModifierHandPrev = this.fovModifierHand;
+         this.fovModifierHand += (this.fovMultiplierTemp - this.fovModifierHand) * 0.5F;
+ 
+@@ -457,7 +469,7 @@
+         }
+         else
+         {
+-            EntityPlayer entityplayer = (EntityPlayer)this.mc.renderViewEntity;
++            EntityLivingBase entityplayer = (EntityLivingBase)this.mc.renderViewEntity;
+             float f1 = 70.0F;
+ 
+             if (par2)
+@@ -540,15 +552,7 @@
+ 
+             if (!this.mc.gameSettings.debugCamEnable)
+             {
+-                Block block = this.mc.theWorld.getBlock(MathHelper.floor_double(entitylivingbase.posX), MathHelper.floor_double(entitylivingbase.posY), MathHelper.floor_double(entitylivingbase.posZ));
+-
+-                if (block == Blocks.bed)
+-                {
+-                    int i = this.mc.theWorld.getBlockMetadata(MathHelper.floor_double(entitylivingbase.posX), MathHelper.floor_double(entitylivingbase.posY), MathHelper.floor_double(entitylivingbase.posZ));
+-                    int j = i & 3;
+-                    GL11.glRotatef((float)(j * 90), 0.0F, 1.0F, 0.0F);
+-                }
+-
++                ForgeHooksClient.orientBedCamera(mc, entitylivingbase);
+                 GL11.glRotatef(entitylivingbase.prevRotationYaw + (entitylivingbase.rotationYaw - entitylivingbase.prevRotationYaw) * par1 + 180.0F, 0.0F, -1.0F, 0.0F);
+                 GL11.glRotatef(entitylivingbase.prevRotationPitch + (entitylivingbase.rotationPitch - entitylivingbase.prevRotationPitch) * par1, -1.0F, 0.0F, 0.0F);
+             }
+@@ -1253,7 +1257,10 @@
+                 GL11.glPushMatrix();
+                 RenderHelper.enableStandardItemLighting();
+                 this.mc.mcProfiler.endStartSection("entities");
++                ForgeHooksClient.setRenderPass(0);
+                 renderglobal.renderEntities(entitylivingbase, frustrum, par1);
++                ForgeHooksClient.setRenderPass(0);
++                // ToDo: Try and figure out how to make particles render sorted correctly.. {They render behind water}
+                 this.enableLightmap((double)par1);
+                 this.mc.mcProfiler.endStartSection("litParticles");
+                 effectrenderer.renderLitParticles(entitylivingbase, par1);
+@@ -1271,7 +1278,10 @@
+                     entityplayer = (EntityPlayer)entitylivingbase;
+                     GL11.glDisable(GL11.GL_ALPHA_TEST);
+                     this.mc.mcProfiler.endStartSection("outline");
+-                    renderglobal.drawSelectionBox(entityplayer, this.mc.objectMouseOver, 0, par1);
++                    if (!ForgeHooksClient.onDrawBlockHighlight(renderglobal, entityplayer, mc.objectMouseOver, 0, entityplayer.inventory.getCurrentItem(), par1))
++                    {
++                        renderglobal.drawSelectionBox(entityplayer, this.mc.objectMouseOver, 0, par1);
++                    }
+                     GL11.glEnable(GL11.GL_ALPHA_TEST);
+                 }
+             }
+@@ -1284,14 +1294,17 @@
+                 entityplayer = (EntityPlayer)entitylivingbase;
+                 GL11.glDisable(GL11.GL_ALPHA_TEST);
+                 this.mc.mcProfiler.endStartSection("outline");
+-                renderglobal.drawSelectionBox(entityplayer, this.mc.objectMouseOver, 0, par1);
++                if (!ForgeHooksClient.onDrawBlockHighlight(renderglobal, entityplayer, mc.objectMouseOver, 0, entityplayer.inventory.getCurrentItem(), par1))
++                {
++                    renderglobal.drawSelectionBox(entityplayer, this.mc.objectMouseOver, 0, par1);
++                }
+                 GL11.glEnable(GL11.GL_ALPHA_TEST);
+             }
+ 
+             this.mc.mcProfiler.endStartSection("destroyProgress");
+             GL11.glEnable(GL11.GL_BLEND);
+             OpenGlHelper.glBlendFunc(770, 1, 1, 0);
+-            renderglobal.drawBlockDamageTexture(Tessellator.instance, (EntityPlayer)entitylivingbase, par1);
++            renderglobal.drawBlockDamageTexture(Tessellator.instance, entitylivingbase, par1);
+             GL11.glDisable(GL11.GL_BLEND);
+             GL11.glDepthMask(false);
+             GL11.glEnable(GL11.GL_CULL_FACE);
+@@ -1346,6 +1359,16 @@
+                 renderglobal.sortAndRender(entitylivingbase, 1, (double)par1);
+             }
+ 
++            if (this.debugViewDirection == 0) //Only render if render pass 0 happens as well.
++            {
++                RenderHelper.enableStandardItemLighting();
++                this.mc.mcProfiler.endStartSection("entities");
++                ForgeHooksClient.setRenderPass(1);
++                renderglobal.renderEntities(entitylivingbase, frustrum, par1);
++                ForgeHooksClient.setRenderPass(-1);
++                RenderHelper.disableStandardItemLighting();
++            }
++
+             GL11.glDepthMask(true);
+             GL11.glEnable(GL11.GL_CULL_FACE);
+             GL11.glDisable(GL11.GL_BLEND);
+@@ -1357,6 +1380,9 @@
+                 this.renderCloudsCheck(renderglobal, par1);
+             }
+ 
++            this.mc.mcProfiler.endStartSection("FRenderLast");
++            ForgeHooksClient.dispatchRenderLast(renderglobal, par1);
++
+             this.mc.mcProfiler.endStartSection("hand");
+ 
+             if (this.cameraZoom == 1.0D)
+@@ -1477,6 +1503,13 @@
+     // JAVADOC METHOD $$ func_78474_d
+     protected void renderRainSnow(float par1)
+     {
++        IRenderHandler renderer = null;
++        if ((renderer = this.mc.theWorld.provider.getWeatherRenderer()) != null)
++        {
++            renderer.render(par1, this.mc.theWorld, mc);
++            return;
++        }
++
+         float f1 = this.mc.theWorld.getRainStrength(par1);
+ 
+         if (f1 > 0.0F)

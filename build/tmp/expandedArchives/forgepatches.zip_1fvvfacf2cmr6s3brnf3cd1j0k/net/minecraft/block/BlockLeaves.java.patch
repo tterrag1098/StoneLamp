@@ -1,0 +1,100 @@
+--- ../src-base/minecraft/net/minecraft/block/BlockLeaves.java
++++ ../src-work/minecraft/net/minecraft/block/BlockLeaves.java
+@@ -2,6 +2,7 @@
+ 
+ import cpw.mods.fml.relauncher.Side;
+ import cpw.mods.fml.relauncher.SideOnly;
++import java.util.ArrayList;
+ import java.util.Random;
+ import net.minecraft.block.material.Material;
+ import net.minecraft.creativetab.CreativeTabs;
+@@ -15,8 +16,9 @@
+ import net.minecraft.world.ColorizerFoliage;
+ import net.minecraft.world.IBlockAccess;
+ import net.minecraft.world.World;
++import net.minecraftforge.common.IShearable;
+ 
+-public abstract class BlockLeaves extends BlockLeavesBase
++public abstract class BlockLeaves extends BlockLeavesBase implements IShearable
+ {
+     int[] field_150128_a;
+     @SideOnly(Side.CLIENT)
+@@ -84,10 +86,10 @@
+                 {
+                     for (int l1 = -b0; l1 <= b0; ++l1)
+                     {
+-                        if (p_149749_1_.getBlock(p_149749_2_ + j1, p_149749_3_ + k1, p_149749_4_ + l1).getMaterial() == Material.leaves)
++                        Block block = p_149749_1_.getBlock(p_149749_2_ + j1, p_149749_3_ + k1, p_149749_4_ + l1);
++                        if (block.isLeaves(p_149749_1_, p_149749_2_ + j1, p_149749_3_ + k1, p_149749_4_ + l1))
+                         {
+-                            int i2 = p_149749_1_.getBlockMetadata(p_149749_2_ + j1, p_149749_3_ + k1, p_149749_4_ + l1);
+-                            p_149749_1_.setBlockMetadataWithNotify(p_149749_2_ + j1, p_149749_3_ + k1, p_149749_4_ + l1, i2 | 8, 4);
++                            block.beginLeavesDecay(p_149749_1_, p_149749_2_ + j1, p_149749_3_ + k1, p_149749_4_ + l1);
+                         }
+                     }
+                 }
+@@ -130,9 +132,9 @@
+                             {
+                                 Block block = p_149674_1_.getBlock(p_149674_2_ + l1, p_149674_3_ + i2, p_149674_4_ + j2);
+ 
+-                                if (block != Blocks.log && block != Blocks.log2)
++                                if (!block.canSustainLeaves(p_149674_1_, p_149674_2_ + l1, p_149674_3_ + i2, p_149674_4_ + j2))
+                                 {
+-                                    if (block.getMaterial() == Material.leaves)
++                                    if (block.isLeaves(p_149674_1_, p_149674_2_ + l1, p_149674_3_ + i2, p_149674_4_ + j2))
+                                     {
+                                         this.field_150128_a[(l1 + k1) * j1 + (i2 + k1) * b1 + j2 + k1] = -2;
+                                     }
+@@ -288,13 +290,7 @@
+     // JAVADOC METHOD $$ func_149636_a
+     public void harvestBlock(World p_149636_1_, EntityPlayer p_149636_2_, int p_149636_3_, int p_149636_4_, int p_149636_5_, int p_149636_6_)
+     {
+-        if (!p_149636_1_.isRemote && p_149636_2_.getCurrentEquippedItem() != null && p_149636_2_.getCurrentEquippedItem().getItem() == Items.shears)
+         {
+-            p_149636_2_.addStat(StatList.mineBlockStatArray[Block.getIdFromBlock(this)], 1);
+-            this.dropBlockAsItem(p_149636_1_, p_149636_3_, p_149636_4_, p_149636_5_, new ItemStack(Item.getItemFromBlock(this), 1, p_149636_6_ & 3));
+-        }
+-        else
+-        {
+             super.harvestBlock(p_149636_1_, p_149636_2_, p_149636_3_, p_149636_4_, p_149636_5_, p_149636_6_);
+         }
+     }
+@@ -330,4 +326,38 @@
+     }
+ 
+     public abstract String[] func_150125_e();
++
++
++    @Override
++    public boolean isShearable(ItemStack item, IBlockAccess world, int x, int y, int z)
++    {
++        return true;
++    }
++
++    @Override
++    public ArrayList<ItemStack> onSheared(ItemStack item, IBlockAccess world, int x, int y, int z, int fortune)
++    {
++        ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
++        ret.add(new ItemStack(this, 1, world.getBlockMetadata(x, y, z) & 3));
++        return ret;
++    }
++
++    @Override
++    public void beginLeavesDecay(World world, int x, int y, int z)
++    {
++
++        int i2 = world.getBlockMetadata(x, y, z);
++
++        if ((i2 & 8) == 0)
++        {
++            world.setBlockMetadataWithNotify(x, y, z, i2 | 8, 4);
++        }
++        world.setBlockMetadataWithNotify(x, y, z, world.getBlockMetadata(x, y, z) | 8, 4);
++    }
++
++    @Override
++    public boolean isLeaves(IBlockAccess world, int x, int y, int z)
++    {
++        return true;
++    }
+ }

@@ -1,0 +1,91 @@
+--- ../src-base/minecraft/net/minecraft/client/gui/achievement/GuiAchievements.java
++++ ../src-work/minecraft/net/minecraft/client/gui/achievement/GuiAchievements.java
+@@ -24,6 +24,9 @@
+ import org.lwjgl.input.Mouse;
+ import org.lwjgl.opengl.GL11;
+ import org.lwjgl.opengl.GL12;
++import java.util.LinkedList;
++import java.util.List;
++import net.minecraftforge.common.AchievementPage;
+ 
+ @SideOnly(Side.CLIENT)
+ public class GuiAchievements extends GuiScreen implements IProgressMeter
+@@ -50,6 +53,10 @@
+     private boolean field_146558_F = true;
+     private static final String __OBFID = "CL_00000722";
+ 
++    private int currentPage = -1;
++    private GuiButton button;
++    private LinkedList<Achievement> minecraftAchievements = new LinkedList<Achievement>();
++
+     public GuiAchievements(GuiScreen p_i45026_1_, StatFileWriter p_i45026_2_)
+     {
+         this.field_146562_a = p_i45026_1_;
+@@ -58,6 +65,14 @@
+         short short2 = 141;
+         this.field_146569_s = this.field_146567_u = this.field_146565_w = (double)(AchievementList.openInventory.displayColumn * 24 - short1 / 2 - 12);
+         this.field_146568_t = this.field_146566_v = this.field_146573_x = (double)(AchievementList.openInventory.displayRow * 24 - short2 / 2);
++        minecraftAchievements.clear();
++        for (Object achievement : AchievementList.achievementList)
++        {
++            if (!AchievementPage.isAchievementInPages((Achievement)achievement))
++            {
++                minecraftAchievements.add((Achievement)achievement);
++            }
++        }
+     }
+ 
+     // JAVADOC METHOD $$ func_73866_w_
+@@ -66,6 +81,7 @@
+         this.mc.getNetHandler().addToSendQueue(new C16PacketClientStatus(C16PacketClientStatus.EnumState.REQUEST_STATS));
+         this.buttonList.clear();
+         this.buttonList.add(new GuiOptionButton(1, this.width / 2 + 24, this.height / 2 + 74, 80, 20, I18n.format("gui.done", new Object[0])));
++        this.buttonList.add(button = new GuiButton(2, (width - field_146555_f) / 2 + 24, height / 2 + 74, 125, 20, AchievementPage.getTitle(currentPage)));
+     }
+ 
+     protected void actionPerformed(GuiButton p_146284_1_)
+@@ -76,6 +92,16 @@
+             {
+                 this.mc.displayGuiScreen(this.field_146562_a);
+             }
++
++            if (p_146284_1_.id == 2)
++            {
++                currentPage++;
++                if (currentPage >= AchievementPage.getAchievementPages().size())
++                {
++                    currentPage = -1;
++                }
++                button.displayString = AchievementPage.getTitle(currentPage);
++            }
+         }
+     }
+ 
+@@ -343,11 +369,12 @@
+         int i4;
+         int j5;
+ 
+-        for (i3 = 0; i3 < AchievementList.achievementList.size(); ++i3)
++        List<Achievement> achievementList = (currentPage == -1 ? minecraftAchievements : AchievementPage.getAchievementPage(currentPage).getAchievements());
++        for (i3 = 0; i3 < achievementList.size(); ++i3)
+         {
+-            Achievement achievement1 = (Achievement)AchievementList.achievementList.get(i3);
++            Achievement achievement1 = achievementList.get(i3);
+ 
+-            if (achievement1.parentAchievement != null)
++            if (achievement1.parentAchievement != null && achievementList.contains(achievement1.parentAchievement))
+             {
+                 j3 = achievement1.displayColumn * 24 - k + 11;
+                 k3 = achievement1.displayRow * 24 - l + 11;
+@@ -404,9 +431,9 @@
+         int i5;
+         int l4;
+ 
+-        for (j5 = 0; j5 < AchievementList.achievementList.size(); ++j5)
++        for (j5 = 0; j5 < achievementList.size(); ++j5)
+         {
+-            Achievement achievement2 = (Achievement)AchievementList.achievementList.get(j5);
++            Achievement achievement2 = (Achievement)achievementList.get(j5);
+             l4 = achievement2.displayColumn * 24 - k;
+             i5 = achievement2.displayRow * 24 - l;
+ 

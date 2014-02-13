@@ -1,0 +1,35 @@
+--- ../src-base/minecraft/net/minecraft/world/IBlockAccess.java
++++ ../src-work/minecraft/net/minecraft/world/IBlockAccess.java
+@@ -6,6 +6,7 @@
+ import net.minecraft.tileentity.TileEntity;
+ import net.minecraft.util.Vec3Pool;
+ import net.minecraft.world.biome.BiomeGenBase;
++import net.minecraftforge.common.util.ForgeDirection;
+ 
+ public interface IBlockAccess
+ {
+@@ -21,7 +22,6 @@
+     int getBlockMetadata(int var1, int var2, int var3);
+ 
+     // JAVADOC METHOD $$ func_147437_c
+-    @SideOnly(Side.CLIENT)
+     boolean isAirBlock(int var1, int var2, int var3);
+ 
+     // JAVADOC METHOD $$ func_72807_a
+@@ -41,4 +41,16 @@
+ 
+     // JAVADOC METHOD $$ func_72879_k
+     int isBlockProvidingPowerTo(int var1, int var2, int var3, int var4);
++
++    /**
++     * FORGE: isSideSolid, pulled up from {@link World}
++     *
++     * @param x X coord
++     * @param y Y coord
++     * @param z Z coord
++     * @param side Side
++     * @param _default default return value
++     * @return if the block is solid on the side
++     */
++    boolean isSideSolid(int x, int y, int z, ForgeDirection side, boolean _default);
+ }

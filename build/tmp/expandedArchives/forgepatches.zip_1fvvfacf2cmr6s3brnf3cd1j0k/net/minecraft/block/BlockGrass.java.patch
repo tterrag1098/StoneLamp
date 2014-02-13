@@ -1,0 +1,37 @@
+--- ../src-base/minecraft/net/minecraft/block/BlockGrass.java
++++ ../src-work/minecraft/net/minecraft/block/BlockGrass.java
+@@ -45,7 +45,7 @@
+     {
+         if (!p_149674_1_.isRemote)
+         {
+-            if (p_149674_1_.getBlockLightValue(p_149674_2_, p_149674_3_ + 1, p_149674_4_) < 4 && p_149674_1_.getBlock(p_149674_2_, p_149674_3_ + 1, p_149674_4_).getLightOpacity() > 2)
++            if (p_149674_1_.getBlockLightValue(p_149674_2_, p_149674_3_ + 1, p_149674_4_) < 4 && p_149674_1_.getBlockLightOpacity(p_149674_2_, p_149674_3_ + 1, p_149674_4_) > 2)
+             {
+                 p_149674_1_.setBlock(p_149674_2_, p_149674_3_, p_149674_4_, Blocks.dirt);
+             }
+@@ -58,7 +58,7 @@
+                     int k1 = p_149674_4_ + p_149674_5_.nextInt(3) - 1;
+                     Block block = p_149674_1_.getBlock(i1, j1 + 1, k1);
+ 
+-                    if (p_149674_1_.getBlock(i1, j1, k1) == Blocks.dirt && p_149674_1_.getBlockMetadata(i1, j1, k1) == 0 && p_149674_1_.getBlockLightValue(i1, j1 + 1, k1) >= 4 && block.getLightOpacity() <= 2)
++                    if (p_149674_1_.getBlock(i1, j1, k1) == Blocks.dirt && p_149674_1_.getBlockMetadata(i1, j1, k1) == 0 && p_149674_1_.getBlockLightValue(i1, j1 + 1, k1) >= 4 && p_149674_1_.getBlockLightOpacity(i1, j1 + 1, k1) <= 2)
+                     {
+                         p_149674_1_.setBlock(i1, j1, k1, Blocks.grass);
+                     }
+@@ -188,15 +188,7 @@
+                     }
+                     else
+                     {
+-                        String s = p_149853_1_.getBiomeGenForCoords(i1, k1).func_150572_a(p_149853_2_, i1, j1, k1);
+-                        logger.debug("Flower in " + p_149853_1_.getBiomeGenForCoords(i1, k1).biomeName + ": " + s);
+-                        BlockFlower blockflower = BlockFlower.func_149857_e(s);
+-
+-                        if (blockflower != null && blockflower.canBlockStay(p_149853_1_, i1, j1, k1))
+-                        {
+-                            int i2 = BlockFlower.func_149856_f(s);
+-                            p_149853_1_.setBlock(i1, j1, k1, blockflower, i2, 3);
+-                        }
++                        p_149853_1_.getBiomeGenForCoords(i1, k1).plantFlower(p_149853_1_, p_149853_2_, i1, j1, k1);
+                     }
+                 }
+ 

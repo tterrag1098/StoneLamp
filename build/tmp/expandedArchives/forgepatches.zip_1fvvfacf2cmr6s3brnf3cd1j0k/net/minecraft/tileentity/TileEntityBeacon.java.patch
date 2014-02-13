@@ -1,0 +1,11 @@
+--- ../src-base/minecraft/net/minecraft/tileentity/TileEntityBeacon.java
++++ ../src-work/minecraft/net/minecraft/tileentity/TileEntityBeacon.java
+@@ -115,7 +115,7 @@
+                     {
+                         Block block = this.worldObj.getBlock(l, k, i1);
+ 
+-                        if (block != Blocks.emerald_block && block != Blocks.gold_block && block != Blocks.diamond_block && block != Blocks.iron_block)
++                        if (!block.isBeaconBase(this.worldObj, l, k, i1, xCoord, yCoord, zCoord))
+                         {
+                             flag = false;
+                             break;

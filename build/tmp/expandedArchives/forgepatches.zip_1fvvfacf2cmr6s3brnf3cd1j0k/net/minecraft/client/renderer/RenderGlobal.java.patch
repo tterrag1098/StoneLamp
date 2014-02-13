@@ -1,0 +1,130 @@
+--- ../src-base/minecraft/net/minecraft/client/renderer/RenderGlobal.java
++++ ../src-work/minecraft/net/minecraft/client/renderer/RenderGlobal.java
+@@ -79,6 +79,9 @@
+ import org.lwjgl.opengl.ARBOcclusionQuery;
+ import org.lwjgl.opengl.GL11;
+ 
++import net.minecraftforge.client.IRenderHandler;
++import net.minecraftforge.client.MinecraftForgeClient;
++
+ @SideOnly(Side.CLIENT)
+ public class RenderGlobal implements IWorldAccess
+ {
+@@ -413,8 +416,10 @@
+     // JAVADOC METHOD $$ func_147589_a
+     public void renderEntities(EntityLivingBase p_147589_1_, ICamera p_147589_2_, float p_147589_3_)
+     {
++        int pass = MinecraftForgeClient.getRenderPass();
+         if (this.renderEntitiesStartupCounter > 0)
+         {
++            if (pass > 0) return;
+             --this.renderEntitiesStartupCounter;
+         }
+         else
+@@ -425,9 +430,12 @@
+             this.theWorld.theProfiler.startSection("prepare");
+             TileEntityRendererDispatcher.instance.cacheActiveRenderInfo(this.theWorld, this.mc.getTextureManager(), this.mc.fontRenderer, this.mc.renderViewEntity, p_147589_3_);
+             RenderManager.instance.cacheActiveRenderInfo(this.theWorld, this.mc.getTextureManager(), this.mc.fontRenderer, this.mc.renderViewEntity, this.mc.pointedEntity, this.mc.gameSettings, p_147589_3_);
++            if (pass == 0) // no indentation to shrink patch
++            {
+             this.countEntitiesTotal = 0;
+             this.countEntitiesRendered = 0;
+             this.countEntitiesHidden = 0;
++            }
+             EntityLivingBase entitylivingbase1 = this.mc.renderViewEntity;
+             double d3 = entitylivingbase1.lastTickPosX + (entitylivingbase1.posX - entitylivingbase1.lastTickPosX) * (double)p_147589_3_;
+             double d4 = entitylivingbase1.lastTickPosY + (entitylivingbase1.posY - entitylivingbase1.lastTickPosY) * (double)p_147589_3_;
+@@ -456,13 +464,17 @@
+             this.mc.entityRenderer.enableLightmap((double)p_147589_3_);
+             this.theWorld.theProfiler.endStartSection("global");
+             List list = this.theWorld.getLoadedEntityList();
++            if (pass == 0) // no indentation for smaller patch size
++            {
+             this.countEntitiesTotal = list.size();
++            }
+             Entity entity;
+             int i;
+ 
+             for (i = 0; i < this.theWorld.weatherEffects.size(); ++i)
+             {
+                 entity = (Entity)this.theWorld.weatherEffects.get(i);
++                if (!entity.shouldRenderInPass(pass)) continue;
+                 ++this.countEntitiesRendered;
+ 
+                 if (entity.isInRangeToRender3d(d0, d1, d2))
+@@ -476,6 +488,7 @@
+             for (i = 0; i < list.size(); ++i)
+             {
+                 entity = (Entity)list.get(i);
++                if (!entity.shouldRenderInPass(pass)) continue;
+                 boolean flag = entity.isInRangeToRender3d(d0, d1, d2) && (entity.ignoreFrustumCheck || p_147589_2_.isBoundingBoxInFrustum(entity.boundingBox) || entity.riddenByEntity == this.mc.thePlayer);
+ 
+                 if (!flag && entity instanceof EntityLiving)
+@@ -501,7 +514,11 @@
+ 
+             for (i = 0; i < this.tileEntities.size(); ++i)
+             {
+-                TileEntityRendererDispatcher.instance.renderTileEntity((TileEntity)this.tileEntities.get(i), p_147589_3_);
++                TileEntity tile = (TileEntity)this.tileEntities.get(i);
++                if (tile.shouldRenderInPass(pass) && p_147589_2_.isBoundingBoxInFrustum(tile.getRenderBoundingBox()))
++                {
++                    TileEntityRendererDispatcher.instance.renderTileEntity(tile, p_147589_3_);
++                }
+             }
+ 
+             this.mc.entityRenderer.disableLightmap((double)p_147589_3_);
+@@ -978,6 +995,12 @@
+     // JAVADOC METHOD $$ func_72714_a
+     public void renderSky(float par1)
+     {
++        IRenderHandler skyProvider = null;
++        if ((skyProvider = this.mc.theWorld.provider.getSkyRenderer()) != null)
++        {
++            skyProvider.render(par1, this.theWorld, mc);
++            return;
++        }
+         if (this.mc.theWorld.provider.dimensionId == 1)
+         {
+             GL11.glDisable(GL11.GL_FOG);
+@@ -1216,6 +1239,12 @@
+ 
+     public void renderClouds(float par1)
+     {
++        IRenderHandler renderer = null;
++        if ((renderer = theWorld.provider.getCloudRenderer()) != null)
++        {
++            renderer.render(par1, theWorld, mc);
++            return;
++        }
+         if (this.mc.theWorld.provider.isSurfaceWorld())
+         {
+             if (this.mc.gameSettings.fancyGraphics)
+@@ -1619,6 +1648,11 @@
+ 
+     public void drawBlockDamageTexture(Tessellator par1Tessellator, EntityPlayer par2EntityPlayer, float par3)
+     {
++        drawBlockDamageTexture(par1Tessellator, (EntityLivingBase)par2EntityPlayer, par3);
++    }
++
++    public void drawBlockDamageTexture(Tessellator par1Tessellator, EntityLivingBase par2EntityPlayer, float par3)
++    {
+         double d0 = par2EntityPlayer.lastTickPosX + (par2EntityPlayer.posX - par2EntityPlayer.lastTickPosX) * (double)par3;
+         double d1 = par2EntityPlayer.lastTickPosY + (par2EntityPlayer.posY - par2EntityPlayer.lastTickPosY) * (double)par3;
+         double d2 = par2EntityPlayer.lastTickPosZ + (par2EntityPlayer.posZ - par2EntityPlayer.lastTickPosZ) * (double)par3;
+@@ -1845,12 +1879,15 @@
+         {
+             ItemRecord itemrecord = ItemRecord.getRecord(par1Str);
+ 
++            ResourceLocation resource = null;
+             if (itemrecord != null)
+             {
+                 this.mc.ingameGUI.setRecordPlayingMessage(itemrecord.getRecordNameLocal());
++                resource = itemrecord.getRecordResource(par1Str);
+             }
+ 
+-            PositionedSoundRecord positionedsoundrecord = PositionedSoundRecord.func_147675_a(new ResourceLocation(par1Str), (float)par2, (float)par3, (float)par4);
++            if (resource == null) resource = new ResourceLocation(par1Str);
++            PositionedSoundRecord positionedsoundrecord = PositionedSoundRecord.func_147675_a(resource, (float)par2, (float)par3, (float)par4);
+             this.mapSoundPositions.put(chunkcoordinates, positionedsoundrecord);
+             this.mc.getSoundHandler().playSound(positionedsoundrecord);
+         }

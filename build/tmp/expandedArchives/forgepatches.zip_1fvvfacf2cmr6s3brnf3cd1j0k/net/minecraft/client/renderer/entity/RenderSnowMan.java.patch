@@ -1,0 +1,25 @@
+--- ../src-base/minecraft/net/minecraft/client/renderer/entity/RenderSnowMan.java
++++ ../src-work/minecraft/net/minecraft/client/renderer/entity/RenderSnowMan.java
+@@ -13,6 +13,10 @@
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.util.ResourceLocation;
+ import org.lwjgl.opengl.GL11;
++import net.minecraftforge.client.IItemRenderer;
++import static net.minecraftforge.client.IItemRenderer.ItemRenderType.*;
++import static net.minecraftforge.client.IItemRenderer.ItemRendererHelper.*;
++import net.minecraftforge.client.MinecraftForgeClient;
+ 
+ @SideOnly(Side.CLIENT)
+ public class RenderSnowMan extends RenderLiving
+@@ -39,7 +43,10 @@
+             GL11.glPushMatrix();
+             this.snowmanModel.head.postRender(0.0625F);
+ 
+-            if (RenderBlocks.renderItemIn3d(Block.getBlockFromItem(itemstack.getItem()).getRenderType()))
++            IItemRenderer customRenderer = MinecraftForgeClient.getItemRenderer(itemstack, EQUIPPED);
++            boolean is3D = (customRenderer != null && customRenderer.shouldUseRenderHelper(EQUIPPED, itemstack, BLOCK_3D));
++
++            if (is3D || RenderBlocks.renderItemIn3d(Block.getBlockFromItem(itemstack.getItem()).getRenderType()))
+             {
+                 float f1 = 0.625F;
+                 GL11.glTranslatef(0.0F, -0.34375F, 0.0F);

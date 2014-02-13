@@ -1,0 +1,11 @@
+--- ../src-base/minecraft/net/minecraft/client/gui/mco/GuiScreenCreateOnlineWorld.java
++++ ../src-work/minecraft/net/minecraft/client/gui/mco/GuiScreenCreateOnlineWorld.java
+@@ -208,7 +208,7 @@
+                 GuiScreenCreateOnlineWorld.logger.error("Couldn\'t create world");
+                 this.func_148416_a(unsupportedencodingexception.getLocalizedMessage());
+             }
+-            catch (IOException ioexception)
++            catch (@SuppressWarnings("hiding") IOException ioexception)
+             {
+                 GuiScreenCreateOnlineWorld.logger.error("Could not parse response creating world");
+                 this.func_148416_a(ioexception.getLocalizedMessage());

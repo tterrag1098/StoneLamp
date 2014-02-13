@@ -1,0 +1,12 @@
+--- ../src-base/minecraft/net/minecraft/item/crafting/FurnaceRecipes.java
++++ ../src-work/minecraft/net/minecraft/item/crafting/FurnaceRecipes.java
+@@ -110,6 +110,9 @@
+ 
+     public float func_151398_b(ItemStack p_151398_1_)
+     {
++        float ret = p_151398_1_.getItem().getSmeltingExperience(p_151398_1_);
++        if (ret != -1) return ret;
++
+         Iterator iterator = this.experienceList.entrySet().iterator();
+         Entry entry;
+ 

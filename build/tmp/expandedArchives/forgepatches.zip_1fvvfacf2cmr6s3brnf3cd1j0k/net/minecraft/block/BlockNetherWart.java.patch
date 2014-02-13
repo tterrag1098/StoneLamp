@@ -1,0 +1,68 @@
+--- ../src-base/minecraft/net/minecraft/block/BlockNetherWart.java
++++ ../src-work/minecraft/net/minecraft/block/BlockNetherWart.java
+@@ -2,6 +2,7 @@
+ 
+ import cpw.mods.fml.relauncher.Side;
+ import cpw.mods.fml.relauncher.SideOnly;
++import java.util.ArrayList;
+ import java.util.Random;
+ import net.minecraft.client.renderer.texture.IIconRegister;
+ import net.minecraft.creativetab.CreativeTabs;
+@@ -11,6 +12,7 @@
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.util.IIcon;
+ import net.minecraft.world.World;
++import net.minecraftforge.common.util.ForgeDirection;
+ 
+ public class BlockNetherWart extends BlockBush
+ {
+@@ -35,7 +37,7 @@
+     // JAVADOC METHOD $$ func_149718_j
+     public boolean canBlockStay(World p_149718_1_, int p_149718_2_, int p_149718_3_, int p_149718_4_)
+     {
+-        return this.canPlaceBlockOn(p_149718_1_.getBlock(p_149718_2_, p_149718_3_ - 1, p_149718_4_));
++        return super.canBlockStay(p_149718_1_, p_149718_2_, p_149718_3_, p_149718_4_);
+     }
+ 
+     // JAVADOC METHOD $$ func_149674_a
+@@ -68,6 +70,8 @@
+     // JAVADOC METHOD $$ func_149690_a
+     public void dropBlockAsItemWithChance(World p_149690_1_, int p_149690_2_, int p_149690_3_, int p_149690_4_, int p_149690_5_, float p_149690_6_, int p_149690_7_)
+     {
++        super.dropBlockAsItemWithChance(p_149690_1_, p_149690_2_, p_149690_3_, p_149690_4_, p_149690_5_, p_149690_6_, p_149690_7_);
++        /*
+         if (!p_149690_1_.isRemote)
+         {
+             int j1 = 1;
+@@ -87,6 +91,7 @@
+                 this.dropBlockAsItem(p_149690_1_, p_149690_2_, p_149690_3_, p_149690_4_, new ItemStack(Items.nether_wart));
+             }
+         }
++        */
+     }
+ 
+     public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_)
+@@ -117,4 +122,23 @@
+             this.field_149883_a[i] = p_149651_1_.registerIcon(this.getTextureName() + "_stage_" + i);
+         }
+     }
++
++    @Override
++    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
++    {
++        ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
++        int count = 1;
++
++        if (metadata >= 3)
++        {
++            count = 2 + world.rand.nextInt(3) + (fortune > 0 ? world.rand.nextInt(fortune + 1) : 0);
++        }
++
++        for (int i = 0; i < count; i++)
++        {
++            ret.add(new ItemStack(Items.nether_wart));
++        }
++
++        return ret;
++    }
+ }
