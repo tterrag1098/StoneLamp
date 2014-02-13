@@ -603,9 +603,10 @@ public class BlockLamp extends Block
 	@Override
 	public IIcon getIcon(int par1, int par2)
 	{
-		return icons[13];
+		return icons[ConfigKeys.allowNewRenderer ? 13 : 0];
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void getSubBlocks(Item item, CreativeTabs tab, List list)
 	{
