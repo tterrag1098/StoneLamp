@@ -1,0 +1,49 @@
+--- ../src-base/minecraft/net/minecraft/block/BlockTrapDoor.java
++++ ../src-work/minecraft/net/minecraft/block/BlockTrapDoor.java
+@@ -11,9 +11,12 @@
+ import net.minecraft.util.Vec3;
+ import net.minecraft.world.IBlockAccess;
+ import net.minecraft.world.World;
++import net.minecraftforge.common.util.ForgeDirection;
+ 
+ public class BlockTrapDoor extends Block
+ {
++    /** Set this to allow trapdoors to remain free-floating */
++    public static boolean disableValidation = false;
+     private static final String __OBFID = "CL_00000327";
+ 
+     protected BlockTrapDoor(Material p_i45434_1_)
+@@ -173,7 +176,7 @@
+                 --i1;
+             }
+ 
+-            if (!func_150119_a(p_149695_1_.getBlock(i1, p_149695_3_, j1)))
++            if (!(func_150119_a(p_149695_1_.getBlock(i1, p_149695_3_, j1)) || p_149695_1_.isSideSolid(i1, p_149695_3_, j1, ForgeDirection.getOrientation((l & 3) + 2))))
+             {
+                 p_149695_1_.setBlockToAir(p_149695_2_, p_149695_3_, p_149695_4_);
+                 this.dropBlockAsItem(p_149695_1_, p_149695_2_, p_149695_3_, p_149695_4_, l, 0);
+@@ -231,6 +234,7 @@
+     // JAVADOC METHOD $$ func_149707_d
+     public boolean canPlaceBlockOnSide(World p_149707_1_, int p_149707_2_, int p_149707_3_, int p_149707_4_, int p_149707_5_)
+     {
++        if (disableValidation) return true;
+         if (p_149707_5_ == 0)
+         {
+             return false;
+@@ -261,7 +265,7 @@
+                 --p_149707_2_;
+             }
+ 
+-            return func_150119_a(p_149707_1_.getBlock(p_149707_2_, p_149707_3_, p_149707_4_));
++            return func_150119_a(p_149707_1_.getBlock(p_149707_2_, p_149707_3_, p_149707_4_)) || p_149707_1_.isSideSolid(p_149707_2_, p_149707_3_, p_149707_4_, ForgeDirection.UP);
+         }
+     }
+ 
+@@ -272,6 +276,7 @@
+ 
+     private static boolean func_150119_a(Block p_150119_0_)
+     {
++        if (disableValidation) return true;
+         return p_150119_0_.blockMaterial.isOpaque() && p_150119_0_.renderAsNormalBlock() || p_150119_0_ == Blocks.glowstone || p_150119_0_ instanceof BlockSlab || p_150119_0_ instanceof BlockStairs;
+     }
+ }

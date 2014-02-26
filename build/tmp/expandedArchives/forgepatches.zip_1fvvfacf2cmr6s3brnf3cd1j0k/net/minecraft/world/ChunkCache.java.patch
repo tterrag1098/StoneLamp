@@ -1,0 +1,56 @@
+--- ../src-base/minecraft/net/minecraft/world/ChunkCache.java
++++ ../src-work/minecraft/net/minecraft/world/ChunkCache.java
+@@ -9,6 +9,7 @@
+ import net.minecraft.util.Vec3Pool;
+ import net.minecraft.world.biome.BiomeGenBase;
+ import net.minecraft.world.chunk.Chunk;
++import net.minecraftforge.common.util.ForgeDirection;
+ 
+ public class ChunkCache implements IBlockAccess
+ {
+@@ -95,6 +96,8 @@
+     {
+         int l = (p_147438_1_ >> 4) - this.chunkX;
+         int i1 = (p_147438_3_ >> 4) - this.chunkZ;
++        if (l < 0 || l >= chunkArray.length || i1 < 0 || i1 >= chunkArray[l].length) return null;
++        if (chunkArray[l][i1] == null) return null;
+         return this.chunkArray[l][i1].func_150806_e(p_147438_1_ & 15, p_147438_2_, p_147438_3_ & 15);
+     }
+ 
+@@ -128,6 +131,8 @@
+         {
+             int l = (par1 >> 4) - this.chunkX;
+             int i1 = (par3 >> 4) - this.chunkZ;
++            if (l < 0 || l >= chunkArray.length || i1 < 0 || i1 >= chunkArray[l].length) return 0;
++            if (chunkArray[l][i1] == null) return 0;
+             return this.chunkArray[l][i1].getBlockMetadata(par1 & 15, par2, par3 & 15);
+         }
+     }
+@@ -146,10 +151,9 @@
+     }
+ 
+     // JAVADOC METHOD $$ func_147437_c
+-    @SideOnly(Side.CLIENT)
+     public boolean isAirBlock(int p_147437_1_, int p_147437_2_, int p_147437_3_)
+     {
+-        return this.getBlock(p_147437_1_, p_147437_2_, p_147437_3_).getMaterial() == Material.air;
++        return this.getBlock(p_147437_1_, p_147437_2_, p_147437_3_).isAir(this, p_147437_1_, p_147437_2_, p_147437_3_);
+     }
+ 
+     // JAVADOC METHOD $$ func_72810_a
+@@ -259,4 +263,15 @@
+     {
+         return this.getBlock(par1, par2, par3).isProvidingStrongPower(this, par1, par2, par3, par4);
+     }
++
++    @Override
++    public boolean isSideSolid(int x, int y, int z, ForgeDirection side, boolean _default)
++    {
++        if (x < -30000000 || z < -30000000 || x >= 30000000 || z >= 30000000)
++        {
++            return _default;
++        }
++
++        return getBlock(x, y, z).isSideSolid(this, x, y, z, side);
++    }
+ }

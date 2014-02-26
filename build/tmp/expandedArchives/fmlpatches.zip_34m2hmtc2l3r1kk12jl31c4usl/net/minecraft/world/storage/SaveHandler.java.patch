@@ -1,0 +1,73 @@
+--- ../src-base/minecraft/net/minecraft/world/storage/SaveHandler.java
++++ ../src-work/minecraft/net/minecraft/world/storage/SaveHandler.java
+@@ -6,6 +6,8 @@
+ import java.io.FileInputStream;
+ import java.io.FileOutputStream;
+ import java.io.IOException;
++
++import cpw.mods.fml.common.FMLCommonHandler;
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.nbt.CompressedStreamTools;
+ import net.minecraft.nbt.NBTTagCompound;
+@@ -107,16 +109,24 @@
+         NBTTagCompound nbttagcompound;
+         NBTTagCompound nbttagcompound1;
+ 
++        WorldInfo worldInfo = null;
++
+         if (file1.exists())
+         {
+             try
+             {
+                 nbttagcompound = CompressedStreamTools.func_74796_a(new FileInputStream(file1));
+                 nbttagcompound1 = nbttagcompound.func_74775_l("Data");
+-                return new WorldInfo(nbttagcompound1);
++                worldInfo = new WorldInfo(nbttagcompound1);
++                FMLCommonHandler.instance().handleWorldDataLoad(this, worldInfo, nbttagcompound);
++                return worldInfo;
+             }
+             catch (Exception exception1)
+             {
++                if (FMLCommonHandler.instance().shouldServerBeKilledQuietly())
++                {
++                    throw (RuntimeException)exception1;
++                }
+                 exception1.printStackTrace();
+             }
+         }
+@@ -129,10 +139,16 @@
+             {
+                 nbttagcompound = CompressedStreamTools.func_74796_a(new FileInputStream(file1));
+                 nbttagcompound1 = nbttagcompound.func_74775_l("Data");
+-                return new WorldInfo(nbttagcompound1);
++                worldInfo = new WorldInfo(nbttagcompound1);
++                FMLCommonHandler.instance().handleWorldDataLoad(this, worldInfo, nbttagcompound);
++                return worldInfo;
+             }
+             catch (Exception exception)
+             {
++                if (FMLCommonHandler.instance().shouldServerBeKilledQuietly())
++                {
++                    throw (RuntimeException)exception;
++                }
+                 exception.printStackTrace();
+             }
+         }
+@@ -146,6 +162,8 @@
+         NBTTagCompound nbttagcompound2 = new NBTTagCompound();
+         nbttagcompound2.func_74782_a("Data", nbttagcompound1);
+ 
++        FMLCommonHandler.instance().handleWorldDataSave(this, p_75755_1_, nbttagcompound2);
++
+         try
+         {
+             File file1 = new File(this.field_75770_b, "level.dat_new");
+@@ -184,6 +202,8 @@
+         NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+         nbttagcompound1.func_74782_a("Data", nbttagcompound);
+ 
++        FMLCommonHandler.instance().handleWorldDataSave(this, p_75761_1_, nbttagcompound1);
++
+         try
+         {
+             File file1 = new File(this.field_75770_b, "level.dat_new");

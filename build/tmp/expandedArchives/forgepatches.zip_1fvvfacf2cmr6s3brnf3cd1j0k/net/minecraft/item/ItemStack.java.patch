@@ -1,0 +1,116 @@
+--- ../src-base/minecraft/net/minecraft/item/ItemStack.java
++++ ../src-work/minecraft/net/minecraft/item/ItemStack.java
+@@ -32,6 +32,7 @@
+ import net.minecraft.util.IIcon;
+ import net.minecraft.util.StatCollector;
+ import net.minecraft.world.World;
++import net.minecraftforge.event.ForgeEventFactory;
+ 
+ public final class ItemStack
+ {
+@@ -192,7 +193,7 @@
+     // JAVADOC METHOD $$ func_77976_d
+     public int getMaxStackSize()
+     {
+-        return this.getItem().getItemStackLimit();
++        return this.getItem().getItemStackLimit(this);
+     }
+ 
+     // JAVADOC METHOD $$ func_77985_e
+@@ -204,7 +205,7 @@
+     // JAVADOC METHOD $$ func_77984_f
+     public boolean isItemStackDamageable()
+     {
+-        return this.field_151002_e.getMaxDamage() <= 0 ? false : !this.hasTagCompound() || !this.getTagCompound().getBoolean("Unbreakable");
++        return this.field_151002_e.getMaxDamage(this) <= 0 ? false : !this.hasTagCompound() || !this.getTagCompound().getBoolean("Unbreakable");
+     }
+ 
+     public boolean getHasSubtypes()
+@@ -215,36 +216,31 @@
+     // JAVADOC METHOD $$ func_77951_h
+     public boolean isItemDamaged()
+     {
+-        return this.isItemStackDamageable() && this.itemDamage > 0;
++        return this.isItemStackDamageable() && getItem().isDamaged(this);
+     }
+ 
+     // JAVADOC METHOD $$ func_77952_i
+     public int getItemDamageForDisplay()
+     {
+-        return this.itemDamage;
++        return getItem().getDisplayDamage(this);
+     }
+ 
+     // JAVADOC METHOD $$ func_77960_j
+     public int getItemDamage()
+     {
+-        return this.itemDamage;
++        return getItem().getDamage(this);
+     }
+ 
+     // JAVADOC METHOD $$ func_77964_b
+     public void setItemDamage(int par1)
+     {
+-        this.itemDamage = par1;
+-
+-        if (this.itemDamage < 0)
+-        {
+-            this.itemDamage = 0;
+-        }
++        getItem().setDamage(this, par1);
+     }
+ 
+     // JAVADOC METHOD $$ func_77958_k
+     public int getMaxDamage()
+     {
+-        return this.field_151002_e.getMaxDamage();
++        return getItem().getMaxDamage(this);
+     }
+ 
+     // JAVADOC METHOD $$ func_96631_a
+@@ -277,8 +273,8 @@
+                 }
+             }
+ 
+-            this.itemDamage += par1;
+-            return this.itemDamage > this.getMaxDamage();
++            setItemDamage(getItemDamage() + par1); //Redirect through Item's callback if applicable.
++            return getItemDamage() > getMaxDamage();
+         }
+     }
+ 
+@@ -339,7 +335,7 @@
+ 
+     public boolean func_150998_b(Block p_150998_1_)
+     {
+-        return this.field_151002_e.func_150897_b(p_150998_1_);
++        return getItem().canHarvestBlock(p_150998_1_, this);
+     }
+ 
+     public boolean interactWithEntity(EntityPlayer par1EntityPlayer, EntityLivingBase par2EntityLivingBase)
+@@ -653,16 +649,24 @@
+         {
+             arraylist.add("Durability: " + (this.getMaxDamage() - this.getItemDamageForDisplay()) + " / " + this.getMaxDamage());
+         }
++        ForgeEventFactory.onItemTooltip(this, par1EntityPlayer, arraylist, par2);
+ 
+         return arraylist;
+     }
+ 
++    @Deprecated
+     @SideOnly(Side.CLIENT)
+     public boolean hasEffect()
+     {
+-        return this.getItem().hasEffect(this);
++        return hasEffect(0);
+     }
+ 
++    @SideOnly(Side.CLIENT)
++    public boolean hasEffect(int pass)
++    {
++        return this.getItem().hasEffect(this, pass);
++    }
++
+     public EnumRarity getRarity()
+     {
+         return this.getItem().getRarity(this);

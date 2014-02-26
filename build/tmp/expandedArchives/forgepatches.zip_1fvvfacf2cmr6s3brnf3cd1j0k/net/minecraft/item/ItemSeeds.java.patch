@@ -1,0 +1,50 @@
+--- ../src-base/minecraft/net/minecraft/item/ItemSeeds.java
++++ ../src-work/minecraft/net/minecraft/item/ItemSeeds.java
+@@ -3,9 +3,14 @@
+ import net.minecraft.block.Block;
+ import net.minecraft.creativetab.CreativeTabs;
+ import net.minecraft.entity.player.EntityPlayer;
++import net.minecraft.init.Blocks;
++import net.minecraft.world.IBlockAccess;
+ import net.minecraft.world.World;
++import net.minecraftforge.common.EnumPlantType;
++import net.minecraftforge.common.IPlantable;
++import net.minecraftforge.common.util.ForgeDirection;
+ 
+-public class ItemSeeds extends Item
++public class ItemSeeds extends Item implements IPlantable
+ {
+     private Block field_150925_a;
+     // JAVADOC FIELD $$ field_77838_b
+@@ -28,7 +33,7 @@
+         }
+         else if (par2EntityPlayer.canPlayerEdit(par4, par5, par6, par7, par1ItemStack) && par2EntityPlayer.canPlayerEdit(par4, par5 + 1, par6, par7, par1ItemStack))
+         {
+-            if (par3World.getBlock(par4, par5, par6) == this.soilBlockID && par3World.isAirBlock(par4, par5 + 1, par6))
++            if (par3World.getBlock(par4, par5, par6).canSustainPlant(par3World, par4, par5, par6, ForgeDirection.UP, this) && par3World.isAirBlock(par4, par5 + 1, par6))
+             {
+                 par3World.setBlock(par4, par5 + 1, par6, this.field_150925_a);
+                 --par1ItemStack.stackSize;
+@@ -44,4 +49,22 @@
+             return false;
+         }
+     }
++
++    @Override
++    public EnumPlantType getPlantType(IBlockAccess world, int x, int y, int z)
++    {
++        return field_150925_a == Blocks.nether_wart ? EnumPlantType.Nether : EnumPlantType.Crop;
++    }
++
++    @Override
++    public Block getPlant(IBlockAccess world, int x, int y, int z)
++    {
++        return field_150925_a;
++    }
++
++    @Override
++    public int getPlantMetadata(IBlockAccess world, int x, int y, int z)
++    {
++        return 0;
++    }
+ }

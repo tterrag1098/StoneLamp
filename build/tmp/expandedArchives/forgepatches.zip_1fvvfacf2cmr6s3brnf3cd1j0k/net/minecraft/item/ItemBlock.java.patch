@@ -1,0 +1,66 @@
+--- ../src-base/minecraft/net/minecraft/item/ItemBlock.java
++++ ../src-work/minecraft/net/minecraft/item/ItemBlock.java
+@@ -54,7 +54,7 @@
+         {
+             par7 = 1;
+         }
+-        else if (block != Blocks.vine && block != Blocks.tallgrass && block != Blocks.deadbush)
++        else if (block != Blocks.vine && block != Blocks.tallgrass && block != Blocks.deadbush && !block.isReplaceable(par3World, par4, par5, par6))
+         {
+             if (par7 == 0)
+             {
+@@ -104,14 +104,8 @@
+             int i1 = this.getMetadata(par1ItemStack.getItemDamage());
+             int j1 = this.field_150939_a.onBlockPlaced(par3World, par4, par5, par6, par7, par8, par9, par10, i1);
+ 
+-            if (par3World.setBlock(par4, par5, par6, this.field_150939_a, j1, 3))
++            if (placeBlockAt(par1ItemStack, par2EntityPlayer, par3World, par4, par5, par6, par7, par8, par9, par10, j1))
+             {
+-                if (par3World.getBlock(par4, par5, par6) == this.field_150939_a)
+-                {
+-                    this.field_150939_a.onBlockPlacedBy(par3World, par4, par5, par6, par2EntityPlayer, par1ItemStack);
+-                    this.field_150939_a.onPostBlockPlaced(par3World, par4, par5, par6, j1);
+-                }
+-
+                 par3World.playSoundEffect((double)((float)par4 + 0.5F), (double)((float)par5 + 0.5F), (double)((float)par6 + 0.5F), this.field_150939_a.stepSound.func_150496_b(), (this.field_150939_a.stepSound.getVolume() + 1.0F) / 2.0F, this.field_150939_a.stepSound.getPitch() * 0.8F);
+                 --par1ItemStack.stackSize;
+             }
+@@ -133,7 +127,7 @@
+         {
+             p_150936_5_ = 1;
+         }
+-        else if (block != Blocks.vine && block != Blocks.tallgrass && block != Blocks.deadbush)
++        else if (block != Blocks.vine && block != Blocks.tallgrass && block != Blocks.deadbush && !block.isReplaceable(p_150936_1_, p_150936_2_, p_150936_3_, p_150936_4_))
+         {
+             if (p_150936_5_ == 0)
+             {
+@@ -205,4 +199,29 @@
+             this.field_150938_b = par1IconRegister.registerIcon(s);
+         }
+     }
++
++    /**
++     * Called to actually place the block, after the location is determined
++     * and all permission checks have been made.
++     *
++     * @param stack The item stack that was used to place the block. This can be changed inside the method.
++     * @param player The player who is placing the block. Can be null if the block is not being placed by a player.
++     * @param side The side the player (or machine) right-clicked on.
++     */
++    public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata)
++    {
++
++       if (!world.setBlock(x, y, z, field_150939_a, metadata, 3))
++       {
++           return false;
++       }
++
++       if (world.getBlock(x, y, z) == field_150939_a)
++       {
++           field_150939_a.onBlockPlacedBy(world, x, y, z, player, stack);
++           field_150939_a.onPostBlockPlaced(world, x, y, z, metadata);
++       }
++
++       return true;
++    }
+ }

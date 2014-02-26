@@ -1,0 +1,71 @@
+--- ../src-base/minecraft/net/minecraft/inventory/ContainerEnchantment.java
++++ ../src-work/minecraft/net/minecraft/inventory/ContainerEnchantment.java
+@@ -12,6 +12,7 @@
+ import net.minecraft.init.Items;
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.world.World;
++import net.minecraftforge.common.ForgeHooks;
+ 
+ public class ContainerEnchantment extends Container
+ {
+@@ -125,6 +126,7 @@
+                 {
+                     i = 0;
+                     int j;
++                    float power = 0;
+ 
+                     for (j = -1; j <= 1; ++j)
+                     {
+@@ -132,37 +134,15 @@
+                         {
+                             if ((j != 0 || k != 0) && this.worldPointer.isAirBlock(this.posX + k, this.posY, this.posZ + j) && this.worldPointer.isAirBlock(this.posX + k, this.posY + 1, this.posZ + j))
+                             {
+-                                if (this.worldPointer.getBlock(this.posX + k * 2, this.posY, this.posZ + j * 2) == Blocks.bookshelf)
+-                                {
+-                                    ++i;
+-                                }
++                                power += ForgeHooks.getEnchantPower(worldPointer, posX + k * 2, posY,     posZ + j * 2);
++                                power += ForgeHooks.getEnchantPower(worldPointer, posX + k * 2, posY + 1, posZ + j * 2);
+ 
+-                                if (this.worldPointer.getBlock(this.posX + k * 2, this.posY + 1, this.posZ + j * 2) == Blocks.bookshelf)
+-                                {
+-                                    ++i;
+-                                }
+-
+                                 if (k != 0 && j != 0)
+                                 {
+-                                    if (this.worldPointer.getBlock(this.posX + k * 2, this.posY, this.posZ + j) == Blocks.bookshelf)
+-                                    {
+-                                        ++i;
+-                                    }
+-
+-                                    if (this.worldPointer.getBlock(this.posX + k * 2, this.posY + 1, this.posZ + j) == Blocks.bookshelf)
+-                                    {
+-                                        ++i;
+-                                    }
+-
+-                                    if (this.worldPointer.getBlock(this.posX + k, this.posY, this.posZ + j * 2) == Blocks.bookshelf)
+-                                    {
+-                                        ++i;
+-                                    }
+-
+-                                    if (this.worldPointer.getBlock(this.posX + k, this.posY + 1, this.posZ + j * 2) == Blocks.bookshelf)
+-                                    {
+-                                        ++i;
+-                                    }
++                                    power += ForgeHooks.getEnchantPower(worldPointer, posX + k * 2, posY,     posZ + j    );
++                                    power += ForgeHooks.getEnchantPower(worldPointer, posX + k * 2, posY + 1, posZ + j    );
++                                    power += ForgeHooks.getEnchantPower(worldPointer, posX + k,     posY,     posZ + j * 2);
++                                    power += ForgeHooks.getEnchantPower(worldPointer, posX + k,     posY + 1, posZ + j * 2);
+                                 }
+                             }
+                         }
+@@ -170,7 +150,7 @@
+ 
+                     for (j = 0; j < 3; ++j)
+                     {
+-                        this.enchantLevels[j] = EnchantmentHelper.calcItemStackEnchantability(this.rand, j, i, itemstack);
++                        this.enchantLevels[j] = EnchantmentHelper.calcItemStackEnchantability(this.rand, j, (int)power, itemstack);
+                     }
+ 
+                     this.detectAndSendChanges();

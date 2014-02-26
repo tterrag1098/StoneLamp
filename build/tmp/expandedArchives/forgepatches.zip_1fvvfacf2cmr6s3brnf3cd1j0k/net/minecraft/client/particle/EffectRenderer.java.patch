@@ -1,0 +1,74 @@
+--- ../src-base/minecraft/net/minecraft/client/particle/EffectRenderer.java
++++ ../src-work/minecraft/net/minecraft/client/particle/EffectRenderer.java
+@@ -16,9 +16,11 @@
+ import net.minecraft.crash.CrashReportCategory;
+ import net.minecraft.entity.Entity;
+ import net.minecraft.util.MathHelper;
++import net.minecraft.util.MovingObjectPosition;
+ import net.minecraft.util.ReportedException;
+ import net.minecraft.util.ResourceLocation;
+ import net.minecraft.world.World;
++
+ import org.lwjgl.opengl.GL11;
+ 
+ @SideOnly(Side.CLIENT)
+@@ -72,7 +74,10 @@
+ 
+                 try
+                 {
+-                    entityfx.onUpdate();
++                    if (entityfx != null)
++                    {
++                        entityfx.onUpdate();
++                    }
+                 }
+                 catch (Throwable throwable)
+                 {
+@@ -97,7 +102,7 @@
+                     throw new ReportedException(crashreport);
+                 }
+ 
+-                if (entityfx.isDead)
++                if (entityfx == null || entityfx.isDead)
+                 {
+                     this.fxLayers[i].remove(j--);
+                 }
+@@ -147,6 +152,7 @@
+                 for (int j = 0; j < this.fxLayers[i].size(); ++j)
+                 {
+                     final EntityFX entityfx = (EntityFX)this.fxLayers[i].get(j);
++                    if (entityfx == null) continue;
+                     tessellator.setBrightness(entityfx.getBrightnessForRender(par2));
+ 
+                     try
+@@ -203,6 +209,7 @@
+             for (int i = 0; i < list.size(); ++i)
+             {
+                 EntityFX entityfx = (EntityFX)list.get(i);
++                if (entityfx == null) continue;
+                 tessellator.setBrightness(entityfx.getBrightnessForRender(par2));
+                 entityfx.renderParticle(tessellator, par2, f2, f6, f3, f4, f5);
+             }
+@@ -221,7 +228,7 @@
+ 
+     public void addBlockDestroyEffects(int p_147215_1_, int p_147215_2_, int p_147215_3_, Block p_147215_4_, int p_147215_5_)
+     {
+-        if (p_147215_4_.getMaterial() != Material.air)
++        if (!p_147215_4_.isAir(worldObj, p_147215_1_, p_147215_2_, p_147215_3_) && !p_147215_4_.addDestroyEffects(worldObj, p_147215_1_, p_147215_2_, p_147215_3_, p_147215_5_, this))
+         {
+             byte b0 = 4;
+ 
+@@ -291,4 +298,13 @@
+     {
+         return "" + (this.fxLayers[0].size() + this.fxLayers[1].size() + this.fxLayers[2].size());
+     }
++
++    public void addBlockHitEffects(int x, int y, int z, MovingObjectPosition target)
++    {
++        Block block = worldObj.getBlock(x, y, z);
++        if (block != null && !block.addHitEffects(worldObj, target, this))
++        {
++            addBlockHitEffects(x, y, z, target.sideHit);
++        }
++     }
+ }

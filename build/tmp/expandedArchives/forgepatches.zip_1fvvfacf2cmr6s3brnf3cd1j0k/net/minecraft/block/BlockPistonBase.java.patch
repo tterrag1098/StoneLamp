@@ -1,0 +1,65 @@
+--- ../src-base/minecraft/net/minecraft/block/BlockPistonBase.java
++++ ../src-work/minecraft/net/minecraft/block/BlockPistonBase.java
+@@ -11,6 +11,7 @@
+ import net.minecraft.entity.player.EntityPlayer;
+ import net.minecraft.init.Blocks;
+ import net.minecraft.item.ItemStack;
++import net.minecraft.server.management.PlayerManager;
+ import net.minecraft.tileentity.TileEntity;
+ import net.minecraft.tileentity.TileEntityPiston;
+ import net.minecraft.util.AxisAlignedBB;
+@@ -380,7 +381,8 @@
+                 return false;
+             }
+ 
+-            return !(p_150080_0_ instanceof ITileEntityProvider);
++            return !(p_150080_1_.getBlock(p_150080_2_, p_150080_3_, p_150080_4_).hasTileEntity(p_150080_1_.getBlockMetadata(p_150080_2_, p_150080_3_, p_150080_4_)));
++            
+         }
+     }
+ 
+@@ -396,14 +398,14 @@
+         {
+             if (l1 < 13)
+             {
+-                if (j1 <= 0 || j1 >= 255)
++                if (j1 <= 0 || j1 >= p_150077_0_.getHeight())
+                 {
+                     return false;
+                 }
+ 
+                 Block block = p_150077_0_.getBlock(i1, j1, k1);
+ 
+-                if (block.getMaterial() != Material.air)
++                if (!block.isAir(p_150077_0_, i1, j1, k1))
+                 {
+                     if (!canPushBlock(block, p_150077_0_, i1, j1, k1, true))
+                     {
+@@ -442,14 +444,14 @@
+         {
+             if (l1 < 13)
+             {
+-                if (j1 <= 0 || j1 >= 255)
++                if (j1 <= 0 || j1 >= p_150079_1_.getHeight())
+                 {
+                     return false;
+                 }
+ 
+                 Block block = p_150079_1_.getBlock(i1, j1, k1);
+ 
+-                if (block.getMaterial() != Material.air)
++                if (!block.isAir(p_150079_1_, i1, j1, k1))
+                 {
+                     if (!canPushBlock(block, p_150079_1_, i1, j1, k1, true))
+                     {
+@@ -470,7 +472,9 @@
+                         continue;
+                     }
+ 
+-                    block.dropBlockAsItem(p_150079_1_, i1, j1, k1, p_150079_1_.getBlockMetadata(i1, j1, k1), 0);
++                    //With our change to how snowballs are dropped this needs to disallow to mimic vanilla behavior.
++                    float chance = block instanceof BlockSnow ? -1.0f : 1.0f;
++                    block.dropBlockAsItemWithChance(p_150079_1_, i1, j1, k1, p_150079_1_.getBlockMetadata(i1, j1, k1), chance, 0);
+                     p_150079_1_.setBlockToAir(i1, j1, k1);
+                 }
+             }

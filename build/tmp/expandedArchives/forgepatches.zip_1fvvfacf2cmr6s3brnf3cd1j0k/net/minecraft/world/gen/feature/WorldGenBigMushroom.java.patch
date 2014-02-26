@@ -1,0 +1,29 @@
+--- ../src-base/minecraft/net/minecraft/world/gen/feature/WorldGenBigMushroom.java
++++ ../src-work/minecraft/net/minecraft/world/gen/feature/WorldGenBigMushroom.java
+@@ -57,7 +57,7 @@
+                         {
+                             Block block = par1World.getBlock(k1, j1, l1);
+ 
+-                            if (block.getMaterial() != Material.air && block.getMaterial() != Material.leaves)
++                            if (!block.isAir(par1World, k1, j1, l1) && !block.isLeaves(par1World, k1, j1, l1))
+                             {
+                                 flag = false;
+                             }
+@@ -184,7 +184,7 @@
+                                     j2 = 0;
+                                 }
+ 
+-                                if ((j2 != 0 || par4 >= par4 + i1 - 1) && !par1World.getBlock(l2, k1, i2).func_149730_j())
++                                if ((j2 != 0 || par4 >= par4 + i1 - 1) && par1World.getBlock(l2, k1, i2).canBeReplacedByLeaves(par1World, l2, k1, i2))
+                                 {
+                                     this.setBlockAndNotifyAdequately(par1World, l2, k1, i2, Block.getBlockById(Block.getIdFromBlock(Blocks.brown_mushroom_block) + l), j2);
+                                 }
+@@ -196,7 +196,7 @@
+                     {
+                         Block block2 = par1World.getBlock(par3, par4 + k1, par5);
+ 
+-                        if (!block2.func_149730_j())
++                        if (block2.canBeReplacedByLeaves(par1World, par3, par4 + k1, par5))
+                         {
+                             this.setBlockAndNotifyAdequately(par1World, par3, par4 + k1, par5, Block.getBlockById(Block.getIdFromBlock(Blocks.brown_mushroom_block) + l), 10);
+                         }

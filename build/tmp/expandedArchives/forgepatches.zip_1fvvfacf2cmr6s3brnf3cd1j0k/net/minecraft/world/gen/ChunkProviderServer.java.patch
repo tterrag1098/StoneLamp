@@ -1,0 +1,57 @@
+--- ../src-base/minecraft/net/minecraft/world/gen/ChunkProviderServer.java
++++ ../src-work/minecraft/net/minecraft/world/gen/ChunkProviderServer.java
+@@ -24,6 +24,8 @@
+ import net.minecraft.world.chunk.EmptyChunk;
+ import net.minecraft.world.chunk.IChunkProvider;
+ import net.minecraft.world.chunk.storage.IChunkLoader;
++import net.minecraftforge.common.DimensionManager;
++import net.minecraftforge.common.ForgeChunkManager;
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
+ 
+@@ -59,7 +61,7 @@
+     // JAVADOC METHOD $$ func_73241_b
+     public void unloadChunksIfNotNearSpawn(int par1, int par2)
+     {
+-        if (this.worldObj.provider.canRespawnHere())
++        if (this.worldObj.provider.canRespawnHere() && DimensionManager.shouldLoadSpawn(this.worldObj.provider.dimensionId))
+         {
+             ChunkCoordinates chunkcoordinates = this.worldObj.getSpawnPoint();
+             int k = par1 * 16 + 8 - chunkcoordinates.posX;
+@@ -98,7 +100,11 @@
+ 
+         if (chunk == null)
+         {
+-            chunk = this.safeLoadChunk(par1, par2);
++            chunk = ForgeChunkManager.fetchDormantChunk(k, this.worldObj);
++            if (chunk == null)
++            {
++                chunk = this.safeLoadChunk(par1, par2);
++            }
+ 
+             if (chunk == null)
+             {
+@@ -272,6 +278,11 @@
+     {
+         if (!this.worldObj.levelSaving)
+         {
++            for (ChunkCoordIntPair forced : this.worldObj.getPersistentChunks().keySet())
++            {
++                this.chunksToUnload.remove(ChunkCoordIntPair.chunkXZ2Int(forced.chunkXPos, forced.chunkZPos));
++            }
++
+             for (int i = 0; i < 100; ++i)
+             {
+                 if (!this.chunksToUnload.isEmpty())
+@@ -284,6 +295,11 @@
+                     this.chunksToUnload.remove(olong);
+                     this.loadedChunkHashMap.remove(olong.longValue());
+                     this.loadedChunks.remove(chunk);
++                    ForgeChunkManager.putDormantChunk(ChunkCoordIntPair.chunkXZ2Int(chunk.xPosition, chunk.zPosition), chunk);
++                    if(loadedChunks.size() == 0 && ForgeChunkManager.getPersistentChunksFor(this.worldObj).size() == 0 && !DimensionManager.shouldLoadSpawn(this.worldObj.provider.dimensionId)){
++                        DimensionManager.unloadWorld(this.worldObj.provider.dimensionId);
++                        return currentChunkProvider.unloadQueuedChunks();
++                    }
+                 }
+             }
+ 

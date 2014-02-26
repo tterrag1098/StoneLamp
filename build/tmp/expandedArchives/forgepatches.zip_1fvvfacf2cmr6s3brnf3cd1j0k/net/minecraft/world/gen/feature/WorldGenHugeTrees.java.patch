@@ -1,0 +1,71 @@
+--- ../src-base/minecraft/net/minecraft/world/gen/feature/WorldGenHugeTrees.java
++++ ../src-work/minecraft/net/minecraft/world/gen/feature/WorldGenHugeTrees.java
+@@ -2,9 +2,11 @@
+ 
+ import java.util.Random;
+ import net.minecraft.block.Block;
++import net.minecraft.block.BlockSapling;
+ import net.minecraft.block.material.Material;
+ import net.minecraft.init.Blocks;
+ import net.minecraft.world.World;
++import net.minecraftforge.common.util.ForgeDirection;
+ 
+ public abstract class WorldGenHugeTrees extends WorldGenAbstractTree
+ {
+@@ -66,7 +68,7 @@
+                         {
+                             Block block = p_150536_1_.getBlock(j1, i1, k1);
+ 
+-                            if (!this.func_150523_a(block))
++                            if (!this.isReplaceable(p_150536_1_, j1, i1, k1))
+                             {
+                                 flag = false;
+                             }
+@@ -91,12 +93,13 @@
+     {
+         Block block = p_150532_1_.getBlock(p_150532_3_, p_150532_4_ - 1, p_150532_5_);
+ 
+-        if ((block == Blocks.grass || block == Blocks.dirt) && p_150532_4_ >= 2)
++        boolean isSoil = block.canSustainPlant(p_150532_1_, p_150532_3_, p_150532_4_ - 1, p_150532_5_, ForgeDirection.UP, (BlockSapling)Blocks.sapling);
++        if (isSoil && p_150532_4_ >= 2)
+         {
+-            p_150532_1_.setBlock(p_150532_3_, p_150532_4_ - 1, p_150532_5_, Blocks.dirt, 0, 2);
+-            p_150532_1_.setBlock(p_150532_3_ + 1, p_150532_4_ - 1, p_150532_5_, Blocks.dirt, 0, 2);
+-            p_150532_1_.setBlock(p_150532_3_, p_150532_4_ - 1, p_150532_5_ + 1, Blocks.dirt, 0, 2);
+-            p_150532_1_.setBlock(p_150532_3_ + 1, p_150532_4_ - 1, p_150532_5_ + 1, Blocks.dirt, 0, 2);
++            onPlantGrow(p_150532_1_, p_150532_3_,     p_150532_4_ - 1, p_150532_5_,     p_150532_3_, p_150532_4_, p_150532_5_);
++            onPlantGrow(p_150532_1_, p_150532_3_ + 1, p_150532_4_ - 1, p_150532_5_,     p_150532_3_, p_150532_4_, p_150532_5_);
++            onPlantGrow(p_150532_1_, p_150532_3_,     p_150532_4_ - 1, p_150532_5_ + 1, p_150532_3_, p_150532_4_, p_150532_5_);
++            onPlantGrow(p_150532_1_, p_150532_3_ + 1, p_150532_4_ - 1, p_150532_5_ + 1, p_150532_3_, p_150532_4_, p_150532_5_);
+             return true;
+         }
+         else
+@@ -128,7 +131,7 @@
+                 {
+                     Block block = p_150535_1_.getBlock(j1, p_150535_3_, l1);
+ 
+-                    if (block.getMaterial() == Material.air || block.getMaterial() == Material.leaves)
++                    if (block.isAir(p_150535_1_, j1, p_150535_3_, l1) || block.isLeaves(p_150535_1_, j1, p_150535_3_, l1))
+                     {
+                         this.setBlockAndNotifyAdequately(p_150535_1_, j1, p_150535_3_, l1, Blocks.leaves, this.leavesMetadata);
+                     }
+@@ -153,7 +156,7 @@
+                 {
+                     Block block = p_150534_1_.getBlock(j1, p_150534_3_, l1);
+ 
+-                    if (block.getMaterial() == Material.air || block.getMaterial() == Material.leaves)
++                    if (block.isAir(p_150534_1_, j1, p_150534_3_, l1) || block.isLeaves(p_150534_1_, j1, p_150534_3_, l1))
+                     {
+                         this.setBlockAndNotifyAdequately(p_150534_1_, j1, p_150534_3_, l1, Blocks.leaves, this.leavesMetadata);
+                     }
+@@ -161,4 +164,10 @@
+             }
+         }
+     }
++
++    //Just a helper macro
++    private void onPlantGrow(World world, int x, int y, int z, int sourceX, int sourceY, int sourceZ)
++    {
++        world.getBlock(x, y, z).onPlantGrow(world, x, y, z, sourceX, sourceY, sourceZ);
++    }
+ }

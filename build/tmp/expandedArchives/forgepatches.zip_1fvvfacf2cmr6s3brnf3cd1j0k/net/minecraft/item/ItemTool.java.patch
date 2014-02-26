@@ -1,0 +1,74 @@
+--- ../src-base/minecraft/net/minecraft/item/ItemTool.java
++++ ../src-work/minecraft/net/minecraft/item/ItemTool.java
+@@ -1,5 +1,6 @@
+ package net.minecraft.item;
+ 
++import com.google.common.collect.ImmutableSet;
+ import com.google.common.collect.Multimap;
+ import cpw.mods.fml.relauncher.Side;
+ import cpw.mods.fml.relauncher.SideOnly;
+@@ -10,6 +11,7 @@
+ import net.minecraft.entity.SharedMonsterAttributes;
+ import net.minecraft.entity.ai.attributes.AttributeModifier;
+ import net.minecraft.world.World;
++import net.minecraftforge.common.ForgeHooks;
+ 
+ public class ItemTool extends Item
+ {
+@@ -30,6 +32,18 @@
+         this.efficiencyOnProperMaterial = p_i45333_2_.getEfficiencyOnProperMaterial();
+         this.damageVsEntity = p_i45333_1_ + p_i45333_2_.getDamageVsEntity();
+         this.setCreativeTab(CreativeTabs.tabTools);
++        if (this instanceof ItemPickaxe)
++        {
++            toolClass = "pickaxe";
++        }
++        else if (this instanceof ItemAxe)
++        {
++            toolClass = "axe";
++        }
++        else if (this instanceof ItemSpade)
++        {
++            toolClass = "shovel";
++        }
+     }
+ 
+     public float func_150893_a(ItemStack p_150893_1_, Block p_150893_2_)
+@@ -91,4 +105,37 @@
+         multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Tool modifier", (double)this.damageVsEntity, 0));
+         return multimap;
+     }
++
++    /*===================================== FORGE START =================================*/
++    private String toolClass;
++    @Override
++    public int getHarvestLevel(ItemStack stack, String toolClass)
++    {
++        int level = super.getHarvestLevel(stack, toolClass);
++        if (level == -1 && toolClass != null && toolClass.equals(this.toolClass))
++        {
++            return this.toolMaterial.getHarvestLevel();
++        }
++        else
++        {
++            return level;
++        }
++    }
++
++    @Override
++    public Set<String> getToolClasses(ItemStack stack)
++    {
++        return toolClass != null ? ImmutableSet.of(toolClass) : super.getToolClasses(stack);
++    }
++
++    @Override
++    public float getDigSpeed(ItemStack stack, Block block, int meta)
++    {
++        if (ForgeHooks.isToolEffective(stack, block, meta))
++        {
++            return efficiencyOnProperMaterial;
++        }
++        return super.getDigSpeed(stack, block, meta);
++    }
++    /*===================================== FORGE END =================================*/
+ }

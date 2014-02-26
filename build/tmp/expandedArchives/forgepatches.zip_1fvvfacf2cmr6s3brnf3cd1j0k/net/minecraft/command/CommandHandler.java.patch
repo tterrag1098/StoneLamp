@@ -1,0 +1,29 @@
+--- ../src-base/minecraft/net/minecraft/command/CommandHandler.java
++++ ../src-work/minecraft/net/minecraft/command/CommandHandler.java
+@@ -14,6 +14,9 @@
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
+ 
++import net.minecraftforge.common.MinecraftForge;
++import net.minecraftforge.event.CommandEvent;
++
+ public class CommandHandler implements ICommandManager
+ {
+     private static final Logger logger = LogManager.getLogger();
+@@ -49,6 +52,16 @@
+ 
+             if (icommand.canCommandSenderUseCommand(par1ICommandSender))
+             {
++                CommandEvent event = new CommandEvent(icommand, par1ICommandSender, astring);
++                if (MinecraftForge.EVENT_BUS.post(event))
++                {
++                    if (event.exception != null)
++                    {
++                        throw event.exception;
++                    }
++                    return 1;
++                }
++
+                 if (i > -1)
+                 {
+                     EntityPlayerMP[] aentityplayermp = PlayerSelector.matchPlayers(par1ICommandSender, astring[i]);
