@@ -611,7 +611,6 @@ public class BlockLamp extends Block
 	public void getSubBlocks(Item item, CreativeTabs tab, List list)
 	{
 		list.add(new ItemStack(this, 1, 0));
-		list.add(new ItemStack(this, 1, 1));
 	}
 
 	@Override

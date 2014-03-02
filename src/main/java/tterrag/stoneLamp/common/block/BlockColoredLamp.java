@@ -35,12 +35,6 @@ public class BlockColoredLamp extends BlockLamp
 	}
 
 	@Override
-	public IIcon getIcon(int par1, int par2)
-	{
-		return icons[13];
-	}
-
-	@Override
 	public int getBlockColor()
 	{
 		if (ConfigKeys.allowNewRenderer) return super.getBlockColor();
