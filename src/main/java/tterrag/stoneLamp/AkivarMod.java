@@ -3,7 +3,6 @@ package tterrag.stoneLamp;
 import net.minecraft.creativetab.CreativeTabs;
 import tterrag.stoneLamp.common.block.ModBlock;
 import tterrag.stoneLamp.common.config.ConfigHandler;
-import tterrag.stoneLamp.common.config.ConfigKeys;
 import tterrag.stoneLamp.common.creativetab.CreativeTabStoneLamp;
 import tterrag.stoneLamp.common.item.ModItem;
 import tterrag.stoneLamp.common.lib.Reference;
@@ -35,7 +34,7 @@ public class AkivarMod
 		ConfigHandler.init(event.getSuggestedConfigurationFile());
 
 		ModBlock.init();
-		if (ConfigKeys.allowDebugItem) ModItem.init();
+		ModItem.init();
 
 		proxy.runClientSide();
 		proxy.initSounds();
@@ -46,6 +45,7 @@ public class AkivarMod
 	public void init(FMLInitializationEvent event)
 	{
 		ModBlock.addRecipes();
+		ModItem.addRecipes();
 	}
 
 	@EventHandler
