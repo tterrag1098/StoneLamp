@@ -3,6 +3,12 @@
 # Package Files #
 *.war
 *.ear
-/build	
+/build
 /eclipse
 /bin
+
+*.mtl
+*.classpath
+*.project
+/.gradle
+/.settings

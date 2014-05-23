@@ -1,0 +1,9 @@
+item.textureConnectorWand.name=Texture Connector Wand
+
+tile.blockEmptyLamp.name=Empty Stone Lamp
+tile.emptyColoredLamp.name=Empty Colored Stone Lamp
+
+tile.blockLamp.name=Stone Lamp
+tile.coloredLamp.name=Colored Stone Lamp
+
+itemGroup.tabStoneLamp=Stone Lamps

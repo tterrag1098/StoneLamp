@@ -10,7 +10,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ModBlock
 {
-
 	public static Block lamp;
 	public static Block emptyLamp;
 	public static Block coloredLamp;

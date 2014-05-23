@@ -28,7 +28,6 @@ public class BlockLamp extends Block
 {
 
 	private float lightVal;
-	private String unlocName;
 
 	public BlockLamp(float lightValue, String unlocName)
 	{
@@ -37,14 +36,7 @@ public class BlockLamp extends Block
 		lightVal = lightValue;
 		setCreativeTab(AkivarMod.tabStoneLamp);
 		setHardness(0.6F);
-
-		this.unlocName = unlocName;
-	}
-
-	@Override
-	public String getUnlocalizedName()
-	{
-		return unlocName;
+		setBlockName(unlocName);
 	}
 
 	@SideOnly(Side.CLIENT)

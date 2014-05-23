@@ -18,7 +18,6 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION)
 public class AkivarMod
 {
-
 	@Instance(Reference.MOD_ID)
 	public static AkivarMod instance;
 
@@ -30,7 +29,6 @@ public class AkivarMod
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-
 		ConfigHandler.init(event.getSuggestedConfigurationFile());
 
 		ModBlock.init();
