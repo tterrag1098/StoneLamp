@@ -103,17 +103,7 @@ public class LampRenderer extends BaseBlockRenderer
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
 	{
-		// renderer.setOverrideBlockTexture(BlockLamp.icons[13]);
 		renderAsItem(block, metadata, renderer, BlockLamp.icons[13]);
-		// renderer.renderBlockAsItem(Block.glass, ((BlockLamp)
-		// block).getBlockColor(metadata), 1);
-		// Tessellator tessellator = Tessellator.instance;
-		// if (block.blockID == BlockIds.COLOREDLAMP_ID || block.blockID ==
-		// BlockIds.EMPTYCOLOREDLAMP_ID)
-		// tessellator.setColorOpaque_I(((BlockLamp)
-		// block).getBlockColor(metadata));
-
-		// renderer.clearOverrideBlockTexture();
 	}
 
 	private IIcon[] getIcons()

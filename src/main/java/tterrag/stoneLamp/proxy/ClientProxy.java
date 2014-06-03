@@ -16,5 +16,4 @@ public class ClientProxy extends CommonProxy
 	{
 		RenderingRegistry.registerBlockHandler(LampRenderer.instance());
 	}
-
 }

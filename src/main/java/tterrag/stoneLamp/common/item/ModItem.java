@@ -8,9 +8,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ModItem
 {
-
-	public static String TEXTURE_LOC = "akivarmod";
-
 	public static final String CONNECTOR_KEY = "connector";
 	public static final String CONNECTOR_UNLOC_NAME = "textureConnectorWand";
 	public static final String CONNECTOR_LOC_NAME = "Texture Connector Wand";

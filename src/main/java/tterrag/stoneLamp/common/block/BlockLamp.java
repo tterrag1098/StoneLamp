@@ -17,10 +17,11 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import tterrag.stoneLamp.AkivarMod;
+import tterrag.stoneLamp.StoneLamps;
 import tterrag.stoneLamp.client.renderers.LampRenderer;
 import tterrag.stoneLamp.common.config.ConfigKeys;
 import tterrag.stoneLamp.common.item.ModItem;
+import tterrag.stoneLamp.common.lib.Reference;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -34,7 +35,7 @@ public class BlockLamp extends Block
 		super(Material.glass);
 		setLightLevel(lightValue);
 		lightVal = lightValue;
-		setCreativeTab(AkivarMod.tabStoneLamp);
+		setCreativeTab(StoneLamps.tabStoneLamp);
 		setHardness(0.6F);
 		setBlockName(unlocName);
 	}
@@ -610,41 +611,41 @@ public class BlockLamp extends Block
 	{
 		if (ConfigKeys.allowNewRenderer)
 		{
-			icons[0] = par1IconRegister.registerIcon("akivarmod:topBorder");
-			icons[1] = par1IconRegister.registerIcon("akivarmod:rightBorder");
-			icons[2] = par1IconRegister.registerIcon("akivarmod:bottomBorder");
-			icons[3] = par1IconRegister.registerIcon("akivarmod:leftBorder");
-			icons[4] = par1IconRegister.registerIcon("akivarmod:topLeftCorner");
-			icons[5] = par1IconRegister.registerIcon("akivarmod:bottomLeftCorner");
-			icons[6] = par1IconRegister.registerIcon("akivarmod:bottomRightCorner");
-			icons[7] = par1IconRegister.registerIcon("akivarmod:topRightCorner");
-			icons[8] = par1IconRegister.registerIcon("akivarmod:topLeftCornerClosed");
-			icons[9] = par1IconRegister.registerIcon("akivarmod:bottomLeftCornerClosed");
-			icons[10] = par1IconRegister.registerIcon("akivarmod:bottomRightCornerClosed");
-			icons[11] = par1IconRegister.registerIcon("akivarmod:topRightCornerClosed");
-			icons[12] = par1IconRegister.registerIcon("akivarmod:lamp_full");
-			icons[13] = par1IconRegister.registerIcon("akivarmod:lamp");
-			// icons[14] = par1IconRegister.registerIcon("akivarmod:lamp");
-			// icons[15] = par1IconRegister.registerIcon("akivarmod:lamp");
+			icons[0] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":topBorder");
+			icons[1] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":rightBorder");
+			icons[2] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":bottomBorder");
+			icons[3] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":leftBorder");
+			icons[4] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":topLeftCorner");
+			icons[5] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":bottomLeftCorner");
+			icons[6] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":bottomRightCorner");
+			icons[7] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":topRightCorner");
+			icons[8] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":topLeftCornerClosed");
+			icons[9] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":bottomLeftCornerClosed");
+			icons[10] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":bottomRightCornerClosed");
+			icons[11] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":topRightCornerClosed");
+			icons[12] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":lamp_full");
+			icons[13] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":lamp");
+			// icons[14] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":lamp");
+			// icons[15] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":lamp");
 		}
 		else
 		{
-			icons[0] = par1IconRegister.registerIcon("akivarmod:lamp");
-			icons[1] = par1IconRegister.registerIcon("akivarmod:lamp_d");
-			icons[2] = par1IconRegister.registerIcon("akivarmod:lamp_u");
-			icons[3] = par1IconRegister.registerIcon("akivarmod:lamp_l");
-			icons[4] = par1IconRegister.registerIcon("akivarmod:lamp_r");
-			icons[5] = par1IconRegister.registerIcon("akivarmod:lamp_h");
-			icons[6] = par1IconRegister.registerIcon("akivarmod:lamp_v");
-			icons[7] = par1IconRegister.registerIcon("akivarmod:lamp_ur");
-			icons[8] = par1IconRegister.registerIcon("akivarmod:lamp_dr");
-			icons[9] = par1IconRegister.registerIcon("akivarmod:lamp_ul");
-			icons[10] = par1IconRegister.registerIcon("akivarmod:lamp_dl");
-			icons[11] = par1IconRegister.registerIcon("akivarmod:lamp_di");
-			icons[12] = par1IconRegister.registerIcon("akivarmod:lamp_ui");
-			icons[13] = par1IconRegister.registerIcon("akivarmod:lamp_li");
-			icons[14] = par1IconRegister.registerIcon("akivarmod:lamp_ri");
-			icons[15] = par1IconRegister.registerIcon("akivarmod:lamp_full");
+			icons[0] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":lamp");
+			icons[1] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":lamp_d");
+			icons[2] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":lamp_u");
+			icons[3] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":lamp_l");
+			icons[4] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":lamp_r");
+			icons[5] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":lamp_h");
+			icons[6] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":lamp_v");
+			icons[7] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":lamp_ur");
+			icons[8] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":lamp_dr");
+			icons[9] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":lamp_ul");
+			icons[10] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":lamp_dl");
+			icons[11] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":lamp_di");
+			icons[12] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":lamp_ui");
+			icons[13] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":lamp_li");
+			icons[14] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":lamp_ri");
+			icons[15] = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":lamp_full");
 		}
 	}
 

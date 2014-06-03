@@ -10,9 +10,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import tterrag.stoneLamp.AkivarMod;
+import tterrag.stoneLamp.StoneLamps;
 import tterrag.stoneLamp.common.block.ModBlock;
 import tterrag.stoneLamp.common.config.ConfigKeys;
+import tterrag.stoneLamp.common.lib.Reference;
 import cpw.mods.fml.common.Loader;
 
 public class ItemConnector extends Item
@@ -24,7 +25,7 @@ public class ItemConnector extends Item
 	{
 		super();
 		setUnlocalizedName(ModItem.CONNECTOR_UNLOC_NAME);
-		setCreativeTab(AkivarMod.tabStoneLamp);
+		setCreativeTab(StoneLamps.tabStoneLamp);
 	}
 
 	private IIcon icon;
@@ -32,7 +33,7 @@ public class ItemConnector extends Item
 	@Override
 	public void registerIcons(IIconRegister par1IconRegister)
 	{
-		icon = par1IconRegister.registerIcon("akivarmod:wand");
+		icon = par1IconRegister.registerIcon(Reference.MOD_TEXTUREPATH + ":wand");
 	};
 
 	@Override
