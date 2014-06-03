@@ -22,6 +22,6 @@ public class CreativeTabStoneLamp extends CreativeTabs
 	@Override
 	public Item getTabIconItem()
 	{
-		return ModBlock.lamp.getItem(null, 0, 0, 0);
+		return Item.getItemFromBlock(ModBlock.lamp);
 	}
 }

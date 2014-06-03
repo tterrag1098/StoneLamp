@@ -727,7 +727,7 @@ public class BlockLamp extends Block
 			int meta = world.getBlockMetadata(x, y, z);
 			world.setBlock(x, y, z, block);
 			world.setBlockMetadataWithNotify(x, y, z, meta, 3);
-			if (!player.inventory.addItemStackToInventory(new ItemStack(Blocks.torch, 1))) player.dropItem(Blocks.torch.getItem(world, x, y, z), 1);
+			if (!player.inventory.addItemStackToInventory(new ItemStack(Blocks.torch, 1))) player.dropItem(Item.getItemFromBlock(Blocks.torch), 1);
 		}
 		super.onBlockClicked(world, x, y, z, player);
 	}
@@ -736,7 +736,7 @@ public class BlockLamp extends Block
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9)
 	{
 		if (player.inventory.getCurrentItem() == null) return super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
-		if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() == Blocks.torch.getItem(world, x, y, z) && (this == ModBlock.emptyColoredLamp || this == ModBlock.emptyLamp) && !player.isSneaking())
+		if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() == Item.getItemFromBlock(Blocks.torch) && (this == ModBlock.emptyColoredLamp || this == ModBlock.emptyLamp) && !player.isSneaking())
 		{
 			Block block = world.getBlock(x, y, z) == ModBlock.emptyColoredLamp ? ModBlock.coloredLamp : ModBlock.lamp;
 			int meta = world.getBlockMetadata(x, y, z);

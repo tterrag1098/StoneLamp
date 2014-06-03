@@ -11,7 +11,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.1-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
     }
 }
 
@@ -55,7 +55,7 @@ version = "MC${config.minecraft_version}-${artifact_version}-${System.getenv().B
 archivesBaseName = "StoneLamp"
 
 minecraft {
-    version = "1.7.2-10.12.0.1024"
+    version = "1.7.2-10.12.1.1110"
     assetDir = "eclipse/assets"
 }
 processResources
