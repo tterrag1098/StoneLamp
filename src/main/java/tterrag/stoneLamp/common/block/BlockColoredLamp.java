@@ -13,7 +13,6 @@ import tterrag.stoneLamp.common.config.ConfigKeys;
 
 public class BlockColoredLamp extends BlockLamp
 {
-
 	private int color;
 	private float lightVal;
 
